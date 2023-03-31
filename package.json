@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "three": "^0.151.2"
+  },
+  "name": "space-time-voyage",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/three": "^0.150.0",
+    "file-loader": "^6.2.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.3",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1"
+  },
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flmartineau/space-time-voyage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flmartineau/space-time-voyage/issues"
+  },
+  "homepage": "https://github.com/flmartineau/space-time-voyage#readme"
+}
