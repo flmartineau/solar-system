@@ -30,16 +30,20 @@ export class Planet extends CelestialBody {
     updateOrbit(deltaTime: number, simulationSpeed: number): void {
         this.elapsedTime += deltaTime * simulationSpeed;
         const angle = this.elapsedTime * this.orbitSpeed;
-
-        // Calculate the elliptical orbit
+    
+        const e = 0.0167; // Excentricité de l'orbite de la Terre (exemple)
         const a = this.distanceToSun;
-        const b = this.distanceToSun * 0.9; // Example eccentricity factor
-        const x = a * Math.cos(angle);
-        const z = b * Math.sin(angle);
+        const theta = angle - e * Math.sin(angle); // Calcul de l'anomalie vraie
+    
+        // Calcul des coordonnées de l'orbite elliptique
+        const r = a * (1 - e * e) / (1 + e * Math.cos(theta));
+        const x = r * Math.cos(theta);
+        const z = r * Math.sin(theta);
         const y = z * Math.tan(this.inclination);
-
+    
         this.position.set(x, y, z);
     }
+    
 
     private createOrbitGeometry(segments: number = 100): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];

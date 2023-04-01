@@ -107,8 +107,6 @@ export class MainScene {
     this.scene.add(light);
 
 
-    const ambientLight = new AmbientLight(0xffffff, 0.5);
-    this.scene.add(ambientLight);
 
     this.sun = new Sun();
     this.mercury = new Mercury();
@@ -210,11 +208,11 @@ export class MainScene {
     const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
 
     if (this.isPlaying) {
-      this.sun.rotation.y += this.sun.rotationSpeed;
+      this.sun.rotation.y += this.sun.rotationSpeed * this.simulationSpeed;
 
 
       this.planets.forEach((planet: Planet) => {
-        planet.rotation.y += planet.rotationSpeed;
+        planet.rotation.y += planet.rotationSpeed * this.simulationSpeed;
         planet.updateOrbit(deltaTime, this.simulationSpeed);
       });
 

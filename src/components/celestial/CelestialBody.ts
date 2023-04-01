@@ -1,4 +1,4 @@
-import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
+import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader, MeshBasicMaterial, MeshLambertMaterial, Vector2, UniformsUtils, ShaderLib, ShaderMaterial, Color  } from 'three';
 
 
 export class CelestialBody extends Mesh {
@@ -12,9 +12,18 @@ export class CelestialBody extends Mesh {
     constructor(name: string, radius: number, texturePath: string, 
         rotationSpeed: number, mass: number, temperature: number, elapsedTime: number) {
 
-        const geometry = new SphereGeometry(radius, 32, 32);
+        const geometry = new SphereGeometry(radius, 128, 128);
         const texture = new TextureLoader().load(texturePath);
-        const material = new MeshPhongMaterial({ map: texture });
+
+        let material;
+
+        if (name === 'Sun') {
+            material = new MeshBasicMaterial({ map: texture });
+        } else {
+            material = new MeshPhongMaterial({ map: texture });
+        }
+
+
         super(geometry, material);
 
         this.name = name;
