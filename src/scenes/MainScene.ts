@@ -23,6 +23,7 @@ import { Venus } from '../components/celestial/planets/Venus';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Jupiter } from '../components/celestial/planets/Jupiter';
+import { Planet } from '../components/celestial/Planet';
 
 export class MainScene {
   private scene: Scene;
@@ -35,6 +36,9 @@ export class MainScene {
   private venus: Venus;
   private jupiter: Jupiter;
 
+  private mercuryOrbitLine: THREE.Line;
+  private venusOrbitLine: THREE.Line;
+  private jupiterOrbitLine: THREE.Line;
 
   private controls: OrbitControls;
   private raycaster: Raycaster;
@@ -94,12 +98,15 @@ private cameraOffset: Vector3 = new Vector3();
    
    this.mercury = new Mercury();
    this.scene.add(this.mercury);
+   this.mercuryOrbitLine = this.createOrbitLine(this.mercury);
 
    this.venus = new Venus();
    this.scene.add(this.venus);
+   this.venusOrbitLine = this.createOrbitLine(this.venus);
 
    this.jupiter = new Jupiter()
    this.scene.add(this.jupiter);
+   this.jupiterOrbitLine = this.createOrbitLine(this.jupiter);
 
 
 
@@ -152,6 +159,29 @@ private centerCameraOnObject(object: Mesh): void {
 }
 
 
+
+private createOrbitGeometry(distanceToSun: number, inclination: number, segments: number = 100): THREE.BufferGeometry {
+  const points: THREE.Vector3[] = [];
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * Math.PI * 2;
+    const x = distanceToSun * Math.cos(theta);
+    const y = distanceToSun * Math.sin(theta) * Math.sin(inclination);
+    const z = distanceToSun * Math.sin(theta) * Math.cos(inclination);
+    points.push(new THREE.Vector3(x, y, z));
+  }
+
+  const geometry = new THREE.BufferGeometry().setFromPoints(points);
+  return geometry;
+}
+
+
+private createOrbitLine(planet: Planet): THREE.Line {
+  const orbitGeometry = this.createOrbitGeometry(planet.distanceToSun, planet.inclination);
+  const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+  const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+  this.scene.add(orbitLine);
+  return orbitLine;
+}
 
 
 
