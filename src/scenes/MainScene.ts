@@ -3,25 +3,16 @@ import {
   PerspectiveCamera,
   WebGLRenderer,
   PointLight,
-  TextureLoader,
   Mesh,
-  MeshBasicMaterial,
-  SphereGeometry,
   Vector2,
-  Vector3,
   Raycaster,
-  AmbientLight,
   CubeTexture,
   CubeTextureLoader,
-  Spherical
 } from 'three';
 import * as THREE from 'three';
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
 import { Venus } from '../components/celestial/planets/Venus';
-
-
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Jupiter } from '../components/celestial/planets/Jupiter';
 import { Planet } from '../components/celestial/Planet';
 import { Earth } from '../components/celestial/planets/Earth';
@@ -29,12 +20,14 @@ import { Mars } from '../components/celestial/planets/Mars';
 import { Saturn } from '../components/celestial/planets/Saturn';
 import { Uranus } from '../components/celestial/planets/Uranus';
 import { Neptune } from '../components/celestial/planets/Neptune';
+import { CameraController } from '../controllers/CameraController';
 
 export class MainScene {
   private scene: Scene;
   private camera: PerspectiveCamera;
   private renderer: WebGLRenderer;
 
+  private cameraController: CameraController;
 
   private sun: Sun;
 
@@ -50,14 +43,11 @@ export class MainScene {
 
   private planets: Array<Planet>;
 
-  private controls: OrbitControls;
   private raycaster: Raycaster;
   private mouse: Vector2;
   private skybox: CubeTexture;
 
   private selectedObject: Mesh | null;
-  private focusedObject: Mesh | null = null;
-  private cameraOffset: Vector3 = new Vector3();
   private isPlaying: boolean;
   private currentDate: Date;
 
@@ -71,7 +61,7 @@ export class MainScene {
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-
+    this.cameraController = new CameraController(this.camera, this.renderer);
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -96,10 +86,6 @@ export class MainScene {
     this.scene.background = this.skybox;
 
     this.camera.position.z = 5;
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.update();
-
-    this.controls.addEventListener('change', () => this.onControlsChange());
 
 
     const light = new PointLight(0xffffff, 1, 0);
@@ -180,27 +166,8 @@ export class MainScene {
     }
   }
 
-  private onControlsChange(): void {
-    if (this.focusedObject) {
-      this.cameraOffset.copy(this.camera.position).sub(this.focusedObject.position);
-    }
-  }
-
-
   private centerCameraOnObject(object: Mesh): void {
-    const initialDistance = this.camera.position.distanceTo(object.position);
-
-    this.controls.target.copy(object.position);
-    this.controls.update();
-
-    const newDistance = this.camera.position.distanceTo(object.position);
-    const scalingFactor = initialDistance / newDistance;
-    const newPosition = this.camera.position.clone().sub(object.position).multiplyScalar(scalingFactor).add(object.position);
-    this.camera.position.copy(newPosition);
-    this.controls.update();
-
-    this.focusedObject = object;
-    this.cameraOffset.copy(this.camera.position).sub(object.position);
+    this.cameraController.centerCameraOnObject(object);
   }
 
   private animate(): void {
@@ -231,18 +198,10 @@ export class MainScene {
       }
     }
 
-
-
-
-    if (this.focusedObject) {
-      this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
-      this.controls.target.copy(this.focusedObject.position);
-      this.controls.update();
-    }
+    this.cameraController.update();
 
 
     this.renderer.render(this.scene, this.camera);
-    this.controls.update();
 
 
   }
