@@ -31,9 +31,9 @@ export class Planet extends CelestialBody {
         this.elapsedTime += deltaTime * simulationSpeed;
         const angle = this.elapsedTime * this.orbitSpeed;
     
-        const e = 0.0167; // Excentricité de l'orbite de la Terre (exemple)
+        const e = 0.0167; // Excentricité de l'orbite
         const a = this.distanceToSun;
-        const theta = angle - e * Math.sin(angle); // Calcul de l'anomalie vraie
+        const theta = angle - e * Math.sin(angle);
     
         // Calcul des coordonnées de l'orbite elliptique
         const r = a * (1 - e * e) / (1 + e * Math.cos(theta));
@@ -45,7 +45,7 @@ export class Planet extends CelestialBody {
     }
     
 
-    private createOrbitGeometry(segments: number = 100): THREE.BufferGeometry {
+    private createOrbitGeometry(segments: number = 1000): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];
         for (let i = 0; i <= segments; i++) {
             const theta = (i / segments) * Math.PI * 2;

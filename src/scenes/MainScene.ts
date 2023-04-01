@@ -161,7 +161,7 @@ export class MainScene {
     if (!this.isPlaying) {
       this.togglePlayPause();
     }
-    this.simulationSpeed = this.simulationSpeed*speed;
+    this.simulationSpeed = this.simulationSpeed * speed;
   }
 
   private onClick(event: MouseEvent): void {
@@ -208,24 +208,27 @@ export class MainScene {
     const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
 
     if (this.isPlaying) {
-      this.sun.rotation.y += this.sun.rotationSpeed * this.simulationSpeed;
+      this.sun.rotation.y += this.sun.rotationSpeed * this.simulationSpeed * deltaTime;
 
+      // Update the current date based on the simulation speed
+      const elapsedTime = deltaTime * 1000 * this.simulationSpeed; // Multiply by 1000 to convert seconds to milliseconds
+      this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
 
       this.planets.forEach((planet: Planet) => {
-        planet.rotation.y += planet.rotationSpeed * this.simulationSpeed;
+
+        planet.rotateY(planet.rotationSpeed * deltaTime * this.simulationSpeed);
+        //planet.rotation.y += planet.rotationSpeed * this.simulationSpeed * deltaTime;
         planet.updateOrbit(deltaTime, this.simulationSpeed);
       });
 
-      // Update the current date based on the simulation speed
-    const elapsedTime = deltaTime * 1000 * this.simulationSpeed; // Multiply by 1000 to convert seconds to milliseconds
-    this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
+      
 
-    // Display the updated date in the HTML element
-    const dateElement = document.getElementById('current-date');
-    if (dateElement) {
-      dateElement.textContent = this.formatDate(this.currentDate);
+      // Display the updated date in the HTML element
+      const dateElement = document.getElementById('current-date');
+      if (dateElement) {
+        dateElement.textContent = this.formatDate(this.currentDate);
 
-    }
+      }
     }
 
 
@@ -251,10 +254,10 @@ export class MainScene {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-  
+
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
-  
+
 
   private onMouseMove(event: MouseEvent): void {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
