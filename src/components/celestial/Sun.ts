@@ -18,4 +18,7 @@ export class Sun extends Mesh {
     this.temperature = temperature;
     this.rotationSpeed = rotationSpeed;
   }
+
+
+
 }

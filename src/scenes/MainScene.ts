@@ -18,6 +18,8 @@ import {
 import * as THREE from 'three';
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/Mercury';
+import { Venus } from '../components/celestial/Venus';
+
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -29,6 +31,7 @@ export class MainScene {
 
   private sun: Sun;
   private mercury: Mercury;
+  private venus: Venus;
 
 
   private controls: OrbitControls;
@@ -80,27 +83,19 @@ private cameraOffset: Vector3 = new Vector3();
     this.scene.add(light);
 
 
-    const ambientLight = new AmbientLight(0xffffff, 1);
+    const ambientLight = new AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
 
     this.sun = new Sun(1, '../../assets/textures/sun.jpg', 'Sun', 1.989 * Math.pow(10, 30), 5778, 0.00005);
 
     this.scene.add(this.sun);
 
-    // Add Mercury to the scene with name, mass, and temperature
-   const mercuryInclination = (7 * Math.PI) / 180; // 7 degrees converted to radians
-   this.mercury = new Mercury(
-     0.05,
-     '../../assets/textures/mercury.jpg',
-     5,
-     0.002,
-     0.001,
-     mercuryInclination,
-     'Mercury',
-     3.3011 * Math.pow(10, 23),
-     440
-   );
+   
+   this.mercury = new Mercury();
    this.scene.add(this.mercury);
+
+   this.venus = new Venus();
+   this.scene.add(this.venus);
 
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
@@ -117,7 +112,7 @@ private cameraOffset: Vector3 = new Vector3();
 
   this.raycaster.setFromCamera(this.mouse, this.camera);
 
-  const celestialObjects = [this.sun, this.mercury]; // Add more planets to this array as needed
+  const celestialObjects = [this.sun, this.mercury, this.venus]; // Add more planets to this array as needed
   const intersects = this.raycaster.intersectObjects(celestialObjects);
 
   if (intersects.length > 0) {
@@ -162,7 +157,7 @@ private centerCameraOnObject(object: Mesh): void {
 
     this.sun.rotation.y += this.sun.rotationSpeed;
     this.mercury.rotation.y += this.mercury.rotationSpeed;
-
+this.venus.rotation.y += this.venus.rotationSpeed;
     if (this.focusedObject) {
     this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
     this.controls.target.copy(this.focusedObject.position);
@@ -176,6 +171,7 @@ private centerCameraOnObject(object: Mesh): void {
     // Update Mercury's orbit
    const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
    this.mercury.updateOrbit(deltaTime);
+   this.venus.updateOrbit(deltaTime);
   }
 
   private onMouseMove(event: MouseEvent): void {
@@ -184,7 +180,7 @@ private centerCameraOnObject(object: Mesh): void {
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const intersects = this.raycaster.intersectObjects([this.sun, this.mercury]);
+    const intersects = this.raycaster.intersectObjects([this.sun, this.mercury, this.venus]);
 
 
     if (intersects.length > 0) {
