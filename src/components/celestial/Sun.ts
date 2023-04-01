@@ -1,22 +1,12 @@
-import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
+import { Star } from './Star';
+import { constants } from '../../utils/constants';
 
-export class Sun extends Mesh {
-  public name: string;
-  public mass: number;
-  public temperature: number;
-  public rotationSpeed: number;
+export class Sun extends Star {
 
-  constructor(radius: number, texturePath: string, name: string, mass: number, temperature: number, rotationSpeed: number) {
-    const geometry = new SphereGeometry(radius, 32, 32);
-    const texture = new TextureLoader().load(texturePath);
-    const material = new MeshPhongMaterial({ map: texture });
+  constructor() {
 
-    super(geometry, material);
-
-    this.name = name;
-    this.mass = mass;
-    this.temperature = temperature;
-    this.rotationSpeed = rotationSpeed;
+    super('Sun', constants.Sun.radius, '../../assets/textures/sun.jpg', 
+    constants.Sun.rotationSpeed, constants.Sun.mass, constants.Sun.temperature, 0);
   }
 
 

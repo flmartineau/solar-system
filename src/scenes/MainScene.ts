@@ -17,11 +17,12 @@ import {
 } from 'three';
 import * as THREE from 'three';
 import { Sun } from '../components/celestial/Sun';
-import { Mercury } from '../components/celestial/Mercury';
-import { Venus } from '../components/celestial/Venus';
+import { Mercury } from '../components/celestial/planets/Mercury';
+import { Venus } from '../components/celestial/planets/Venus';
 
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { Jupiter } from '../components/celestial/planets/Jupiter';
 
 export class MainScene {
   private scene: Scene;
@@ -32,6 +33,7 @@ export class MainScene {
   private sun: Sun;
   private mercury: Mercury;
   private venus: Venus;
+  private jupiter: Jupiter;
 
 
   private controls: OrbitControls;
@@ -86,8 +88,7 @@ private cameraOffset: Vector3 = new Vector3();
     const ambientLight = new AmbientLight(0xffffff, 0.5);
     this.scene.add(ambientLight);
 
-    this.sun = new Sun(1, '../../assets/textures/sun.jpg', 'Sun', 1.989 * Math.pow(10, 30), 5778, 0.00005);
-
+    this.sun = new Sun();
     this.scene.add(this.sun);
 
    
@@ -96,6 +97,11 @@ private cameraOffset: Vector3 = new Vector3();
 
    this.venus = new Venus();
    this.scene.add(this.venus);
+
+   this.jupiter = new Jupiter()
+   this.scene.add(this.jupiter);
+
+
 
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
@@ -112,7 +118,7 @@ private cameraOffset: Vector3 = new Vector3();
 
   this.raycaster.setFromCamera(this.mouse, this.camera);
 
-  const celestialObjects = [this.sun, this.mercury, this.venus]; // Add more planets to this array as needed
+  const celestialObjects = [this.sun, this.mercury, this.venus, this.jupiter]; // Add more planets to this array as needed
   const intersects = this.raycaster.intersectObjects(celestialObjects);
 
   if (intersects.length > 0) {
@@ -157,6 +163,7 @@ private centerCameraOnObject(object: Mesh): void {
 
     this.sun.rotation.y += this.sun.rotationSpeed;
     this.mercury.rotation.y += this.mercury.rotationSpeed;
+    this.jupiter.rotation.y += this.jupiter.rotationSpeed;
 this.venus.rotation.y += this.venus.rotationSpeed;
     if (this.focusedObject) {
     this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
