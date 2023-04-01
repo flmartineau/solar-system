@@ -1,4 +1,3 @@
-import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader } from 'three';
 import { CelestialBody } from './CelestialBody';
 
 

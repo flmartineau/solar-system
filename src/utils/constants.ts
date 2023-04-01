@@ -33,7 +33,7 @@ export interface SunConfig {
       temperature: 5778,
     },
     Mercury: {
-      radius: 0.1,//0.003285, // 0.05
+      radius: 0.003285, // 0.05
       distanceToSun: 3.7, // 5
       orbitalSpeed: 0.002,
       rotationSpeed: 0.001,

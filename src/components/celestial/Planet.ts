@@ -20,7 +20,7 @@ export class Planet extends CelestialBody {
         distanceToSun: number,
         orbitSpeed: number,
         inclination: number) {
-            super(name, radius, texturePath, rotationSpeed, mass, temperature, elapsedTime);
+            super(name, radius * 50, texturePath, rotationSpeed, mass, temperature, elapsedTime);
             this.distanceToSun = distanceToSun;
             this.orbitSpeed = orbitSpeed;
             this.inclination = inclination;

@@ -24,6 +24,11 @@ import { Venus } from '../components/celestial/planets/Venus';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { Jupiter } from '../components/celestial/planets/Jupiter';
 import { Planet } from '../components/celestial/Planet';
+import { Earth } from '../components/celestial/planets/Earth';
+import { Mars } from '../components/celestial/planets/Mars';
+import { Saturn } from '../components/celestial/planets/Saturn';
+import { Uranus } from '../components/celestial/planets/Uranus';
+import { Neptune } from '../components/celestial/planets/Neptune';
 
 export class MainScene {
   private scene: Scene;
@@ -34,11 +39,22 @@ export class MainScene {
   private sun: Sun;
   private mercury: Mercury;
   private venus: Venus;
+  private earth: Earth;
+  private mars: Mars;
   private jupiter: Jupiter;
+  private saturn : Saturn;
+  private uranus : Uranus;
+  private neptune : Neptune;
+
 
   private mercuryOrbitLine: THREE.Line;
   private venusOrbitLine: THREE.Line;
   private jupiterOrbitLine: THREE.Line;
+  private earthOrbitLine: THREE.Line;
+  private marsOrbitLine: THREE.Line;
+  private saturnOrbitLine: THREE.Line;
+  private uranusOrbitLine: THREE.Line;
+  private neptuneOrbitLine: THREE.Line;
 
   private controls: OrbitControls;
   private raycaster: Raycaster;
@@ -104,9 +120,29 @@ private cameraOffset: Vector3 = new Vector3();
    this.scene.add(this.venus);
    this.venusOrbitLine = this.createOrbitLine(this.venus);
 
+   this.earth = new Earth();
+   this.scene.add(this.earth);
+   this.earthOrbitLine = this.createOrbitLine(this.earth);
+
+   this.mars = new Mars();
+    this.scene.add(this.mars);
+  this.marsOrbitLine = this.createOrbitLine(this.mars);
+
    this.jupiter = new Jupiter()
    this.scene.add(this.jupiter);
    this.jupiterOrbitLine = this.createOrbitLine(this.jupiter);
+
+    this.saturn = new Saturn()
+    this.scene.add(this.saturn);
+    this.saturnOrbitLine = this.createOrbitLine(this.saturn);
+
+    this.uranus = new Uranus()
+    this.scene.add(this.uranus);
+    this.uranusOrbitLine = this.createOrbitLine(this.uranus);
+
+    this.neptune = new Neptune()
+    this.scene.add(this.neptune);
+    this.neptuneOrbitLine = this.createOrbitLine(this.neptune);
 
 
 
@@ -125,7 +161,7 @@ private cameraOffset: Vector3 = new Vector3();
 
   this.raycaster.setFromCamera(this.mouse, this.camera);
 
-  const celestialObjects = [this.sun, this.mercury, this.venus, this.jupiter]; // Add more planets to this array as needed
+  const celestialObjects = [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune]; // Add more planets to this array as needed
   const intersects = this.raycaster.intersectObjects(celestialObjects);
 
   if (intersects.length > 0) {
@@ -194,7 +230,12 @@ private createOrbitLine(planet: Planet): THREE.Line {
     this.sun.rotation.y += this.sun.rotationSpeed;
     this.mercury.rotation.y += this.mercury.rotationSpeed;
     this.jupiter.rotation.y += this.jupiter.rotationSpeed;
-this.venus.rotation.y += this.venus.rotationSpeed;
+    this.venus.rotation.y += this.venus.rotationSpeed;
+    this.earth.rotation.y += this.earth.rotationSpeed;
+    this.mars.rotation.y += this.mars.rotationSpeed;
+    this.saturn.rotation.y += this.saturn.rotationSpeed;
+    this.uranus.rotation.y += this.uranus.rotationSpeed;
+    this.neptune.rotation.y += this.neptune.rotationSpeed;
     if (this.focusedObject) {
     this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
     this.controls.target.copy(this.focusedObject.position);
@@ -209,6 +250,12 @@ this.venus.rotation.y += this.venus.rotationSpeed;
    const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
    this.mercury.updateOrbit(deltaTime);
    this.venus.updateOrbit(deltaTime);
+   this.earth.updateOrbit(deltaTime);
+   this.mars.updateOrbit(deltaTime);
+   this.jupiter.updateOrbit(deltaTime);
+    this.saturn.updateOrbit(deltaTime);
+    this.uranus.updateOrbit(deltaTime);
+    this.neptune.updateOrbit(deltaTime);
   }
 
   private onMouseMove(event: MouseEvent): void {
@@ -217,7 +264,8 @@ this.venus.rotation.y += this.venus.rotationSpeed;
 
     this.raycaster.setFromCamera(this.mouse, this.camera);
 
-    const intersects = this.raycaster.intersectObjects([this.sun, this.mercury, this.venus]);
+    const intersects = this.raycaster.intersectObjects([this.sun, this.mercury, this.venus, this.earth, 
+      this.mars, this.jupiter, this.saturn, this.uranus, this.neptune]);
 
 
     if (intersects.length > 0) {
