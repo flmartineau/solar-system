@@ -58,9 +58,12 @@ export class MainScene {
   private selectedObject: Mesh | null;
   private focusedObject: Mesh | null = null;
   private cameraOffset: Vector3 = new Vector3();
+  private isPlaying: boolean;
+
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
+    this.isPlaying = true;
     this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -116,7 +119,7 @@ export class MainScene {
 
 
     this.scene.add(this.sun);
-    
+
     this.planets = [this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
 
     this.planets.forEach((planet: Planet) => {
@@ -124,15 +127,40 @@ export class MainScene {
       this.scene.add(planet.createOrbitLine());
     });
 
-  
+
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
 
     window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
     window.addEventListener('resize', () => this.onWindowResize(), false);
+    document.getElementById('play-pause')?.addEventListener('click', () => this.togglePlayPause());
+    document.getElementById('forward-x10')?.addEventListener('click', () => this.setSpeed(10));
+    document.getElementById('forward-x100')?.addEventListener('click', () => this.setSpeed(100));
+    document.getElementById('forward-x1000')?.addEventListener('click', () => this.setSpeed(1000));
+    document.getElementById('backward-x10')?.addEventListener('click', () => this.setSpeed(-10));
+    document.getElementById('backward-x100')?.addEventListener('click', () => this.setSpeed(-100));
+    document.getElementById('backward-x1000')?.addEventListener('click', () => this.setSpeed(-1000));
+
 
     this.animate();
   }
+
+private simulationSpeed: number = 1;
+
+private togglePlayPause(): void {
+  this.isPlaying = !this.isPlaying;
+  const playPauseButton = document.getElementById('play-pause');
+  if (playPauseButton) {
+    playPauseButton.textContent = this.isPlaying ? 'Pause' : 'Play';
+  }
+}
+
+private setSpeed(speed: number): void {
+  if (!this.isPlaying) {
+    this.togglePlayPause();
+  }
+  this.simulationSpeed = speed;
+}
 
   private onClick(event: MouseEvent): void {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -177,16 +205,20 @@ export class MainScene {
     requestAnimationFrame(() => this.animate());
     const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
 
+    if (this.isPlaying) {
+      this.sun.rotation.y += this.sun.rotationSpeed;
 
-    this.sun.rotation.y += this.sun.rotationSpeed;
 
-
-    this.planets.forEach((planet: Planet) => {
-      planet.rotation.y += planet.rotationSpeed;
-      planet.updateOrbit(deltaTime);
-    });
+      this.planets.forEach((planet: Planet) => {
+        planet.rotation.y += planet.rotationSpeed;
+        planet.updateOrbit(deltaTime, this.simulationSpeed);
+      });
+    
+    }
 
     
+
+
     if (this.focusedObject) {
       this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
       this.controls.target.copy(this.focusedObject.position);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,45 @@
       margin: 0;
       overflow: hidden;
     }
+
+    #control-panel {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+    }
+
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
   <div id="game-container" style="width: 100%; height: 100vh; overflow: hidden;"></div>
-  <div id="info" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; color: white;">
+  <div id="info"
+    style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: rgba(0, 0, 0, 0.8); padding: 10px; border-radius: 5px; color: white;">
   </div>
+  <div id="control-panel">
+    <button id="play-pause">Pause</button>
+    <button id="forward-x10">x10</button>
+    <button id="forward-x100">x100</button>
+    <button id="forward-x1000">x1000</button>
+    <button id="backward-x10">-x10</button>
+    <button id="backward-x100">-x100</button>
+    <button id="backward-x1000">-x1000</button>
+  </div>
+
   <script src="bundle.js"></script>
 </body>
+
 </html>

@@ -27,8 +27,8 @@ export class Planet extends CelestialBody {
         this.inclination = inclination;
     }
 
-    updateOrbit(deltaTime: number): void {
-        this.elapsedTime += deltaTime;
+    updateOrbit(deltaTime: number, simulationSpeed: number): void {
+        this.elapsedTime += deltaTime * simulationSpeed;
         const angle = this.elapsedTime * this.orbitSpeed;
 
         // Calculate the elliptical orbit
