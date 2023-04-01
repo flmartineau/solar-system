@@ -59,11 +59,14 @@ export class MainScene {
   private focusedObject: Mesh | null = null;
   private cameraOffset: Vector3 = new Vector3();
   private isPlaying: boolean;
+  private currentDate: Date;
+
 
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
     this.isPlaying = true;
+    this.currentDate = new Date();
     this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -145,22 +148,23 @@ export class MainScene {
     this.animate();
   }
 
-private simulationSpeed: number = 1;
+  private simulationSpeed: number = 1;
 
-private togglePlayPause(): void {
-  this.isPlaying = !this.isPlaying;
-  const playPauseButton = document.getElementById('play-pause');
-  if (playPauseButton) {
-    playPauseButton.textContent = this.isPlaying ? 'Pause' : 'Play';
+  private togglePlayPause(): void {
+    this.isPlaying = !this.isPlaying;
+    this.simulationSpeed = 1;
+    const playPauseButton = document.getElementById('play-pause');
+    if (playPauseButton) {
+      playPauseButton.textContent = this.isPlaying ? 'Pause' : 'Play';
+    }
   }
-}
 
-private setSpeed(speed: number): void {
-  if (!this.isPlaying) {
-    this.togglePlayPause();
+  private setSpeed(speed: number): void {
+    if (!this.isPlaying) {
+      this.togglePlayPause();
+    }
+    this.simulationSpeed = this.simulationSpeed*speed;
   }
-  this.simulationSpeed = speed;
-}
 
   private onClick(event: MouseEvent): void {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -213,10 +217,20 @@ private setSpeed(speed: number): void {
         planet.rotation.y += planet.rotationSpeed;
         planet.updateOrbit(deltaTime, this.simulationSpeed);
       });
-    
+
+      // Update the current date based on the simulation speed
+    const elapsedTime = deltaTime * 1000 * this.simulationSpeed; // Multiply by 1000 to convert seconds to milliseconds
+    this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
+
+    // Display the updated date in the HTML element
+    const dateElement = document.getElementById('current-date');
+    if (dateElement) {
+      dateElement.textContent = this.formatDate(this.currentDate);
+
+    }
     }
 
-    
+
 
 
     if (this.focusedObject) {
@@ -231,6 +245,18 @@ private setSpeed(speed: number): void {
 
 
   }
+
+  private formatDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois sont de 0 à 11, donc nous ajoutons 1
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+  
 
   private onMouseMove(event: MouseEvent): void {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
