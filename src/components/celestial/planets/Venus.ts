@@ -8,7 +8,7 @@ export class Venus extends Planet {
     const TEXTUREPATH: string = '../../assets/textures/venus.jpg';
 
     super(
-      'Mercury',
+      'Venus',
       constants.Venus.radius,
       TEXTUREPATH,      
       constants.Venus.rotationSpeed,

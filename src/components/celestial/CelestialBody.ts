@@ -7,7 +7,7 @@ export class CelestialBody extends Mesh {
     public mass: number;
     public temperature: number;
     protected elapsedTime: number;
-    private radius: number;
+    public radius: number;
 
     constructor(name: string, radius: number, texturePath: string, 
         rotationSpeed: number, mass: number, temperature: number, elapsedTime: number) {
