@@ -8,6 +8,7 @@ export class Planet extends CelestialBody {
     public distanceToSun: number;
     public orbitSpeed: number;
     public inclination: number;
+    private orbitLine: THREE.Line;
 
 
     constructor(
@@ -25,6 +26,7 @@ export class Planet extends CelestialBody {
         this.distanceToSun = distanceToSun;
         this.orbitSpeed = orbitSpeed;
         this.inclination = inclination;
+        this.orbitLine = this.createOrbitLine();
     }
 
     updateOrbit(deltaTime: number, simulationSpeed: number): void {
@@ -64,6 +66,10 @@ export class Planet extends CelestialBody {
         const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
         const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
         return orbitLine;
+    }
+
+    getOrbitLine(): THREE.Line {
+        return this.orbitLine;
     }
 
 }

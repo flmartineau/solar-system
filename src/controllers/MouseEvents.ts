@@ -4,6 +4,7 @@ import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
+import { Planet } from '../components/celestial/Planet';
 
 export class MouseEvents {
   private mainScene: MainScene;
@@ -27,7 +28,21 @@ export class MouseEvents {
 
      window.addEventListener('resize', () => this.onWindowResize(), false);
 
- 
+     const toggleOrbitsButton = document.getElementById('toggleOrbits');
+     const toggleLabelsButton = document.getElementById('toggleLabels');
+   
+     if (toggleOrbitsButton) {
+       toggleOrbitsButton.addEventListener('click', () => {
+         this.toggleOrbitLines();
+       });
+     }
+   
+     if (toggleLabelsButton) {
+       toggleLabelsButton.addEventListener('click', () => {
+         this.toggleLabels();
+       });
+     }
+
      
   }
 
@@ -82,5 +97,18 @@ export class MouseEvents {
   private onWindowResize(): void {
     this.mainScene.cameraController.updateOnResize();
     this.mainScene.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+
+  public toggleOrbitLines(): void {
+    this.mainScene.getPlanets().forEach((planet: Planet) => {
+      planet.getOrbitLine().visible = !planet.getOrbitLine().visible;
+    });
+  }
+  
+  public toggleLabels(): void {
+    this.mainScene.getLabels().forEach((label: Label) => {
+      label.visible = !label.visible;
+    });
   }
 }

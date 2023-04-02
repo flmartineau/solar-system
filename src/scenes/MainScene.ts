@@ -99,7 +99,7 @@ export class MainScene {
 
     this.planets.forEach((planet: Planet) => {
       this.scene.add(planet);
-      this.scene.add(planet.createOrbitLine());
+      this.scene.add(planet.getOrbitLine());
       this.scene.add(planet.getLabel());
       this.labels.push(planet.getLabel());
     });
@@ -127,6 +127,10 @@ export class MainScene {
 
   getCelestialObjects(): CelestialBody[] {
     return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
+  }
+
+  getPlanets(): Planet[] {
+    return this.planets;
   }
 
   getLabels(): Array<Label> {
