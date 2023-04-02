@@ -18,9 +18,6 @@ export class Mercury extends Planet {
       constants.Mercury.rotationSpeed,
       constants.Mercury.mass,
       constants.Mercury.temperature,
-      0,
-      constants.Mercury.distanceToSun,
-      constants.Mercury.orbitalSpeed,
       constants.Mercury.inclination,
       timeController,
       Body.Mercury

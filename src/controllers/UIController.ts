@@ -1,5 +1,6 @@
 import { Label } from '../components/celestial/Label';
 import { Planet } from '../components/celestial/Planet';
+import { Star } from '../components/celestial/Star';
 import { MainScene } from '../scenes/MainScene';
 
 export class UIController {
@@ -11,13 +12,28 @@ export class UIController {
 
   public showInfo(celestialObject: any): void {
     const infoElement = document.getElementById('info');
-    if (infoElement) {
-      infoElement.innerHTML = `
-        <strong>Name:</strong> ${celestialObject.name}<br>
-        <strong>Mass:</strong> ${celestialObject.mass} kg<br>
-        <strong>Temperature:</strong> ${celestialObject.temperature} K
-      `;
-      infoElement.style.display = 'block';
+
+    if (celestialObject instanceof Star) {
+      if (infoElement) {
+        infoElement.innerHTML = `
+          <strong>Name:</strong> ${celestialObject.name}<br>
+          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature:</strong> ${celestialObject.temperature} K
+        `;
+        infoElement.style.display = 'block';
+      }
+
+    } else if (celestialObject instanceof Planet) {
+      if (infoElement) {
+        infoElement.innerHTML = `
+          <strong>Name:</strong> ${celestialObject.name}<br>
+          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature:</strong> ${celestialObject.temperature} K<br>
+          <strong>Distance From Sun:</strong> ${celestialObject.distanceToSun} AU
+        `;
+        infoElement.style.display = 'block';
+      }
+
     }
   }
 

@@ -16,9 +16,6 @@ export class Venus extends Planet {
       constants.Venus.rotationSpeed,
       constants.Venus.mass,
       constants.Venus.temperature,
-      0,
-      constants.Venus.distanceToSun,
-      constants.Venus.orbitalSpeed,
       constants.Venus.inclination,
       timeController,
       Body.Venus

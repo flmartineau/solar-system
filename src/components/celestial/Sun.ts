@@ -6,7 +6,7 @@ export class Sun extends Star {
   constructor() {
 
     super('Sun', constants.Sun.radius, '../../assets/textures/sun.jpg', 
-    constants.Sun.rotationSpeed, constants.Sun.mass, constants.Sun.temperature, 0);
+    constants.Sun.rotationSpeed, constants.Sun.mass, constants.Sun.temperature);
   }
 
 

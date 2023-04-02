@@ -17,9 +17,6 @@ export class Jupiter extends Planet {
       constants.Jupiter.rotationSpeed,
       constants.Jupiter.mass,
       constants.Jupiter.temperature,
-      0,
-      constants.Jupiter.distanceToSun,
-      constants.Jupiter.orbitalSpeed,
       constants.Jupiter.inclination,
       timeController,
       Body.Jupiter

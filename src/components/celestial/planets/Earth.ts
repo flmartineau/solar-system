@@ -17,9 +17,6 @@ export class Earth extends Planet {
       constants.Earth.rotationSpeed,
       constants.Earth.mass,
       constants.Earth.temperature,
-      0,
-      constants.Earth.distanceToSun,
-      constants.Earth.orbitalSpeed,
       constants.Earth.inclination,
       timeController,
       Body.Earth

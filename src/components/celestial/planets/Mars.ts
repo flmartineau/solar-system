@@ -17,9 +17,6 @@ export class Mars extends Planet {
       constants.Mars.rotationSpeed,
       constants.Mars.mass,
       constants.Mars.temperature,
-      0,
-      constants.Mars.distanceToSun,
-      constants.Mars.orbitalSpeed,
       constants.Mars.inclination,
       timeController,
       Body.Mars

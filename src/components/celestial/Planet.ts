@@ -1,4 +1,4 @@
-import { Body, HelioDistance, HelioVector, PlanetOrbitalPeriod, Vector } from 'astronomy-engine';
+import { Body, HelioDistance, HelioVector, PlanetOrbitalPeriod } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
 import { TimeController } from '../../controllers/TimeController';
@@ -21,14 +21,11 @@ export class Planet extends CelestialBody {
         rotationSpeed: number,
         mass: number,
         temperature: number,
-        elapsedTime: number,
-        distanceToSun: number,
-        orbitSpeed: number,
         inclination: number,
         timeController: TimeController,
         body: Body) {
-        super(name, radius * 20, texturePath, rotationSpeed, mass, temperature, elapsedTime);
-        this.distanceToSun = distanceToSun;
+        super(name, radius * 20, texturePath, rotationSpeed, mass, temperature);
+        this.distanceToSun = 0;
         this.inclination = inclination;
         this.body = body;
         this.orbitLine = this.createOrbitLine();
@@ -36,8 +33,8 @@ export class Planet extends CelestialBody {
 
     }
 
-    updateOrbit(deltaTime: number, simulationSpeed: number): void {
-        this.elapsedTime += deltaTime * simulationSpeed;
+    updateOrbit(): void {
+        this.distanceToSun = Math.round(HelioDistance(this.body, this.timeController.getCurrentDate())*1000)/1000;
         let v = HelioVector(this.body, this.timeController.getCurrentDate());
         let x = v.x * 10;
         let y = v.y * 10;
@@ -47,10 +44,6 @@ export class Planet extends CelestialBody {
 
         vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
 
-
-        if (this.name == "Mercury") {
-            console.log("x: " + x + " y: " + y + " z: " + z);
-        }
         this.position.set(vector.x, vector.y, vector.z);
     }
 

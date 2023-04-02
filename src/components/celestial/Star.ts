@@ -5,8 +5,8 @@ import { CelestialBody } from './CelestialBody';
 export class Star extends CelestialBody {
 
     constructor(name: string, radius: number, texturePath: string, 
-        rotationSpeed: number, mass: number, temperature: number, elapsedTime: number) {
-            super(name, radius, texturePath, rotationSpeed, mass, temperature, elapsedTime);
+        rotationSpeed: number, mass: number, temperature: number) {
+            super(name, radius, texturePath, rotationSpeed, mass, temperature);
         
         
         }

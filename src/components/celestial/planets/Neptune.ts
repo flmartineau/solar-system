@@ -18,9 +18,6 @@ export class Neptune extends Planet {
       constants.Neptune.rotationSpeed,
       constants.Neptune.mass,
       constants.Neptune.temperature,
-      0,
-      constants.Neptune.distanceToSun,
-      constants.Neptune.orbitalSpeed,
       constants.Neptune.inclination,
       timeController,
       Body.Neptune

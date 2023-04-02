@@ -56,7 +56,7 @@ export class TimeController {
 
     this.planets.forEach((planet: Planet) => {
       planet.rotateY(planet.rotationSpeed * this.deltaTime * this.simulationSpeed);
-      planet.updateOrbit(this.deltaTime, this.simulationSpeed);
+      planet.updateOrbit();
     });
 
     // Display the updated date in the HTML element

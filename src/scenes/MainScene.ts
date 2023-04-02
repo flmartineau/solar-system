@@ -27,12 +27,14 @@ import { TimeController } from '../controllers/TimeController';
 import { TemplateHelper } from '../helper/TemplateHelper';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
+import { UIController } from '../controllers/UIController';
 
 export class MainScene {
   public scene: Scene;
   public renderer: WebGLRenderer;
   public timeController: TimeController;
   public cameraController: CameraController;
+  public uiController: UIController;
   private mouseEvents: MouseEvents;
 
   private sun: Sun;
@@ -60,6 +62,8 @@ export class MainScene {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.cameraController = new CameraController(this.renderer, this);
+    this.uiController = new UIController(this);
+
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -181,6 +185,8 @@ export class MainScene {
   private animate(): void {
     requestAnimationFrame(() => this.animate());
     this.timeController.update();
+    if (this.selectedObject)
+      this.uiController.showInfo(this.selectedObject);
     this.cameraController.update();
     this.labels.forEach((label: Label) => {
       label.update(this.cameraController.getCamera());

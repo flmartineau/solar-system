@@ -18,9 +18,6 @@ export class Saturn extends Planet {
       constants.Saturn.rotationSpeed,
       constants.Saturn.mass,
       constants.Saturn.temperature,
-      0,
-      constants.Saturn.distanceToSun,
-      constants.Saturn.orbitalSpeed,
       constants.Saturn.inclination,
       timeController,
       Body.Saturn

@@ -18,9 +18,6 @@ export class Uranus extends Planet {
       constants.Uranus.rotationSpeed,
       constants.Uranus.mass,
       constants.Uranus.temperature,
-      0,
-      constants.Uranus.distanceToSun,
-      constants.Uranus.orbitalSpeed,
       constants.Uranus.inclination,
       timeController,
       Body.Uranus
