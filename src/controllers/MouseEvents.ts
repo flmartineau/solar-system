@@ -1,13 +1,16 @@
 import { MainScene } from '../scenes/MainScene';
 import { Raycaster, Vector2, Mesh } from 'three';
+import { UIController } from './UIController';
 
 export class MouseEvents {
   private mainScene: MainScene;
+  private uiController: UIController;
   private raycaster: Raycaster;
   private mouse: Vector2;
 
   constructor(mainScene: MainScene) {
     this.mainScene = mainScene;
+    this.uiController = new UIController(mainScene);
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
 
@@ -54,9 +57,9 @@ export class MouseEvents {
     const intersects = this.raycaster.intersectObjects(this.mainScene.getCelestialObjects());
 
     if (intersects.length > 0) {
-      this.mainScene.showInfo(intersects[0].object);
+      this.uiController.showInfo(intersects[0].object);
     } else {
-      this.mainScene.hideInfo();
+      this.uiController.hideInfo();
     }
   }
 
