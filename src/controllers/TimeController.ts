@@ -7,6 +7,7 @@ export class TimeController {
   private currentDate: Date;
   private simulationSpeed: number;
   private isPlaying: boolean;
+  private deltaTime: number;
 
   constructor(sun: Star, planets: Array<Planet>) {
     this.planets = planets;
@@ -14,6 +15,7 @@ export class TimeController {
     this.currentDate = new Date();
     this.simulationSpeed = 1;
     this.isPlaying = true;
+    this.deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
   }
 
   public togglePlayPause(): void {
@@ -32,19 +34,19 @@ export class TimeController {
     this.simulationSpeed = this.simulationSpeed * speed;
   }
 
-  public update(deltaTime: number): void {
+  public update(): void {
     if (!this.isPlaying) {
       return;
     }
 
-    const elapsedTime = deltaTime * 1000 * this.simulationSpeed;
+    const elapsedTime = this.deltaTime * 1000 * this.simulationSpeed;
     this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
 
-    this.sun.rotateY(this.sun.rotationSpeed * deltaTime * this.simulationSpeed);
+    this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
     this.planets.forEach((planet: Planet) => {
-      planet.rotateY(planet.rotationSpeed * deltaTime * this.simulationSpeed);
-      planet.updateOrbit(deltaTime, this.simulationSpeed);
+      planet.rotateY(planet.rotationSpeed * this.deltaTime * this.simulationSpeed);
+      planet.updateOrbit(this.deltaTime, this.simulationSpeed);
     });
 
     // Display the updated date in the HTML element

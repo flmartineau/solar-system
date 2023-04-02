@@ -57,12 +57,9 @@ export class MainScene {
     // Load the skybox textures
     const loader = new CubeTextureLoader();
     this.skybox = loader.load([
-      '../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg'
+      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg',
+      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg',
+      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg'
     ]);
     this.skybox.encoding = THREE.sRGBEncoding;
 
@@ -132,9 +129,7 @@ export class MainScene {
 
   private animate(): void {
     requestAnimationFrame(() => this.animate());
-    const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
-    this.timeController.update(deltaTime);
+    this.timeController.update();
     this.cameraController.update();
-
   }
 }
