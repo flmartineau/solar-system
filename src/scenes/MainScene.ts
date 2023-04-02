@@ -129,6 +129,10 @@ export class MainScene {
     return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
   }
 
+  getLabels(): Array<Label> {
+    return this.labels;
+  }
+
   selectObject(object: CelestialBody): void {
     this.selectedObject = object;
     this.centerCameraOnObject(this.selectedObject);

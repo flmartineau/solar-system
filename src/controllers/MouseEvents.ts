@@ -3,6 +3,7 @@ import { Raycaster, Vector2, Mesh } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
+import { Label } from '../components/celestial/Label';
 
 export class MouseEvents {
   private mainScene: MainScene;
@@ -46,21 +47,33 @@ export class MouseEvents {
     this.mainScene.cameraController.setFromCamera(event, this.raycaster);
 
     const celestialObjects = this.mainScene.getCelestialObjects();
-    const intersects = this.raycaster.intersectObjects(celestialObjects);
+    const celestialLabels = this.mainScene.getLabels();
+    const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
 
-    if (intersects.length > 0) {
-      const object = intersects[0].object;
+    if (intersectsObjects.length > 0) {
+      const object = intersectsObjects[0].object;
       this.mainScene.selectObject(object as CelestialBody);
+    }
+
+    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
+    if (intersectsLabels.length > 0) {
+      const object = intersectsLabels[0].object;
+      this.mainScene.selectObject((object as Label).getCelestialBody());
     }
   }
 
   private onMouseMove(event: MouseEvent): void {
     this.mainScene.cameraController.setFromCamera(event, this.raycaster);
 
-    const intersects = this.raycaster.intersectObjects(this.mainScene.getCelestialObjects());
+    const celestialObjects = this.mainScene.getCelestialObjects();
+    const celestialLabels = this.mainScene.getLabels();
+    const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
+    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
 
-    if (intersects.length > 0) {
-      this.uiController.showInfo(intersects[0].object);
+    if (intersectsObjects.length > 0) {
+      this.uiController.showInfo(intersectsObjects[0].object);
+    } else if (intersectsLabels.length > 0) {
+      this.uiController.showInfo((intersectsLabels[0].object as Label).getCelestialBody());
     } else {
       this.uiController.hideInfo();
     }
