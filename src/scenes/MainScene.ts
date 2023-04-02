@@ -49,7 +49,7 @@ export class MainScene {
   private planets: Array<Planet>;
   private skybox: CubeTexture;
 
-  private selectedObject: CelestialBody | null;
+  public selectedObject: CelestialBody | null;
 
   private labels: Array<Label>;
 
@@ -138,6 +138,11 @@ export class MainScene {
   }
 
   selectObject(object: CelestialBody): void {
+
+    if (this.selectedObject === object) {
+      this.cameraController.zoomToObject(this.selectedObject, 0.8);
+      return;
+    }
     this.selectedObject = object;
     this.cameraController.centerCameraOnObject(this.selectedObject);
   }

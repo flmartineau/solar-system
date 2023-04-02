@@ -65,6 +65,22 @@ export class CameraController {
     this.cameraOffset.copy(this.camera.position).sub(object.position);
   }
 
+  async zoomToObject(object: CelestialBody, targetDistance: number): Promise<void> {
+  const currentDistance = this.camera.position.distanceTo(object.position);
+  const steps = 30;
+  const distanceStep = (currentDistance - (targetDistance + object.radius)) / steps;
+
+  for (let i = 0; i < steps; i++) {
+    const newPosition = this.camera.position.clone().sub(object.position).normalize().multiplyScalar(-distanceStep).add(this.camera.position);
+    this.camera.position.copy(newPosition);
+    this.controls.update();
+
+    // Attendre un peu avant de passer à l'étape suivante
+    await new Promise<void>((resolve) => setTimeout(() => resolve(), 16));
+  }
+}
+
+
   update(): void {
     if (this.focusedObject) {
       this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);

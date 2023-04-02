@@ -20,26 +20,26 @@ export class MouseEvents {
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
 
-     // Add the click event listener
-     window.addEventListener('click', (event) => this.onClick(event), false);
+    // Add the click event listener
+    window.addEventListener('click', (event) => this.onClick(event), false);
 
-     // Add the mouse move event listener
-     window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
+    // Add the mouse move event listener
+    window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
 
-     window.addEventListener('resize', () => this.onWindowResize(), false);
+    window.addEventListener('resize', () => this.onWindowResize(), false);
 
-     const toggleOrbitsButton = document.getElementById('toggleOrbits');
-     const toggleLabelsButton = document.getElementById('toggleLabels');
-   
-     if (toggleOrbitsButton) {
-       toggleOrbitsButton.addEventListener('click', () => this.uiController.toggleOrbitLines());
-     }
-   
-     if (toggleLabelsButton) {
-       toggleLabelsButton.addEventListener('click', () => this.uiController.toggleLabels());
-     }
+    const toggleOrbitsButton = document.getElementById('toggleOrbits');
+    const toggleLabelsButton = document.getElementById('toggleLabels');
 
-     
+    if (toggleOrbitsButton) {
+      toggleOrbitsButton.addEventListener('click', () => this.uiController.toggleOrbitLines());
+    }
+
+    if (toggleLabelsButton) {
+      toggleLabelsButton.addEventListener('click', () => this.uiController.toggleLabels());
+    }
+
+
   }
 
   public addControlEventListeners(): void {
@@ -60,13 +60,12 @@ export class MouseEvents {
     const celestialObjects = this.mainScene.getCelestialObjects();
     const celestialLabels = this.mainScene.getLabels();
     const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
+    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
 
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
       this.mainScene.selectObject(object as CelestialBody);
     }
-
-    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
       this.mainScene.selectObject((object as Label).getCelestialBody());
@@ -80,14 +79,15 @@ export class MouseEvents {
     const celestialLabels = this.mainScene.getLabels();
     const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
     const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
-
     if (intersectsObjects.length > 0) {
       this.uiController.showInfo(intersectsObjects[0].object);
     } else if (intersectsLabels.length > 0) {
       this.uiController.showInfo((intersectsLabels[0].object as Label).getCelestialBody());
+    } else if (this.mainScene.selectedObject) {
+        this.uiController.showInfo(this.mainScene.selectedObject);
     } else {
-      this.uiController.hideInfo();
-    }
+        this.uiController.hideInfo();
+      }
   }
 
   private onWindowResize(): void {

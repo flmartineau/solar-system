@@ -22,6 +22,8 @@ export class UIController {
   }
 
   public hideInfo(): void {
+    if (this.mainScene.selectedObject !== null) 
+      return;
     const infoElement = document.getElementById('info');
     if (infoElement) {
       infoElement.style.display = 'none';
