@@ -41,10 +41,8 @@ export class MouseEvents {
   }
 
   private onClick(event: MouseEvent): void {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    this.raycaster.setFromCamera(this.mouse, this.mainScene.camera);
+    this.mainScene.cameraController.setFromCamera(event, this.raycaster);
 
     const celestialObjects = this.mainScene.getCelestialObjects();
     const intersects = this.raycaster.intersectObjects(celestialObjects);
@@ -56,10 +54,7 @@ export class MouseEvents {
   }
 
   private onMouseMove(event: MouseEvent): void {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.mainScene.camera);
+    this.mainScene.cameraController.setFromCamera(event, this.raycaster);
 
     const intersects = this.raycaster.intersectObjects(this.mainScene.getCelestialObjects());
 
@@ -71,8 +66,7 @@ export class MouseEvents {
   }
 
   private onWindowResize(): void {
-    this.mainScene.camera.aspect = window.innerWidth / window.innerHeight;
-    this.mainScene.camera.updateProjectionMatrix();
+    this.mainScene.cameraController.updateOnResize();
     this.mainScene.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }

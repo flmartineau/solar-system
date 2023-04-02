@@ -1,6 +1,5 @@
 import {
   Scene,
-  PerspectiveCamera,
   WebGLRenderer,
   PointLight,
   Mesh,
@@ -23,16 +22,13 @@ import { MouseEvents } from '../controllers/MouseEvents';
 import { TimeController } from '../controllers/TimeController';
 
 export class MainScene {
-  private scene: Scene;
-  public camera: PerspectiveCamera;
+  public scene: Scene;
   public renderer: WebGLRenderer;
   public timeController: TimeController;
-  private cameraController: CameraController;
+  public cameraController: CameraController;
   private mouseEvents: MouseEvents;
-  
 
   private sun: Sun;
-
   //Planets
   private mercury: Mercury;
   private venus: Venus;
@@ -50,11 +46,10 @@ export class MainScene {
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-    this.cameraController = new CameraController(this.camera, this.renderer);
+    this.cameraController = new CameraController(this.renderer, this);
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -73,9 +68,6 @@ export class MainScene {
 
     // Set the scene background to the skybox
     this.scene.background = this.skybox;
-
-    this.camera.position.z = 5;
-
 
     const light = new PointLight(0xffffff, 1, 0);
     light.position.set(0, 0, 0);
@@ -99,7 +91,7 @@ export class MainScene {
     this.planets.forEach((planet: Planet) => {
       this.scene.add(planet);
       this.scene.add(planet.createOrbitLine());
-    }); 
+    });
 
     this.timeController = new TimeController(this.sun, this.planets);
     
@@ -125,8 +117,6 @@ export class MainScene {
     }
   }
 
-  
-
   getCelestialObjects(): Mesh[] {
     return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
   }
@@ -146,8 +136,5 @@ export class MainScene {
     this.timeController.update(deltaTime);
     this.cameraController.update();
 
-    this.renderer.render(this.scene, this.camera);
   }
-
-  
 }

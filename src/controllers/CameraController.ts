@@ -2,10 +2,13 @@ import {
     PerspectiveCamera,
     Vector3,
     Mesh,
-    WebGLRenderer
+    WebGLRenderer,
+    Raycaster,
+    Vector2
   } from 'three';
 
   import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { MainScene } from '../scenes/MainScene';
 
   
   export class CameraController {
@@ -13,15 +16,28 @@ import {
     private focusedObject: Mesh | null;
     private cameraOffset: Vector3;
     private controls: OrbitControls;
-  
-    constructor(camera: PerspectiveCamera, renderer: WebGLRenderer) {
-      this.camera = camera;
+    private mainScene: MainScene;
+    private renderer: WebGLRenderer;
+
+    constructor(renderer: WebGLRenderer, mainScene: MainScene) {
+      
+      this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      this.camera.position.z = 5;
+
       this.focusedObject = null;
       this.cameraOffset = new Vector3();
   
       this.controls = new OrbitControls(this.camera, renderer.domElement);
       this.controls.addEventListener('change', () => this.onControlsChange());
+      this.mainScene = mainScene;
+      this.renderer = renderer;
     }
+
+
+    getCamera(): PerspectiveCamera {
+      return this.camera;
+    }
+
   
     setFocusedObject(object: Mesh | null): void {
       this.focusedObject = object;
@@ -55,6 +71,22 @@ import {
         this.controls.target.copy(this.focusedObject.position);
         this.controls.update();
       }
+      this.renderer.render(this.mainScene.scene, this.camera);
     }
+
+
+    updateOnResize(): void {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+    }
+
+    setFromCamera(event: MouseEvent, raycaster: Raycaster): void {
+        const mouse = new Vector2();
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, this.camera);
+    }
+
+
   }
   
