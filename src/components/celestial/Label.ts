@@ -1,4 +1,4 @@
-import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
+import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial, Vector3 } from "three";
 import { CelestialBody } from "./CelestialBody";
 
 export class Label extends Sprite {
@@ -34,20 +34,29 @@ export class Label extends Sprite {
 
 
     update(camera: PerspectiveCamera): void {
-        
-         // Mettre à jour la position et la taille du label en fonction de la position de la caméra
+        // Mettre à jour la position et la taille du label en fonction de la position de la caméra
         const cameraPosition = camera.position;
-
+    
         const scale = cameraPosition.distanceTo(this.celestialBody.position) * 1;
         this.scale.set(0.15 * scale, 0.0375 * scale, 1);
-
-        this.position.y = this.celestialBody.position.y;
-
+    
+        // Calculer la direction de la caméra vers la planète
+        const direction = this.celestialBody.position.clone().sub(cameraPosition).normalize();
+    
+        // Calculer un vecteur perpendiculaire à la direction de la caméra (axe "haut" de la caméra)
+        const up = new Vector3(0, 1, 0);
+        const right = up.clone().cross(direction).normalize();
+    
+        // Calculer un nouveau vecteur "haut" pour le label
+        up.crossVectors(direction, right);
+    
+        // Positionner le label au-dessus de la planète en fonction de la direction de la caméra
         this.position.copy(this.celestialBody.position.clone());
-        this.position.y = this.celestialBody.position.y + this.celestialBody.radius + 0.1;
+        this.position.addScaledVector(up, this.celestialBody.radius + 0.1);
+    
         this.lookAt(cameraPosition);
-        
     }
+    
 
     
 }
