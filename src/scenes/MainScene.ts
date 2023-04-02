@@ -139,11 +139,7 @@ export class MainScene {
 
   selectObject(object: CelestialBody): void {
     this.selectedObject = object;
-    this.centerCameraOnObject(this.selectedObject);
-  }
-
-  private centerCameraOnObject(object: CelestialBody): void {
-    this.cameraController.centerCameraOnObject(object);
+    this.cameraController.centerCameraOnObject(this.selectedObject);
   }
 
   private animate(): void {

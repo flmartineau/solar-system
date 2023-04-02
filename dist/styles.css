@@ -14,7 +14,7 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(31, 28, 28, 0.5);
   padding: 10px;
   border-radius: 5px;
   color: white;
@@ -38,7 +38,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(31, 28, 28, 0.5);
   z-index: 100;
 }
 
