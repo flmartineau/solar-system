@@ -4,8 +4,6 @@ import {
   WebGLRenderer,
   PointLight,
   Mesh,
-  Vector2,
-  Raycaster,
   CubeTexture,
   CubeTextureLoader,
 } from 'three';
@@ -21,13 +19,15 @@ import { Saturn } from '../components/celestial/planets/Saturn';
 import { Uranus } from '../components/celestial/planets/Uranus';
 import { Neptune } from '../components/celestial/planets/Neptune';
 import { CameraController } from '../controllers/CameraController';
+import { MouseEvents } from '../controllers/MouseEvents';
 
 export class MainScene {
   private scene: Scene;
-  private camera: PerspectiveCamera;
-  private renderer: WebGLRenderer;
+  public camera: PerspectiveCamera;
+  public renderer: WebGLRenderer;
 
   private cameraController: CameraController;
+  private mouseEvents: MouseEvents;
 
   private sun: Sun;
 
@@ -42,9 +42,6 @@ export class MainScene {
   private neptune: Neptune;
 
   private planets: Array<Planet>;
-
-  private raycaster: Raycaster;
-  private mouse: Vector2;
   private skybox: CubeTexture;
 
   private selectedObject: Mesh | null;
@@ -62,13 +59,10 @@ export class MainScene {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.cameraController = new CameraController(this.camera, this.renderer);
+    this.mouseEvents = new MouseEvents(this);
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
-
-
-    // Add the click event listener
-    window.addEventListener('click', (event) => this.onClick(event), false);
 
     // Load the skybox textures
     const loader = new CubeTextureLoader();
@@ -112,29 +106,14 @@ export class MainScene {
     this.planets.forEach((planet: Planet) => {
       this.scene.add(planet);
       this.scene.add(planet.createOrbitLine());
-    });
-
-
-    this.raycaster = new Raycaster();
-    this.mouse = new Vector2();
-
-    window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
-    window.addEventListener('resize', () => this.onWindowResize(), false);
-    document.getElementById('play-pause')?.addEventListener('click', () => this.togglePlayPause());
-    document.getElementById('forward-x10')?.addEventListener('click', () => this.setSpeed(10));
-    document.getElementById('forward-x100')?.addEventListener('click', () => this.setSpeed(100));
-    document.getElementById('forward-x1000')?.addEventListener('click', () => this.setSpeed(1000));
-    document.getElementById('backward-x10')?.addEventListener('click', () => this.setSpeed(-10));
-    document.getElementById('backward-x100')?.addEventListener('click', () => this.setSpeed(-100));
-    document.getElementById('backward-x1000')?.addEventListener('click', () => this.setSpeed(-1000));
-
+    }); 
 
     this.animate();
   }
 
   private simulationSpeed: number = 1;
 
-  private togglePlayPause(): void {
+  public togglePlayPause(): void {
     this.isPlaying = !this.isPlaying;
     this.simulationSpeed = 1;
     const playPauseButton = document.getElementById('play-pause');
@@ -143,27 +122,20 @@ export class MainScene {
     }
   }
 
-  private setSpeed(speed: number): void {
+  public setSpeed(speed: number): void {
     if (!this.isPlaying) {
       this.togglePlayPause();
     }
     this.simulationSpeed = this.simulationSpeed * speed;
   }
 
-  private onClick(event: MouseEvent): void {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  getCelestialObjects(): Mesh[] {
+    return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
+  }
 
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const celestialObjects = [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune]; // Add more planets to this array as needed
-    const intersects = this.raycaster.intersectObjects(celestialObjects);
-
-    if (intersects.length > 0) {
-      const object = intersects[0].object;
-      this.selectedObject = object as Mesh;
-      this.centerCameraOnObject(this.selectedObject);
-    }
+  selectObject(object: Mesh): void {
+    this.selectedObject = object;
+    this.centerCameraOnObject(this.selectedObject);
   }
 
   private centerCameraOnObject(object: Mesh): void {
@@ -188,8 +160,6 @@ export class MainScene {
         planet.updateOrbit(deltaTime, this.simulationSpeed);
       });
 
-      
-
       // Display the updated date in the HTML element
       const dateElement = document.getElementById('current-date');
       if (dateElement) {
@@ -202,8 +172,6 @@ export class MainScene {
 
 
     this.renderer.render(this.scene, this.camera);
-
-
   }
 
   private formatDate(date: Date): string {
@@ -217,32 +185,8 @@ export class MainScene {
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
-
-  private onMouseMove(event: MouseEvent): void {
-    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    const intersects = this.raycaster.intersectObjects([this.sun, this.mercury, this.venus, this.earth,
-    this.mars, this.jupiter, this.saturn, this.uranus, this.neptune]);
-
-
-    if (intersects.length > 0) {
-      this.showInfo(intersects[0].object);
-    } else {
-      this.hideInfo();
-    }
-  }
-
-  private onWindowResize(): void {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
   // Helper function to display information
-  private showInfo(celestialObject: any): void {
+  public showInfo(celestialObject: any): void {
     const infoElement = document.getElementById('info');
     if (infoElement) {
       infoElement.innerHTML = `
@@ -254,7 +198,7 @@ export class MainScene {
     }
   }
 
-  private hideInfo(): void {
+  public hideInfo(): void {
     const infoElement = document.getElementById('info');
     if (infoElement) {
       infoElement.style.display = 'none';
