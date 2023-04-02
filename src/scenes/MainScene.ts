@@ -20,14 +20,16 @@ import { Uranus } from '../components/celestial/planets/Uranus';
 import { Neptune } from '../components/celestial/planets/Neptune';
 import { CameraController } from '../controllers/CameraController';
 import { MouseEvents } from '../controllers/MouseEvents';
+import { TimeController } from '../controllers/TimeController';
 
 export class MainScene {
   private scene: Scene;
   public camera: PerspectiveCamera;
   public renderer: WebGLRenderer;
-
+  public timeController: TimeController;
   private cameraController: CameraController;
   private mouseEvents: MouseEvents;
+  
 
   private sun: Sun;
 
@@ -45,21 +47,14 @@ export class MainScene {
   private skybox: CubeTexture;
 
   private selectedObject: Mesh | null;
-  private isPlaying: boolean;
-  private currentDate: Date;
-
-
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
-    this.isPlaying = true;
-    this.currentDate = new Date();
     this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.cameraController = new CameraController(this.camera, this.renderer);
-    this.mouseEvents = new MouseEvents(this);
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -86,8 +81,6 @@ export class MainScene {
     light.position.set(0, 0, 0);
     this.scene.add(light);
 
-
-
     this.sun = new Sun();
     this.mercury = new Mercury();
     this.venus = new Venus();
@@ -108,25 +101,10 @@ export class MainScene {
       this.scene.add(planet.createOrbitLine());
     }); 
 
+    this.timeController = new TimeController(this.sun, this.planets);
+    this.mouseEvents = new MouseEvents(this);
+
     this.animate();
-  }
-
-  private simulationSpeed: number = 1;
-
-  public togglePlayPause(): void {
-    this.isPlaying = !this.isPlaying;
-    this.simulationSpeed = 1;
-    const playPauseButton = document.getElementById('play-pause');
-    if (playPauseButton) {
-      playPauseButton.textContent = this.isPlaying ? 'Pause' : 'Play';
-    }
-  }
-
-  public setSpeed(speed: number): void {
-    if (!this.isPlaying) {
-      this.togglePlayPause();
-    }
-    this.simulationSpeed = this.simulationSpeed * speed;
   }
 
   getCelestialObjects(): Mesh[] {
@@ -145,43 +123,11 @@ export class MainScene {
   private animate(): void {
     requestAnimationFrame(() => this.animate());
     const deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
-
-    if (this.isPlaying) {
-      this.sun.rotation.y += this.sun.rotationSpeed * this.simulationSpeed * deltaTime;
-
-      // Update the current date based on the simulation speed
-      const elapsedTime = deltaTime * 1000 * this.simulationSpeed; // Multiply by 1000 to convert seconds to milliseconds
-      this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
-
-      this.planets.forEach((planet: Planet) => {
-
-        planet.rotateY(planet.rotationSpeed * deltaTime * this.simulationSpeed);
-        //planet.rotation.y += planet.rotationSpeed * this.simulationSpeed * deltaTime;
-        planet.updateOrbit(deltaTime, this.simulationSpeed);
-      });
-
-      // Display the updated date in the HTML element
-      const dateElement = document.getElementById('current-date');
-      if (dateElement) {
-        dateElement.textContent = this.formatDate(this.currentDate);
-
-      }
-    }
-
+    this.timeController.update(deltaTime);
     this.cameraController.update();
-
 
     this.renderer.render(this.scene, this.camera);
   }
 
-  private formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois sont de 0 à 11, donc nous ajoutons 1
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-  }
+  
 }

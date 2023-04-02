@@ -1,16 +1,19 @@
 import { MainScene } from '../scenes/MainScene';
 import { Raycaster, Vector2, Mesh } from 'three';
 import { UIController } from './UIController';
+import { TimeController } from './TimeController';
 
 export class MouseEvents {
   private mainScene: MainScene;
   private uiController: UIController;
+  private timeController: TimeController;
   private raycaster: Raycaster;
   private mouse: Vector2;
 
   constructor(mainScene: MainScene) {
     this.mainScene = mainScene;
     this.uiController = new UIController(mainScene);
+    this.timeController = mainScene.timeController;
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
 
@@ -24,13 +27,13 @@ export class MouseEvents {
 
  
      // Add event listeners for UI elements
-     document.getElementById('play-pause')?.addEventListener('click', () => this.mainScene.togglePlayPause());
-     document.getElementById('forward-x10')?.addEventListener('click', () => this.mainScene.setSpeed(10));
-     document.getElementById('forward-x100')?.addEventListener('click', () => this.mainScene.setSpeed(100));
-     document.getElementById('forward-x1000')?.addEventListener('click', () => this.mainScene.setSpeed(1000));
-     document.getElementById('backward-x10')?.addEventListener('click', () => this.mainScene.setSpeed(-10));
-     document.getElementById('backward-x100')?.addEventListener('click', () => this.mainScene.setSpeed(-100));
-     document.getElementById('backward-x1000')?.addEventListener('click', () => this.mainScene.setSpeed(-1000));
+     document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
+     document.getElementById('forward-x10')?.addEventListener('click', () => this.timeController.setSpeed(10));
+     document.getElementById('forward-x100')?.addEventListener('click', () => this.timeController.setSpeed(100));
+     document.getElementById('forward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(1000));
+     document.getElementById('backward-x10')?.addEventListener('click', () => this.timeController.setSpeed(-10));
+     document.getElementById('backward-x100')?.addEventListener('click', () => this.timeController.setSpeed(-100));
+     document.getElementById('backward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(-1000));
   }
 
   private onClick(event: MouseEvent): void {
