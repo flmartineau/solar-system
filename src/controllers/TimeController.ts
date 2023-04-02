@@ -1,5 +1,6 @@
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
+import { Sun } from '../components/celestial/Sun';
 import { DateHelper } from '../helper/DateHelper';
 
 export class TimeController {
@@ -10,13 +11,21 @@ export class TimeController {
   private isPlaying: boolean;
   private deltaTime: number;
 
-  constructor(sun: Star, planets: Array<Planet>) {
-    this.planets = planets;
-    this.sun = sun;
+  constructor() {
+    this.planets = new Array<Planet>();
+    this.sun = new Sun();
     this.currentDate = new Date();
     this.simulationSpeed = 1;
     this.isPlaying = true;
     this.deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
+  }
+
+  setPlanets(planets: Array<Planet>): void {
+    this.planets = planets;
+  }
+
+  setSun(sun: Star): void {
+    this.sun = sun;
   }
 
   public togglePlayPause(): void {

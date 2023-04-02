@@ -42,7 +42,7 @@ export class CelestialBody extends Mesh {
     }
 
     setLabelVisibility(visibility: boolean): void {
-        this.label.visible = visibility;
+        this.label.visible
     }
 
 }

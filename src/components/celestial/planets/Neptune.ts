@@ -1,9 +1,11 @@
+import { Body } from 'astronomy-engine';
+import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 
 export class Neptune extends Planet {
     
-  constructor() {
+  constructor(timeController: TimeController) {
 
     const NAME: string = 'Neptune';
     const TEXTUREPATH: string = '../../assets/textures/neptune.jpg';
@@ -19,7 +21,9 @@ export class Neptune extends Planet {
       0,
       constants.Neptune.distanceToSun,
       constants.Neptune.orbitalSpeed,
-      constants.Neptune.inclination
+      constants.Neptune.inclination,
+      timeController,
+      Body.Neptune
     );
   }
 }

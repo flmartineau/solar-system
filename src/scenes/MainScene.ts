@@ -80,15 +80,17 @@ export class MainScene {
     light.position.set(0, 0, 0);
     this.scene.add(light);
 
+    this.timeController = new TimeController();
+
     this.sun = new Sun();
-    this.mercury = new Mercury();
-    this.venus = new Venus();
-    this.earth = new Earth();
-    this.mars = new Mars();
-    this.jupiter = new Jupiter()
-    this.saturn = new Saturn()
-    this.uranus = new Uranus()
-    this.neptune = new Neptune()
+    this.mercury = new Mercury(this.timeController);
+    this.venus = new Venus(this.timeController);
+    this.earth = new Earth(this.timeController);
+    this.mars = new Mars(this.timeController);
+    this.jupiter = new Jupiter(this.timeController)
+    this.saturn = new Saturn(this.timeController)
+    this.uranus = new Uranus(this.timeController)
+    this.neptune = new Neptune(this.timeController)
 
 
     this.scene.add(this.sun);
@@ -104,8 +106,37 @@ export class MainScene {
       this.labels.push(planet.getLabel());
     });
 
-    this.timeController = new TimeController(this.sun, this.planets);
+    this.timeController.setPlanets(this.planets);
+    this.timeController.setSun(this.sun);
+
+    /** AXIS LINES
     
+    const orbitMaterialX = new THREE.LineBasicMaterial({ color: 0xff0000 });  //RED
+    let pointsX = [];
+    pointsX.push(new THREE.Vector3(0, 0, 0));
+    pointsX.push(new THREE.Vector3(100, 0, 0));
+    const orbitGeometryX = new THREE.BufferGeometry().setFromPoints(pointsX);        
+    const orbitLineX = new THREE.Line(orbitGeometryX, orbitMaterialX);
+    const orbitMaterialY = new THREE.LineBasicMaterial({ color: 0x00ff00 }); //GREEN
+    let pointsY = [];
+    pointsY.push(new THREE.Vector3(0, 0, 0));
+    pointsY.push(new THREE.Vector3(0, 100, 0));
+    const orbitGeometryY = new THREE.BufferGeometry().setFromPoints(pointsY); 
+    const orbitLineY = new THREE.Line(orbitGeometryY, orbitMaterialY);
+    let pointsZ = [];
+    pointsZ.push(new THREE.Vector3(0, 0, 0));
+    pointsZ.push(new THREE.Vector3(0, 0, 100));
+    const orbitMaterialZ = new THREE.LineBasicMaterial({ color: 0x0000ff }); //BLUE
+    const orbitGeometryZ = new THREE.BufferGeometry().setFromPoints(pointsZ);
+    const orbitLineZ = new THREE.Line(orbitGeometryZ, orbitMaterialZ);
+    this.scene.add(orbitLineX);
+    this.scene.add(orbitLineY);
+    this.scene.add(orbitLineZ);
+    */
+
+
+
+
 
     this.animate();
 

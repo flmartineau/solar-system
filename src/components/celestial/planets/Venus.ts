@@ -1,9 +1,11 @@
+import { Body } from 'astronomy-engine';
+import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 
 export class Venus extends Planet {
 
-  constructor() {
+  constructor(timeController: TimeController) {
     
     const TEXTUREPATH: string = '../../assets/textures/venus.jpg';
 
@@ -17,7 +19,9 @@ export class Venus extends Planet {
       0,
       constants.Venus.distanceToSun,
       constants.Venus.orbitalSpeed,
-      constants.Venus.inclination
+      constants.Venus.inclination,
+      timeController,
+      Body.Venus
     );
   }
 }

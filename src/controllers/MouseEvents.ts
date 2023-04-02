@@ -5,6 +5,7 @@ import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { Planet } from '../components/celestial/Planet';
+import {Body, PlanetOrbitalPeriod} from 'astronomy-engine'
 
 export class MouseEvents {
   private mainScene: MainScene;
@@ -19,6 +20,8 @@ export class MouseEvents {
     this.timeController = mainScene.timeController;
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
+
+    console.log(PlanetOrbitalPeriod(Body.Mercury))
 
     // Add the click event listener
     window.addEventListener('click', (event) => this.onClick(event), false);

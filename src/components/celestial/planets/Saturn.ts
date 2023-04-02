@@ -1,9 +1,11 @@
+import { Body } from 'astronomy-engine';
+import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 
 export class Saturn extends Planet {
     
-  constructor() {
+  constructor(timeController: TimeController) {
 
     const NAME: string = 'Saturn';
     const TEXTUREPATH: string = '../../assets/textures/saturn.jpg';
@@ -19,7 +21,9 @@ export class Saturn extends Planet {
       0,
       constants.Saturn.distanceToSun,
       constants.Saturn.orbitalSpeed,
-      constants.Saturn.inclination
+      constants.Saturn.inclination,
+      timeController,
+      Body.Saturn
     );
   }
 }

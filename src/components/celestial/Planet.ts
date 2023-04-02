@@ -1,14 +1,17 @@
+import { Body, HelioDistance, HelioVector, PlanetOrbitalPeriod, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
+import { TimeController } from '../../controllers/TimeController';
 
 
 
 export class Planet extends CelestialBody {
 
     public distanceToSun: number;
-    public orbitSpeed: number;
     public inclination: number;
     private orbitLine: THREE.Line;
+    private timeController: TimeController
+    private body: Body;
 
 
     constructor(
@@ -21,40 +24,49 @@ export class Planet extends CelestialBody {
         elapsedTime: number,
         distanceToSun: number,
         orbitSpeed: number,
-        inclination: number) {
+        inclination: number,
+        timeController: TimeController,
+        body: Body) {
         super(name, radius * 20, texturePath, rotationSpeed, mass, temperature, elapsedTime);
         this.distanceToSun = distanceToSun;
-        this.orbitSpeed = orbitSpeed;
         this.inclination = inclination;
+        this.body = body;
         this.orbitLine = this.createOrbitLine();
+        this.timeController = timeController;
+
     }
 
     updateOrbit(deltaTime: number, simulationSpeed: number): void {
         this.elapsedTime += deltaTime * simulationSpeed;
-        const angle = this.elapsedTime * this.orbitSpeed;
-    
-        const e = 0.0167; // Excentricité de l'orbite
-        const a = this.distanceToSun;
-        const theta = angle - e * Math.sin(angle);
-    
-        // Calcul des coordonnées de l'orbite elliptique
-        const r = a * (1 - e * e) / (1 + e * Math.cos(theta));
-        const x = r * Math.cos(theta);
-        const z = r * Math.sin(theta);
-        const y = z * Math.tan(this.inclination);
-    
-        this.position.set(x, y, z);
+        let v = HelioVector(this.body, this.timeController.getCurrentDate());
+        let x = v.x * 10;
+        let y = v.y * 10;
+        let z = v.z * 10;
+
+        let vector = new THREE.Vector3(x, y, z);
+
+        vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
+
+
+        if (this.name == "Mercury") {
+            console.log("x: " + x + " y: " + y + " z: " + z);
+        }
+        this.position.set(vector.x, vector.y, vector.z);
     }
-    
+
 
     private createOrbitGeometry(segments: number = 1000): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];
+        let period = PlanetOrbitalPeriod(this.body) * 24 * 60 * 60 * 1000; //millisecondes
+        let date = new Date();
+
         for (let i = 0; i <= segments; i++) {
-            const theta = (i / segments) * Math.PI * 2;
-            const x = this.distanceToSun * Math.cos(theta);
-            const y = this.distanceToSun * Math.sin(theta) * Math.sin(this.inclination);
-            const z = this.distanceToSun * Math.sin(theta) * Math.cos(this.inclination);
-            points.push(new THREE.Vector3(x, y, z));
+
+            let v = HelioVector(this.body, date);
+            let v3 = new THREE.Vector3(v.x * 10, v.y * 10, v.z * 10);
+            v3.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
+            points.push(v3);
+            date = new Date(date.getTime() + (period / segments));
         }
 
         const geometry = new THREE.BufferGeometry().setFromPoints(points);

@@ -1,9 +1,11 @@
+import { Body } from 'astronomy-engine';
+import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 
 export class Uranus extends Planet {
     
-  constructor() {
+  constructor(timeController: TimeController) {
 
     const NAME: string = 'Uranus';
     const TEXTUREPATH: string = '../../assets/textures/uranus.jpg';
@@ -19,7 +21,9 @@ export class Uranus extends Planet {
       0,
       constants.Uranus.distanceToSun,
       constants.Uranus.orbitalSpeed,
-      constants.Uranus.inclination
+      constants.Uranus.inclination,
+      timeController,
+      Body.Uranus
     );
   }
 }
