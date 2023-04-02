@@ -102,10 +102,30 @@ export class MainScene {
     }); 
 
     this.timeController = new TimeController(this.sun, this.planets);
-    this.mouseEvents = new MouseEvents(this);
+    
 
     this.animate();
+
+    this.mouseEvents = new MouseEvents(this);
+
+
+    this.fetchAndInsertContent('info-container', 'info.html');
+    this.fetchAndInsertContent('current-date-container', 'current-date.html');
+    this.fetchAndInsertContent('control-panel-container', 'control-panel.html', () => this.mouseEvents.addControlEventListeners());
   }
+
+  async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void) {
+    const response = await fetch(contentUrl);
+    const content = await response.text();
+
+    const container = document.getElementById(containerId);
+    container!.innerHTML = content;
+    if (callback) {
+      callback();
+    }
+  }
+
+  
 
   getCelestialObjects(): Mesh[] {
     return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];

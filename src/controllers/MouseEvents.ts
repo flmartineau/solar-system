@@ -26,14 +26,18 @@ export class MouseEvents {
      window.addEventListener('resize', () => this.onWindowResize(), false);
 
  
-     // Add event listeners for UI elements
-     document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
-     document.getElementById('forward-x10')?.addEventListener('click', () => this.timeController.setSpeed(10));
-     document.getElementById('forward-x100')?.addEventListener('click', () => this.timeController.setSpeed(100));
-     document.getElementById('forward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(1000));
-     document.getElementById('backward-x10')?.addEventListener('click', () => this.timeController.setSpeed(-10));
-     document.getElementById('backward-x100')?.addEventListener('click', () => this.timeController.setSpeed(-100));
-     document.getElementById('backward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(-1000));
+     
+  }
+
+  public addControlEventListeners(): void {
+    // Add event listeners for UI elements
+    document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
+    document.getElementById('forward-x10')?.addEventListener('click', () => this.timeController.setSpeed(10));
+    document.getElementById('forward-x100')?.addEventListener('click', () => this.timeController.setSpeed(100));
+    document.getElementById('forward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(1000));
+    document.getElementById('backward-x10')?.addEventListener('click', () => this.timeController.setSpeed(-10));
+    document.getElementById('backward-x100')?.addEventListener('click', () => this.timeController.setSpeed(-100));
+    document.getElementById('backward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(-1000));
   }
 
   private onClick(event: MouseEvent): void {

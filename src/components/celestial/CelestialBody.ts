@@ -1,4 +1,4 @@
-import { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader, MeshBasicMaterial, MeshLambertMaterial, Vector2, UniformsUtils, ShaderLib, ShaderMaterial, Color  } from 'three';
+import THREE, { Mesh, MeshPhongMaterial, SphereGeometry, TextureLoader, MeshBasicMaterial, MeshLambertMaterial, Vector2, UniformsUtils, ShaderLib, ShaderMaterial, Color  } from 'three';
 
 
 export class CelestialBody extends Mesh {
