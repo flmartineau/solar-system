@@ -2,6 +2,7 @@ import { MainScene } from '../scenes/MainScene';
 import { Raycaster, Vector2, Mesh } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
+import { CelestialBody } from '../components/celestial/CelestialBody';
 
 export class MouseEvents {
   private mainScene: MainScene;
@@ -49,7 +50,7 @@ export class MouseEvents {
 
     if (intersects.length > 0) {
       const object = intersects[0].object;
-      this.mainScene.selectObject(object as Mesh);
+      this.mainScene.selectObject(object as CelestialBody);
     }
   }
 

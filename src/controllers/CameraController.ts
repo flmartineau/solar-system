@@ -1,20 +1,19 @@
 import {
   PerspectiveCamera,
   Vector3,
-  Mesh,
   WebGLRenderer,
   Raycaster,
   Vector2,
-  Sprite
 } from 'three';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
+import { CelestialBody } from '../components/celestial/CelestialBody';
 
 
 export class CameraController {
   private camera: PerspectiveCamera;
-  private focusedObject: Mesh | null;
+  private focusedObject: CelestialBody | null;
   private cameraOffset: Vector3;
   private controls: OrbitControls;
   private mainScene: MainScene;
@@ -40,7 +39,7 @@ export class CameraController {
   }
 
 
-  setFocusedObject(object: Mesh | null): void {
+  setFocusedObject(object: CelestialBody | null): void {
     this.focusedObject = object;
   }
 
@@ -50,7 +49,7 @@ export class CameraController {
     }
   }
 
-  centerCameraOnObject(object: Mesh): void {
+  centerCameraOnObject(object: CelestialBody): void {
     const initialDistance = this.camera.position.distanceTo(object.position);
 
     this.controls.target.copy(object.position);
@@ -64,14 +63,6 @@ export class CameraController {
 
     this.setFocusedObject(object);
     this.cameraOffset.copy(this.camera.position).sub(object.position);
-
-    // Masquer le nom de l'objet si la caméra est trop proche
-    if (object.children.length > 0) {
-      const label = object.children.find(child => child instanceof Sprite);
-      if (label) {
-        label.visible = newDistance > 0.5;
-      }
-    }
   }
 
   update(): void {
@@ -80,10 +71,16 @@ export class CameraController {
       this.controls.target.copy(this.focusedObject.position);
       this.controls.update();
 
+      // Masquer le nom de l'objet si la caméra est trop proche
+      if (this.focusedObject.getLabel()) {
+        this.focusedObject.setLabelVisibility(this.camera.position.distanceTo(this.focusedObject.position) > (this.focusedObject.radius * 6));
+      }
+
+
     }
 
-      this.renderer.render(this.mainScene.scene, this.camera);
-    
+    this.renderer.render(this.mainScene.scene, this.camera);
+
   }
 
 
