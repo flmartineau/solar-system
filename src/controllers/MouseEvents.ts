@@ -101,14 +101,31 @@ export class MouseEvents {
 
 
   public toggleOrbitLines(): void {
+    let orbitLinesVisible = false;
     this.mainScene.getPlanets().forEach((planet: Planet) => {
       planet.getOrbitLine().visible = !planet.getOrbitLine().visible;
+      orbitLinesVisible = planet.getOrbitLine().visible;
     });
+
+    const toggleOrbitsIcon = document.getElementById('toggleOrbits') as HTMLImageElement;
+    if (toggleOrbitsIcon) {
+      toggleOrbitsIcon.src = orbitLinesVisible ? '/assets/icons/orbit_lines_on.png' : '/assets/icons/orbit_lines_off.png';
+    }
+
+
   }
   
   public toggleLabels(): void {
+    let labelsVisible = false;
+
     this.mainScene.getLabels().forEach((label: Label) => {
       label.visible = !label.visible;
+      labelsVisible = label.visible;
     });
+
+    const toggleLabelsIcon = document.getElementById('toggleLabels') as HTMLImageElement;
+    if (toggleLabelsIcon) {
+      toggleLabelsIcon.src = labelsVisible ? '/assets/icons/planet_labels_on.png' : '/assets/icons/planet_labels_off.png';
+    }
   }
 }
