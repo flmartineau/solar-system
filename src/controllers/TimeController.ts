@@ -1,5 +1,6 @@
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
+import { DateHelper } from '../helper/DateHelper';
 
 export class TimeController {
   private planets: Array<Planet>;
@@ -52,20 +53,9 @@ export class TimeController {
     // Display the updated date in the HTML element
     const dateElement = document.getElementById('current-date');
     if (dateElement) {
-      dateElement.textContent = this.formatDate(this.currentDate);
+      dateElement.textContent = DateHelper.formatDate(this.currentDate);
 
     }
-  }
-
-  private formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
   }
 
   public getCurrentDate(): Date {

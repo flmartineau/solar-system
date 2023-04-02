@@ -20,6 +20,7 @@ import { Neptune } from '../components/celestial/planets/Neptune';
 import { CameraController } from '../controllers/CameraController';
 import { MouseEvents } from '../controllers/MouseEvents';
 import { TimeController } from '../controllers/TimeController';
+import { TemplateHelper } from '../helper/TemplateHelper';
 
 export class MainScene {
   public scene: Scene;
@@ -97,10 +98,7 @@ export class MainScene {
 
     this.mouseEvents = new MouseEvents(this);
 
-
-    this.fetchAndInsertContent('info-container', 'info.html');
-    this.fetchAndInsertContent('current-date-container', 'current-date.html');
-    this.fetchAndInsertContent('control-panel-container', 'control-panel.html', () => this.mouseEvents.addControlEventListeners());
+    TemplateHelper.initTemplates(this.mouseEvents);
   }
 
   async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void) {
