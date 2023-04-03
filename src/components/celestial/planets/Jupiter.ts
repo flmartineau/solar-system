@@ -2,6 +2,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
+import { MeshPhongMaterial, TextureLoader } from 'three';
 
 export class Jupiter extends Planet {
     
@@ -10,16 +11,9 @@ export class Jupiter extends Planet {
     const NAME: string = 'Jupiter';
     const TEXTUREPATH: string = '../../assets/textures/jupiter.jpg';
 
-    super(
-      NAME,
-      constants.Jupiter.radius,
-      TEXTUREPATH,      
-      constants.Jupiter.rotationSpeed,
-      constants.Jupiter.mass,
-      constants.Jupiter.temperature,
-      constants.Jupiter.inclination,
-      mainScene,
-      Body.Jupiter
-    );
+    const texture = new TextureLoader().load(TEXTUREPATH);
+    const material = new MeshPhongMaterial({ map: texture });
+
+    super(NAME, constants.Jupiter, material, mainScene, Body.Jupiter);
   }
 }

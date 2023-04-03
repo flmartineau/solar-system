@@ -6,8 +6,10 @@ export class Sun extends Star {
 
   constructor(mainScene: MainScene) {
 
-    super(mainScene, 'Sun', constants.Sun.radius, '../../assets/textures/sun.jpg', 
-    constants.Sun.rotationSpeed, constants.Sun.mass, constants.Sun.temperature);
+    const NAME: string = 'Sun';
+    const TEXTUREPATH: string = '../../assets/textures/sun.jpg';
+
+    super(mainScene, NAME, constants.Sun, TEXTUREPATH);
   }
 
 

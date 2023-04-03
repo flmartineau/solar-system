@@ -1,3 +1,4 @@
+import GUI from 'lil-gui';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { Sun } from '../components/celestial/Sun';
@@ -18,6 +19,10 @@ export class TimeController {
     this.simulationSpeed = 1;
     this.isPlaying = true;
     this.deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
+
+
+    let gui = new GUI();
+    gui.add(this, 'currentDate');
   }
 
   setPlanets(planets: Array<Planet>): void {

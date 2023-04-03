@@ -2,6 +2,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
+import { MeshPhongMaterial, TextureLoader } from 'three';
 
 export class Saturn extends Planet {
     
@@ -10,17 +11,9 @@ export class Saturn extends Planet {
     const NAME: string = 'Saturn';
     const TEXTUREPATH: string = '../../assets/textures/saturn.jpg';
 
+    const texture = new TextureLoader().load(TEXTUREPATH);
+    const material = new MeshPhongMaterial({ map: texture });
 
-    super(
-      'Saturn',
-      constants.Saturn.radius,
-      TEXTUREPATH,      
-      constants.Saturn.rotationSpeed,
-      constants.Saturn.mass,
-      constants.Saturn.temperature,
-      constants.Saturn.inclination,
-      mainScene,
-      Body.Saturn
-    );
+    super(NAME, constants.Saturn, material, mainScene, Body.Saturn);
   }
 }

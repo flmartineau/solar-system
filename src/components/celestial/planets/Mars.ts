@@ -2,6 +2,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
+import { MeshPhongMaterial, TextureLoader } from 'three';
 
 export class Mars extends Planet {
     
@@ -9,17 +10,10 @@ export class Mars extends Planet {
 
     const NAME: string = 'Mars';
     const TEXTUREPATH: string = '../../assets/textures/mars.jpg';
-
-    super(
-      NAME,
-      constants.Mars.radius,
-      TEXTUREPATH,      
-      constants.Mars.rotationSpeed,
-      constants.Mars.mass,
-      constants.Mars.temperature,
-      constants.Mars.inclination,
-      mainScene,
-      Body.Mars
-    );
+    
+    const texture = new TextureLoader().load(TEXTUREPATH);
+    const material = new MeshPhongMaterial({ map: texture });
+    
+    super(NAME, constants.Mars, material, mainScene, Body.Mars);
   }
 }

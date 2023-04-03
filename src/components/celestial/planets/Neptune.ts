@@ -2,6 +2,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
+import { MeshPhongMaterial, TextureLoader } from 'three';
 
 export class Neptune extends Planet {
     
@@ -10,17 +11,9 @@ export class Neptune extends Planet {
     const NAME: string = 'Neptune';
     const TEXTUREPATH: string = '../../assets/textures/neptune.jpg';
 
+    const texture = new TextureLoader().load(TEXTUREPATH);
+    const material = new MeshPhongMaterial({ map: texture });
 
-    super(
-      'Neptune',
-      constants.Neptune.radius,
-      TEXTUREPATH,      
-      constants.Neptune.rotationSpeed,
-      constants.Neptune.mass,
-      constants.Neptune.temperature,
-      constants.Neptune.inclination,
-      mainScene,
-      Body.Neptune
-    );
+    super(NAME, constants.Neptune, material, mainScene, Body.Neptune);
   }
 }

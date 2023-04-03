@@ -74,6 +74,11 @@ export class CameraController {
   async zoomToObject(object: CelestialBody, targetDistance: number): Promise<void> {
   const currentDistance = this.camera.position.distanceTo(object.position);
   const steps = 30;
+
+  if (currentDistance < (targetDistance + object.radius))
+    return;
+
+
   const distanceStep = (currentDistance - (targetDistance + object.radius)) / steps;
 
   for (let i = 0; i < steps; i++) {

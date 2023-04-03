@@ -1,37 +1,28 @@
 import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
-import { SIZE_FACTOR } from '../../utils/constants';
+import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { MeshPhongMaterial, TextureLoader } from 'three';
+import { Material, MeshPhongMaterial, TextureLoader } from 'three';
 
 
 
 export class Planet extends CelestialBody {
 
     public distanceToSun: number;
-    public inclination: number;
     private orbitLine: THREE.Line;
     public mainScene: MainScene
     private body: Body;
 
     constructor(
         name: string,
-        radius: number,
-        texturePath: string,
-        rotationSpeed: number,
-        mass: number,
-        temperature: number,
-        inclination: number,
+        constants: PlanetConfig,
+        material: Material,
         mainScene: MainScene,
         body: Body) {
 
-        const texture = new TextureLoader().load(texturePath);
-        const material = new MeshPhongMaterial({ map: texture });
-
-        super(mainScene,name, radius * SIZE_FACTOR, material, rotationSpeed, mass, temperature);
+        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.rotationSpeed, constants.mass, constants.temperature);
         this.distanceToSun = 0;
-        this.inclination = inclination;
         this.body = body;
         this.mainScene = mainScene;
         this.orbitLine = this.createOrbitLine();
