@@ -28,7 +28,6 @@ import { TemplateHelper } from '../helper/TemplateHelper';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
-import { Body, HelioDistance } from 'astronomy-engine';
 
 export class MainScene {
   public scene: Scene;
@@ -48,17 +47,12 @@ export class MainScene {
   private saturn: Saturn;
   private uranus: Uranus;
   private neptune: Neptune;
-
-  private planets: Array<Planet>;
   private skybox: CubeTexture;
 
   public selectedObject: CelestialBody | null;
 
-  private labels: Array<Label>;
-
   constructor(container: HTMLElement) {
     this.scene = new Scene();
-    this.labels = new Array<Label>();
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -87,31 +81,17 @@ export class MainScene {
 
     this.timeController = new TimeController();
 
-    this.sun = new Sun();
-    this.mercury = new Mercury(this.timeController);
-    this.venus = new Venus(this.timeController);
-    this.earth = new Earth(this.timeController);
-    this.mars = new Mars(this.timeController);
-    this.jupiter = new Jupiter(this.timeController)
-    this.saturn = new Saturn(this.timeController)
-    this.uranus = new Uranus(this.timeController)
-    this.neptune = new Neptune(this.timeController)
+    this.sun = new Sun(this);
+    this.mercury = new Mercury(this);
+    this.venus = new Venus(this);
+    this.earth = new Earth(this);
+    this.mars = new Mars(this);
+    this.jupiter = new Jupiter(this)
+    this.saturn = new Saturn(this)
+    this.uranus = new Uranus(this)
+    this.neptune = new Neptune(this)
 
-
-    this.scene.add(this.sun);
-    this.scene.add(this.sun.getLabel());
-    this.labels.push(this.sun.getLabel());
-
-    this.planets = [this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
-
-    this.planets.forEach((planet: Planet) => {
-      this.scene.add(planet);
-      this.scene.add(planet.getOrbitLine());
-      this.scene.add(planet.getLabel());
-      this.labels.push(planet.getLabel());
-    });
-
-    this.timeController.setPlanets(this.planets);
+    this.timeController.setPlanets(this.getPlanets());
     this.timeController.setSun(this.sun);
 
     /** AXIS LINES
@@ -163,11 +143,11 @@ export class MainScene {
   }
 
   getPlanets(): Planet[] {
-    return this.planets;
+    return this.getCelestialObjects().filter((object: CelestialBody) => object instanceof Planet) as Planet[];
   }
 
   getLabels(): Array<Label> {
-    return this.labels;
+    return this.getCelestialObjects().map((object: CelestialBody) => object.getLabel());
   }
 
   selectObject(object: CelestialBody): void {
@@ -186,7 +166,7 @@ export class MainScene {
     if (this.selectedObject)
       this.uiController.showInfo(this.selectedObject);
     this.cameraController.update();
-    this.labels.forEach((label: Label) => {
+    this.getLabels().forEach((label: Label) => {
       label.update(this.cameraController.getCamera());
     });
   }

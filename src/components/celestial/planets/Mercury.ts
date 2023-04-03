@@ -1,11 +1,11 @@
 import { Body } from 'astronomy-engine';
-import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
+import { MainScene } from '../../../scenes/MainScene';
 
 export class Mercury extends Planet {
     
-  constructor(timeController: TimeController) {
+  constructor(mainScene: MainScene) {
 
     const NAME: string = 'Mercury';
     const TEXTUREPATH: string = '../../assets/textures/mercury.jpg';
@@ -19,7 +19,7 @@ export class Mercury extends Planet {
       constants.Mercury.mass,
       constants.Mercury.temperature,
       constants.Mercury.inclination,
-      timeController,
+      mainScene,
       Body.Mercury
     );
   }

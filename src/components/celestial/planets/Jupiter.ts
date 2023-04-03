@@ -1,11 +1,11 @@
 import { Body } from 'astronomy-engine';
-import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
+import { MainScene } from '../../../scenes/MainScene';
 
 export class Jupiter extends Planet {
     
-  constructor(timeController: TimeController) {
+  constructor(mainScene: MainScene) {
 
     const NAME: string = 'Jupiter';
     const TEXTUREPATH: string = '../../assets/textures/jupiter.jpg';
@@ -18,7 +18,7 @@ export class Jupiter extends Planet {
       constants.Jupiter.mass,
       constants.Jupiter.temperature,
       constants.Jupiter.inclination,
-      timeController,
+      mainScene,
       Body.Jupiter
     );
   }

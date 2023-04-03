@@ -5,7 +5,7 @@ import { DateHelper } from '../helper/DateHelper';
 
 export class TimeController {
   private planets: Array<Planet>;
-  private sun: Star;
+  private sun: Star | null;
   private currentDate: Date;
   private simulationSpeed: number;
   private isPlaying: boolean;
@@ -13,7 +13,7 @@ export class TimeController {
 
   constructor() {
     this.planets = new Array<Planet>();
-    this.sun = new Sun();
+    this.sun = null;
     this.currentDate = new Date();
     this.simulationSpeed = 1;
     this.isPlaying = true;
@@ -52,6 +52,7 @@ export class TimeController {
     const deltaTimeToSpeed = this.deltaTime * 1000 * this.simulationSpeed;
     this.currentDate = new Date(this.currentDate.getTime() + deltaTimeToSpeed);
 
+    if (this.sun)
     this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
     this.planets.forEach((planet: Planet) => {

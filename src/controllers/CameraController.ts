@@ -40,7 +40,9 @@ export class CameraController {
 
 
   setFocusedObject(object: CelestialBody | null): void {
+    if (object == null || object.name != "") {
     this.focusedObject = object;
+    }
   }
 
   onControlsChange(): void {
@@ -61,9 +63,13 @@ export class CameraController {
     this.camera.position.copy(newPosition);
     this.controls.update();
 
-    this.setFocusedObject(object);
-    this.cameraOffset.copy(this.camera.position).sub(object.position);
+    if (object == null || object.name != "") {
+      this.setFocusedObject(object);
+      this.cameraOffset.copy(this.camera.position).sub(object.position);
+    } 
   }
+
+    
 
   async zoomToObject(object: CelestialBody, targetDistance: number): Promise<void> {
   const currentDistance = this.camera.position.distanceTo(object.position);

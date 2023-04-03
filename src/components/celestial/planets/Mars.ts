@@ -1,11 +1,11 @@
 import { Body } from 'astronomy-engine';
-import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
+import { MainScene } from '../../../scenes/MainScene';
 
 export class Mars extends Planet {
     
-  constructor(timeController: TimeController) {
+  constructor(mainScene: MainScene) {
 
     const NAME: string = 'Mars';
     const TEXTUREPATH: string = '../../assets/textures/mars.jpg';
@@ -18,7 +18,7 @@ export class Mars extends Planet {
       constants.Mars.mass,
       constants.Mars.temperature,
       constants.Mars.inclination,
-      timeController,
+      mainScene,
       Body.Mars
     );
   }

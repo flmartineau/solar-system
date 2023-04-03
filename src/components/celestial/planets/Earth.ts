@@ -1,16 +1,14 @@
 import { Body } from 'astronomy-engine';
-import { TimeController } from '../../../controllers/TimeController';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
+import { MainScene } from '../../../scenes/MainScene';
 
 export class Earth extends Planet {
  
-  constructor(timeController: TimeController) {
+  constructor(mainScene: MainScene) {
 
     const NAME: string = 'Earth';
     const TEXTUREPATH: string = '../../assets/textures/earth_daymap.jpg';
-
-    console.log(constants.Earth.radius);
 
     super(
       NAME,
@@ -20,7 +18,7 @@ export class Earth extends Planet {
       constants.Earth.mass,
       constants.Earth.temperature,
       constants.Earth.inclination,
-      timeController,
+      mainScene,
       Body.Earth
     );
   }
