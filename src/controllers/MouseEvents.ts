@@ -16,7 +16,7 @@ export class MouseEvents {
 
   constructor(mainScene: MainScene) {
     this.mainScene = mainScene;
-    this.uiController = new UIController(mainScene);
+    this.uiController = mainScene.uiController;
     this.timeController = mainScene.timeController;
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();

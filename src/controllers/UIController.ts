@@ -29,7 +29,7 @@ export class UIController {
           <strong>Name:</strong> ${celestialObject.name}<br>
           <strong>Mass:</strong> ${celestialObject.mass} kg<br>
           <strong>Temperature:</strong> ${celestialObject.temperature} K<br>
-          <strong>Distance From Sun:</strong> ${celestialObject.distanceToSun} AU
+          <strong>Distance From Sun:</strong> ${celestialObject.distanceToSun} km
         `;
         infoElement.style.display = 'block';
       }

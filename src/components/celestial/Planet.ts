@@ -1,4 +1,4 @@
-import { Body, HelioDistance, HelioVector, PlanetOrbitalPeriod } from 'astronomy-engine';
+import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
 import { TimeController } from '../../controllers/TimeController';
@@ -34,7 +34,7 @@ export class Planet extends CelestialBody {
     }
 
     updateOrbit(): void {
-        this.distanceToSun = Math.round(HelioDistance(this.body, this.timeController.getCurrentDate())*1000)/1000;
+        this.distanceToSun = Math.round(HelioDistance(this.body, this.timeController.getCurrentDate())* KM_PER_AU);
         let v = HelioVector(this.body, this.timeController.getCurrentDate());
         let x = v.x * 10;
         let y = v.y * 10;
