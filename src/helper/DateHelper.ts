@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export abstract class DateHelper {
     
     static formatDate(date: Date): string {
@@ -9,5 +11,13 @@ export abstract class DateHelper {
         const seconds = String(date.getSeconds()).padStart(2, '0');
 
         return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    }
+
+    static formatDateFromFormat(date: Date, format: string) {
+       return (moment(date).format(format)); 
+    }
+
+    static getDateFromString(dateString: string, format: string): Date {
+        return (moment(dateString, format).toDate());
     }
 }

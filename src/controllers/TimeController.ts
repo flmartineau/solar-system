@@ -1,4 +1,3 @@
-import GUI from 'lil-gui';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { Sun } from '../components/celestial/Sun';
@@ -19,10 +18,6 @@ export class TimeController {
     this.simulationSpeed = 1;
     this.isPlaying = true;
     this.deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
-
-
-    let gui = new GUI();
-    gui.add(this, 'currentDate');
   }
 
   setPlanets(planets: Array<Planet>): void {
@@ -66,15 +61,21 @@ export class TimeController {
     });
 
     // Display the updated date in the HTML element
-    const dateElement = document.getElementById('current-date');
+    const dateElement = (<HTMLInputElement>document.getElementById('current-date'));
     if (dateElement) {
-      dateElement.textContent = DateHelper.formatDate(this.currentDate);
-
+      dateElement.value = DateHelper.formatDateFromFormat(this.currentDate, 'YYYY-MM-DD');
     }
   }
 
   public getCurrentDate(): Date {
     return this.currentDate;
+  }
+
+  public setCurrentDate(currentDate: Date): void {
+    this.togglePlayPause();
+    this.currentDate = currentDate;
+    this.update();
+    this.togglePlayPause();
   }
 
   public getIsPlaying(): boolean {

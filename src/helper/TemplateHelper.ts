@@ -4,7 +4,7 @@ export abstract class TemplateHelper {
 
   static initTemplates(mouseEvents: MouseEvents): void {
     this.setTemplate('info-container', 'info.html');
-    this.setTemplate('current-date-container', 'current-date.html');
+    this.setTemplate('current-date-container', 'current-date.html', () => mouseEvents.addDateEventListeners());
     this.setTemplate('control-panel-container', 'control-panel.html', () => mouseEvents.addControlEventListeners());
   }
 

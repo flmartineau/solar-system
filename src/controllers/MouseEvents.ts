@@ -5,6 +5,7 @@ import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import {Body, PlanetOrbitalPeriod} from 'astronomy-engine'
+import { DateHelper } from '../helper/DateHelper';
 
 export class MouseEvents {
   private mainScene: MainScene;
@@ -19,8 +20,6 @@ export class MouseEvents {
     this.timeController = mainScene.timeController;
     this.raycaster = new Raycaster();
     this.mouse = new Vector2();
-
-    console.log(PlanetOrbitalPeriod(Body.Mercury))
 
     // Add the click event listener
     window.addEventListener('click', (event) => this.onClick(event), false);
@@ -40,8 +39,14 @@ export class MouseEvents {
     if (toggleLabelsButton) {
       toggleLabelsButton.addEventListener('click', () => this.uiController.toggleLabels());
     }
+  }
 
+  public addDateEventListeners(): void {
+    document.getElementById('current-date')?.addEventListener('change', () => {
 
+      const dateString = (<HTMLInputElement>document.getElementById('current-date')).value;
+      this.timeController.setCurrentDate(DateHelper.getDateFromString(dateString, 'yyyy-MM-dd'));
+    });
   }
 
   public addControlEventListeners(): void {
