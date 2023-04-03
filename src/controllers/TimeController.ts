@@ -49,8 +49,8 @@ export class TimeController {
       return;
     }
 
-    const elapsedTime = this.deltaTime * 1000 * this.simulationSpeed;
-    this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
+    const deltaTimeToSpeed = this.deltaTime * 1000 * this.simulationSpeed;
+    this.currentDate = new Date(this.currentDate.getTime() + deltaTimeToSpeed);
 
     this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 

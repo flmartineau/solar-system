@@ -28,6 +28,7 @@ import { TemplateHelper } from '../helper/TemplateHelper';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
+import { Body, HelioDistance } from 'astronomy-engine';
 
 export class MainScene {
   public scene: Scene;
@@ -137,9 +138,6 @@ export class MainScene {
     this.scene.add(orbitLineY);
     this.scene.add(orbitLineZ);
     */
-
-
-
 
 
     this.animate();

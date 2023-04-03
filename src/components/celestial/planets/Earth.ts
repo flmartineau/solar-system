@@ -10,6 +10,8 @@ export class Earth extends Planet {
     const NAME: string = 'Earth';
     const TEXTUREPATH: string = '../../assets/textures/earth_daymap.jpg';
 
+    console.log(constants.Earth.radius);
+
     super(
       NAME,
       constants.Earth.radius,

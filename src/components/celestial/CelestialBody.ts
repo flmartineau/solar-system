@@ -35,6 +35,12 @@ export class CelestialBody extends Mesh {
         this.label = new Label(this);
     }
 
+    getComputedRadius(): number {
+        
+    return this.radius * this.scale.x;
+    
+    }
+
     getLabel(): Label {
         return this.label;
     }

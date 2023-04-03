@@ -21,8 +21,8 @@ export class CameraController {
 
   constructor(renderer: WebGLRenderer, mainScene: MainScene) {
 
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.camera.position.z = 5;
+    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000);
+    this.camera.position.z = 200;
 
     this.focusedObject = null;
     this.cameraOffset = new Vector3();

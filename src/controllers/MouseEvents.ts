@@ -1,10 +1,9 @@
 import { MainScene } from '../scenes/MainScene';
-import { Raycaster, Vector2, Mesh } from 'three';
+import { Raycaster, Vector2 } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
-import { Planet } from '../components/celestial/Planet';
 import {Body, PlanetOrbitalPeriod} from 'astronomy-engine'
 
 export class MouseEvents {
