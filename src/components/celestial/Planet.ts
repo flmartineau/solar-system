@@ -1,9 +1,10 @@
-import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod } from 'astronomy-engine';
+import { AxisInfo, Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
 import { Material, MeshPhongMaterial, TextureLoader } from 'three';
+import { Earth } from './planets/Earth';
 
 
 
@@ -43,6 +44,11 @@ export class Planet extends CelestialBody {
         vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
 
         this.position.set(vector.x, vector.y, vector.z);
+    }
+
+    updateRotation(): void {
+        let axisInfo: AxisInfo = RotationAxis(this.body, this.mainScene.timeController.getCurrentDate());
+        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 
 

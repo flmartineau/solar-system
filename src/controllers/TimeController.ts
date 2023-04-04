@@ -61,10 +61,8 @@ export class TimeController {
     this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
     this.planets.forEach((planet: Planet) => {
-      planet.rotateY(planet.rotationSpeed * this.deltaTime * this.simulationSpeed);
-      /* if (planet instanceof Earth)
-        planet.children[0].rotateY(this.deltaTime * planet.rotationSpeed / 10); */
       planet.updateOrbit();
+      planet.updateRotation();
     });
 
     this.mainScene.uiController.updateDateDisplay();
