@@ -11,8 +11,21 @@ export class UIController {
     this.mainScene = mainScene;
   }
 
+
+  public getInfoElement(): HTMLElement {
+    return document.getElementById('info') as HTMLElement;
+  }
+
+  public getCurrentDateElement(): HTMLInputElement {
+    return document.getElementById('current-date') as HTMLInputElement;
+  }
+
+  public getCurrentTimeElement(): HTMLInputElement {
+    return document.getElementById('current-time') as HTMLInputElement;
+  }
+
   public showInfo(celestialObject: any): void {
-    const infoElement = document.getElementById('info');
+    const infoElement = this.getInfoElement();
 
     if (celestialObject instanceof Star) {
       if (infoElement) {
@@ -75,18 +88,18 @@ export class UIController {
   }
 
   public updateTimeDisplay() {
-    let simulationSpeed = this.mainScene.timeController.getSimulationSpeed();
-    let currentDate = this.mainScene.timeController.getCurrentDate();
-    const timeElement = (<HTMLInputElement>document.getElementById('current-time'));
+    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    let currentDate: Date = this.mainScene.timeController.getCurrentDate();
+    const timeElement: HTMLInputElement = this.getCurrentTimeElement();
     if (timeElement && simulationSpeed !== 0) {
       timeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
     }
   }
 
   public updateDateDisplay() {
-    let simulationSpeed = this.mainScene.timeController.getSimulationSpeed();
-    let currentDate = this.mainScene.timeController.getCurrentDate();
-    const dateElement = (<HTMLInputElement>document.getElementById('current-date'));
+    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    let currentDate: Date = this.mainScene.timeController.getCurrentDate();
+    const dateElement: HTMLInputElement = this.getCurrentDateElement();
     if (dateElement && simulationSpeed !== 0) {
       dateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
     }

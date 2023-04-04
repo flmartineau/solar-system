@@ -1,0 +1,8 @@
+- Real Time rotation coordinates of Planets
+- Infos : newt eclipse date, apoapsis, seasons, moon phases, transit
+- add barycentric positions
+- add correct rotation axis
+- display lagrange points
+- update UI for time selection
+- add background music
+- fix orbit lines
