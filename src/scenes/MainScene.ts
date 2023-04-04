@@ -79,7 +79,7 @@ export class MainScene {
     light.position.set(0, 0, 0);
     this.scene.add(light);
 
-    this.timeController = new TimeController();
+    this.timeController = new TimeController(this);
 
     this.sun = new Sun(this);
     this.mercury = new Mercury(this);

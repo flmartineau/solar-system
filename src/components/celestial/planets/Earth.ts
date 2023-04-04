@@ -27,7 +27,7 @@ export class Earth extends Planet {
   }
 
   addClouds() {
-    const geometry = new SphereGeometry(this.radius, 128, 128);
+    const geometry = new SphereGeometry(this.radius * 1.001, 128, 128);
     const cloudTexture = new TextureLoader().load('assets/textures/earth_clouds.jpg');
     const atmosphere = new MeshPhongMaterial({
       side: FrontSide, map: cloudTexture, transparent: true,

@@ -1,6 +1,7 @@
 import { Label } from '../components/celestial/Label';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
+import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
 export class UIController {
@@ -73,7 +74,24 @@ export class UIController {
     }
   }
 
+  public updateTimeDisplay() {
+    let simulationSpeed = this.mainScene.timeController.getSimulationSpeed();
+    let currentDate = this.mainScene.timeController.getCurrentDate();
+    const timeElement = (<HTMLInputElement>document.getElementById('current-time'));
+    if (timeElement && simulationSpeed !== 0) {
+      timeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
+    }
+  }
 
+  public updateDateDisplay() {
+    let simulationSpeed = this.mainScene.timeController.getSimulationSpeed();
+    let currentDate = this.mainScene.timeController.getCurrentDate();
+    const dateElement = (<HTMLInputElement>document.getElementById('current-date'));
+    if (dateElement && simulationSpeed !== 0) {
+      dateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
+    }
+
+  }
 
 
 }

@@ -21,9 +21,20 @@ body {
 }
 
 #current-date {
+  bottom: 50px;
+  left: 48%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: white;
+  border: none;
+  background-color: black;
+  position: absolute;
+}
+
+#current-time {
   position: absolute;
   bottom: 50px;
-  left: 50%;
+  left: 54%;
   transform: translateX(-50%);
   font-size: 16px;
   color: white;
@@ -89,5 +100,3 @@ button {
   width: 32px;
   height: 32px;
 }
-
-

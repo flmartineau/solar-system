@@ -1,7 +1,9 @@
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { Sun } from '../components/celestial/Sun';
+import { Earth } from '../components/celestial/planets/Earth';
 import { DateHelper } from '../helper/DateHelper';
+import { MainScene } from '../scenes/MainScene';
 
 export class TimeController {
   private planets: Array<Planet>;
@@ -11,7 +13,10 @@ export class TimeController {
   private isPlaying: boolean;
   private deltaTime: number;
 
-  constructor() {
+  private mainScene: MainScene;
+
+  constructor(mainScene: MainScene) {
+    this.mainScene = mainScene;
     this.planets = new Array<Planet>();
     this.sun = null;
     this.currentDate = new Date();
@@ -57,24 +62,29 @@ export class TimeController {
 
     this.planets.forEach((planet: Planet) => {
       planet.rotateY(planet.rotationSpeed * this.deltaTime * this.simulationSpeed);
+      /* if (planet instanceof Earth)
+        planet.children[0].rotateY(this.deltaTime * planet.rotationSpeed / 10); */
       planet.updateOrbit();
     });
 
-    // Display the updated date in the HTML element
-    const dateElement = (<HTMLInputElement>document.getElementById('current-date'));
-    if (dateElement) {
-      dateElement.value = DateHelper.formatDateFromFormat(this.currentDate, 'YYYY-MM-DD');
-    }
+    this.mainScene.uiController.updateDateDisplay();
+
+    this.mainScene.uiController.updateTimeDisplay();
   }
 
   public getCurrentDate(): Date {
     return this.currentDate;
   }
 
+  public getSimulationSpeed(): number {
+    return this.simulationSpeed;
+  }
+
   public setCurrentDate(currentDate: Date): void {
     this.togglePlayPause();
     this.currentDate = currentDate;
     this.update();
+
     this.togglePlayPause();
   }
 

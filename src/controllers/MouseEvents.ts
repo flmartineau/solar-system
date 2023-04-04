@@ -42,11 +42,31 @@ export class MouseEvents {
   }
 
   public addDateEventListeners(): void {
-    document.getElementById('current-date')?.addEventListener('change', () => {
-
-      const dateString = (<HTMLInputElement>document.getElementById('current-date')).value;
-      this.timeController.setCurrentDate(DateHelper.getDateFromString(dateString, 'yyyy-MM-dd'));
+    document.getElementById('current-date')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        let newDate = (<HTMLInputElement>document.getElementById('current-date')).value;
+        if (newDate) {
+          let currentDate: Date = this.timeController.getCurrentDate();
+          let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
+          let newDateDate = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD'); 
+          this.timeController.setCurrentDate(DateHelper.setTimeToDate(currentTime, newDateDate));
+        }
+      }
     });
+
+    document.getElementById('current-time')?.addEventListener('keypress', (e) => {
+
+      if (e.key === 'Enter') {
+        let newTime = (<HTMLInputElement>document.getElementById('current-time')).value;
+        if (newTime) {
+          let currentDate: Date = this.timeController.getCurrentDate();
+          this.timeController.setCurrentDate(DateHelper.setTimeToDate(newTime, currentDate));
+        }
+      }
+    });
+
+
+
   }
 
   public addControlEventListeners(): void {

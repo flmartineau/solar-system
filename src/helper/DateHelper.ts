@@ -20,4 +20,12 @@ export abstract class DateHelper {
     static getDateFromString(dateString: string, format: string): Date {
         return (moment(dateString, format).toDate());
     }
+
+
+    static setTimeToDate(newTime: string, date: Date): Date {
+        const newDate = moment(date).format('YYYY-MM-DD');
+        const newDateWithTime = newDate + ' ' + newTime;
+        return (moment(newDateWithTime, 'YYYY-MM-DD HH:mm:ss').toDate());
+    }
+
 }
