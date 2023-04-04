@@ -57,7 +57,7 @@ export class TimeController {
     const deltaTimeToSpeed = this.deltaTime * 1000 * this.simulationSpeed;
     this.currentDate = new Date(this.currentDate.getTime() + deltaTimeToSpeed);
 
-    if (this.sun)
+    if (this.sun && this.sun.rotationSpeed)
     this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
     this.planets.forEach((planet: Planet) => {

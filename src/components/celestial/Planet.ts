@@ -22,7 +22,7 @@ export class Planet extends CelestialBody {
         mainScene: MainScene,
         body: Body) {
 
-        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.rotationSpeed, constants.mass, constants.temperature);
+        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature);
         this.distanceToSun = 0;
         this.body = body;
         this.mainScene = mainScene;
@@ -50,7 +50,6 @@ export class Planet extends CelestialBody {
         let axisInfo: AxisInfo = RotationAxis(this.body, this.mainScene.timeController.getCurrentDate());
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
-
 
     private createOrbitGeometry(segments: number = 1000): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];

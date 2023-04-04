@@ -6,14 +6,14 @@ import { MainScene } from '../../scenes/MainScene';
 export class CelestialBody extends Mesh {
     public mainScene: MainScene;
     public name: string;
-    public rotationSpeed: number;
+    public rotationSpeed: number | undefined;
     public mass: number;
     public temperature: number;
     public radius: number;
     private label: Label;
 
     constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
-        rotationSpeed: number, mass: number, temperature: number) {
+        mass: number, temperature: number, rotationSpeed?: number) {
 
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
