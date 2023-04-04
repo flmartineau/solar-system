@@ -3,6 +3,7 @@ import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
+import Stats from 'stats.js'
 
 export class UIController {
   private mainScene: MainScene;

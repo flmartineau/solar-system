@@ -10,6 +10,9 @@ import {
   SpriteMaterial,
   Vector3,
 } from 'three';
+
+import Stats from 'stats.js';
+
 import * as THREE from 'three';
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
@@ -36,6 +39,7 @@ export class MainScene {
   public cameraController: CameraController;
   public uiController: UIController;
   private mouseEvents: MouseEvents;
+  private stats: Stats;
 
   private sun: Sun;
   //Planets
@@ -119,6 +123,12 @@ export class MainScene {
     this.scene.add(orbitLineZ);
     */
 
+    
+    this.stats = new Stats();
+    this.stats.showPanel(0);
+    this.stats.dom.style.right = '0px';
+    this.stats.dom.style.left = 'auto';
+    document.body.appendChild( this.stats.dom );
 
     this.animate();
 
@@ -162,12 +172,11 @@ export class MainScene {
 
   private animate(): void {
     requestAnimationFrame(() => this.animate());
+    this.stats.begin();
     this.timeController.update();
     if (this.selectedObject)
       this.uiController.showInfo(this.selectedObject);
     this.cameraController.update();
-    this.getLabels().forEach((label: Label) => {
-      label.update(this.cameraController.getCamera());
-    });
+    this.stats.end();
   }
 }

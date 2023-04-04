@@ -34,18 +34,15 @@ export class Label extends Sprite {
 
 
     update(camera: PerspectiveCamera): void {
-        
-         // Mettre à jour la position et la taille du label en fonction de la position de la caméra
-        const cameraPosition = camera.position;
-
-        const scale = cameraPosition.distanceTo(this.celestialBody.position) * 1;
+        const scale = camera.position.distanceTo(this.celestialBody.position);
         this.scale.set(0.15 * scale, 0.0375 * scale, 1);
 
-        this.position.y = this.celestialBody.position.y;
+        if (this.celestialBody.name == "Earth")
+            console.log(scale);
 
         this.position.copy(this.celestialBody.position.clone());
         this.position.y = this.celestialBody.position.y + this.celestialBody.radius + 0.1;
-        this.lookAt(cameraPosition);
+        this.lookAt(camera.position);
         
     }
 

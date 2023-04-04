@@ -63,6 +63,7 @@ export class TimeController {
     this.planets.forEach((planet: Planet) => {
       planet.updateOrbit();
       planet.updateRotation();
+      planet.updateLabel();
     });
 
     this.mainScene.uiController.updateDateDisplay();

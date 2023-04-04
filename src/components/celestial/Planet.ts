@@ -3,8 +3,8 @@ import { CelestialBody } from './CelestialBody';
 import * as THREE from 'three';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { Material, MeshPhongMaterial, TextureLoader } from 'three';
-import { Earth } from './planets/Earth';
+import { Material} from 'three';
+import { GUI } from 'lil-gui';
 
 
 
@@ -29,7 +29,6 @@ export class Planet extends CelestialBody {
         this.orbitLine = this.createOrbitLine();
 
         this.mainScene.scene.add(this.orbitLine);
-
     }
 
     updateOrbit(): void {
@@ -44,6 +43,8 @@ export class Planet extends CelestialBody {
         vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
 
         this.position.set(vector.x, vector.y, vector.z);
+
+        this.refreshOrbitLine();
     }
 
     updateRotation(): void {
@@ -51,18 +52,23 @@ export class Planet extends CelestialBody {
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 
-    private createOrbitGeometry(segments: number = 1000): THREE.BufferGeometry {
+    private createOrbitGeometry(segments: number = 250): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];
-        let period = PlanetOrbitalPeriod(this.body) * 24 * 60 * 60 * 1000; //millisecondes
-        let date = this.mainScene.timeController.getCurrentDate();
+        const period = PlanetOrbitalPeriod(this.body) * 24 * 60 * 60 * 1000; //millisecondes
+        let date: Date = this.mainScene.timeController.getCurrentDate();
 
-        for (let i = 0; i <= segments; i++) {
+        let v0 = new THREE.Vector3(0, 0, 0);
+
+        for (let i = 0; i < segments; i++) {
             let v = HelioVector(this.body, date);
             let v3 = new THREE.Vector3(v.x * SIZE_FACTOR, v.y * SIZE_FACTOR, v.z * SIZE_FACTOR);
             v3.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
             points.push(v3);
+            if (i== 0) v0 = v3;
             date = new Date(date.getTime() + (period / segments));
         }
+
+        points.push(v0);
 
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         return geometry;
@@ -75,9 +81,14 @@ export class Planet extends CelestialBody {
         return orbitLine;
     }
 
-    refreshOrbitLine(): THREE.Line {
-        this.orbitLine = this.createOrbitLine();
-        return this.orbitLine;
+    refreshOrbitLine(): void {
+        const isVisible = this.orbitLine.visible;
+
+        if (isVisible) {
+            this.mainScene.scene.remove(this.orbitLine);
+            this.orbitLine = this.createOrbitLine();
+            this.mainScene.scene.add(this.orbitLine);
+        }
     }
 
     getOrbitLine(): THREE.Line {

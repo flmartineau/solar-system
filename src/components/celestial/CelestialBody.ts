@@ -42,4 +42,8 @@ export class CelestialBody extends Mesh {
         this.label.visible
     }
 
+    updateLabel(): void {
+        this.label.update(this.mainScene.cameraController.getCamera());
+    }
+
 }
