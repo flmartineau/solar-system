@@ -1,5 +1,6 @@
 import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
 import { CelestialBody } from "./CelestialBody";
+import { SIZE_FACTOR } from "../../utils/constants";
 
 export class Label extends Sprite {
 
@@ -15,7 +16,7 @@ export class Label extends Sprite {
           context.font = '48px Arial';
           context.textAlign = 'center';
           context.fillStyle = 'white';
-          context.fillText(celestialBody.name, canvas.width / 2, canvas.height / 2);
+          context.fillText(celestialBody.name.toUpperCase(), canvas.width / 2, canvas.height / 2);
         }
       
         const texture = new CanvasTexture(canvas);
@@ -34,16 +35,15 @@ export class Label extends Sprite {
 
 
     update(camera: PerspectiveCamera): void {
-        const scale = camera.position.distanceTo(this.celestialBody.position);
-        this.scale.set(0.15 * scale, 0.0375 * scale, 1);
+        const distanceToCamera: number = camera.position.distanceTo(this.position);
+        this.visible = distanceToCamera > (this.celestialBody.radius * 2);
 
-        if (this.celestialBody.name == "Earth")
-            console.log(scale);
-
-        this.position.copy(this.celestialBody.position.clone());
-        this.position.y = this.celestialBody.position.y + this.celestialBody.radius + 0.1;
-        this.lookAt(camera.position);
-        
+        if (this.visible) {
+            this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
+            this.position.copy(this.celestialBody.position.clone());
+            this.position.y = this.celestialBody.position.y + (this.celestialBody.radius * 1.2);
+            this.lookAt(camera.position);
+        }
     }
 
     

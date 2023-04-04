@@ -163,7 +163,7 @@ export class MainScene {
   selectObject(object: CelestialBody): void {
 
     if (this.selectedObject === object) {
-      this.cameraController.zoomToObject(this.selectedObject, 0.8);
+      this.cameraController.zoomToObject(this.selectedObject);
       return;
     }
     this.selectedObject = object;

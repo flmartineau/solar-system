@@ -4,7 +4,6 @@ import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
-import {Body, PlanetOrbitalPeriod} from 'astronomy-engine'
 import { DateHelper } from '../helper/DateHelper';
 
 export class MouseEvents {

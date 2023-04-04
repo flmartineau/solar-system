@@ -1,10 +1,4 @@
-import {
-  PerspectiveCamera,
-  Vector3,
-  WebGLRenderer,
-  Raycaster,
-  Vector2,
-} from 'three';
+import {PerspectiveCamera, Vector3, WebGLRenderer, Raycaster, Vector2} from 'three';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
@@ -21,7 +15,7 @@ export class CameraController {
 
   constructor(renderer: WebGLRenderer, mainScene: MainScene) {
 
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000000);
+    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000000);
     this.camera.position.z = 200;
 
     this.focusedObject = null;
@@ -66,16 +60,21 @@ export class CameraController {
     if (object == null || object.name != "") {
       this.setFocusedObject(object);
       this.cameraOffset.copy(this.camera.position).sub(object.position);
-    } 
+    }
+
+    // Set the minDistance property to prevent clipping
+    this.controls.minDistance = object.radius * 1.1;
   }
 
     
 
-  async zoomToObject(object: CelestialBody, targetDistance: number): Promise<void> {
+  async zoomToObject(object: CelestialBody): Promise<void> {
   const currentDistance = this.camera.position.distanceTo(object.position);
   const steps = 30;
 
-  if (currentDistance < (targetDistance + object.radius))
+  const targetDistance = object.radius * 3;
+
+  if (currentDistance < targetDistance)
     return;
 
 
@@ -97,13 +96,6 @@ export class CameraController {
       this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
       this.controls.target.copy(this.focusedObject.position);
       this.controls.update();
-
-      // Masquer le nom de l'objet si la caméra est trop proche
-      if (this.focusedObject.getLabel()) {
-        this.focusedObject.setLabelVisibility(this.camera.position.distanceTo(this.focusedObject.position) > (this.focusedObject.radius * 6));
-      }
-
-
     }
 
     this.renderer.render(this.mainScene.scene, this.camera);

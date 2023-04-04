@@ -1,3 +1,4 @@
+import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { Sun } from '../components/celestial/Sun';
@@ -50,7 +51,11 @@ export class TimeController {
   }
 
   public update(): void {
+
     if (!this.isPlaying) {
+      this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+        celestialBody.updateLabel();
+      });
       return;
     }
 
@@ -60,10 +65,12 @@ export class TimeController {
     if (this.sun && this.sun.rotationSpeed)
     this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
-    this.planets.forEach((planet: Planet) => {
-      planet.updateOrbit();
-      planet.updateRotation();
-      planet.updateLabel();
+    this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+      if (celestialBody instanceof Planet) {
+        celestialBody.updateOrbit();
+        celestialBody.updateRotation();
+      }
+      celestialBody.updateLabel();
     });
 
     this.mainScene.uiController.updateDateDisplay();
