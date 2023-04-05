@@ -30,10 +30,6 @@ export class TimeController {
     this.refreshOrbitLineTimer = 0;
   }
 
-  getElapsedTime(): number {
-    return this.clock.getElapsedTime();
-  }
-
   getDeltaTime(): number {
     return this.clock.getDelta();
   }
@@ -49,17 +45,14 @@ export class TimeController {
   public togglePlayPause(): void {
     this.isPlaying = !this.isPlaying;
     this.simulationSpeed = 1;
-    const playPauseButton = document.getElementById('play-pause');
-    if (playPauseButton) {
-      playPauseButton.textContent = this.isPlaying ? 'Pause' : 'Play';
-    }
+    this.mainScene.uiController.togglePlayPauseButton();
   }
 
   public setSpeed(speed: number): void {
     if (!this.isPlaying) {
       this.togglePlayPause();
     }
-    this.simulationSpeed = this.simulationSpeed * speed;
+    this.simulationSpeed = speed;
   }
 
   public update(): void {
@@ -69,16 +62,16 @@ export class TimeController {
       });
       return;
     }
-  
+
     const deltaTime = this.getDeltaTime();
     const elapsedTime = deltaTime * 1000 * this.simulationSpeed;
-  
+
     this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
     this.refreshOrbitLineTimer += deltaTime * this.simulationSpeed;
 
     if (this.sun && this.sun.rotationSpeed)
       this.sun.rotateY(this.sun.rotationSpeed * deltaTime * this.simulationSpeed);
-  
+
     this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
       if (celestialBody instanceof Planet) {
         celestialBody.updateOrbit();
@@ -91,29 +84,25 @@ export class TimeController {
 
         // Check if it's time to update the orbit line
         if (celestialBody.lastOrbitLineUpdateTime >= orbitalPeriod) {
-          if (celestialBody instanceof Earth) 
-          console.log('refreshing orbit line');
-          celestialBody.refreshOrbitLine();
+          if (celestialBody instanceof Earth)
+            celestialBody.refreshOrbitLine();
           celestialBody.lastOrbitLineUpdateTime = 0;
-      }
-
-
-
+        }
       }
       celestialBody.updateLabel();
     });
-  
-    
-  
+
+
+
     this.mainScene.uiController.updateDateDisplay();
-  
+
     this.mainScene.uiController.updateTimeDisplay();
-  
+
     this.mainScene.uiController.updateSpeedDisplay();
-  
+
     this.clock.elapsedTime = 0;
   }
-  
+
 
   public getCurrentDate(): Date {
     return this.currentDate;

@@ -61,6 +61,13 @@ export class UIController {
     }
   }
 
+  public togglePlayPauseButton(): void {
+    const playPauseButton = document.getElementById('play-pause-icon') as HTMLImageElement;
+    if (playPauseButton) {
+      playPauseButton.src = this.mainScene.timeController.getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
+    }
+  }
+
 
   public toggleOrbitLines(): void {
     let orbitLinesVisible = false;

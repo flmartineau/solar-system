@@ -64,19 +64,20 @@ export class MouseEvents {
       }
     });
 
-
-
   }
 
   public addControlEventListeners(): void {
-    // Add event listeners for UI elements
     document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
-    document.getElementById('forward-x10')?.addEventListener('click', () => this.timeController.setSpeed(10));
-    document.getElementById('forward-x100')?.addEventListener('click', () => this.timeController.setSpeed(100));
-    document.getElementById('forward-x1000')?.addEventListener('click', () => this.timeController.setSpeed(1000));
-    document.getElementById('backward-x10')?.addEventListener('click', () => this.timeController.setSpeed(-10));
-    document.getElementById('backward-x100')?.addEventListener('click', () => this.timeController.setSpeed(-100));
-    document.getElementById('to-current')?.addEventListener('click', () => this.timeController.setCurrentDate(new Date()));
+    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => {this.timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber);});
+    document.getElementById('current-date-icon')?.addEventListener('click', () => this.timeController.setCurrentDate(new Date()));
+    const playPauseButton = document.getElementById('play-pause-icon');
+
+    if (playPauseButton) {
+      playPauseButton.addEventListener('click', () => this.timeController.togglePlayPause());
+    }
+  
+  
+  
   }
 
   private onClick(event: MouseEvent): void {
