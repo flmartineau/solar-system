@@ -46,6 +46,11 @@ export class CameraController {
   }
 
   centerCameraOnObject(object: CelestialBody): void {
+
+    if(!(object instanceof CelestialBody))
+      return;
+
+
     const initialDistance = this.camera.position.distanceTo(object.position);
 
     this.controls.target.copy(object.position);
