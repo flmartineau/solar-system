@@ -1,3 +1,4 @@
+import { Clock } from 'three';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
@@ -13,6 +14,7 @@ export class TimeController {
   private simulationSpeed: number;
   private isPlaying: boolean;
   private deltaTime: number;
+  private clock: Clock;
 
   private mainScene: MainScene;
 
@@ -23,7 +25,16 @@ export class TimeController {
     this.currentDate = new Date();
     this.simulationSpeed = 1;
     this.isPlaying = true;
-    this.deltaTime = 0.016; // Use a fixed time step or calculate the elapsed time since the last frame
+    this.deltaTime = 0.016; // One frame every 16ms (60fps)
+    this.clock = new Clock();
+  }
+
+  getElapsedTime(): number {
+    return this.clock.getElapsedTime();
+  }
+
+  getDeltaTime(): number {
+    return this.clock.getDelta();
   }
 
   setPlanets(planets: Array<Planet>): void {
@@ -59,11 +70,13 @@ export class TimeController {
       return;
     }
 
-    const deltaTimeToSpeed = this.deltaTime * 1000 * this.simulationSpeed;
-    this.currentDate = new Date(this.currentDate.getTime() + deltaTimeToSpeed);
+    const deltaTime = this.getDeltaTime();
+    const elapsedTime = deltaTime * 1000 * this.simulationSpeed;
+
+    this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
 
     if (this.sun && this.sun.rotationSpeed)
-    this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
+      this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
 
     this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
       if (celestialBody instanceof Planet) {
@@ -78,6 +91,8 @@ export class TimeController {
     this.mainScene.uiController.updateTimeDisplay();
 
     this.mainScene.uiController.updateSpeedDisplay();
+
+    this.clock.elapsedTime = 0;
   }
 
   public getCurrentDate(): Date {

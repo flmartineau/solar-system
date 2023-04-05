@@ -59,6 +59,8 @@ export class MainScene {
     this.scene = new Scene();
     this.renderer = new WebGLRenderer();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.sortObjects = true;
+    this.renderer.autoClear = true;
 
     this.cameraController = new CameraController(this.renderer, this);
     this.uiController = new UIController(this);
@@ -70,9 +72,9 @@ export class MainScene {
     // Load the skybox textures
     const loader = new CubeTextureLoader();
     this.skybox = loader.load([
-      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg',
-      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg',
-      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg'
+      './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
+      './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
+      './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg'
     ]);
     this.skybox.encoding = THREE.sRGBEncoding;
 
@@ -123,12 +125,12 @@ export class MainScene {
     this.scene.add(orbitLineZ);
     */
 
-    
+
     this.stats = new Stats();
     this.stats.showPanel(0);
     this.stats.dom.style.right = '0px';
     this.stats.dom.style.left = 'auto';
-    document.body.appendChild( this.stats.dom );
+    document.body.appendChild(this.stats.dom);
 
     this.animate();
 
@@ -171,12 +173,15 @@ export class MainScene {
   }
 
   private animate(): void {
-    requestAnimationFrame(() => this.animate());
-    this.stats.begin();
-    this.timeController.update();
-    if (this.selectedObject)
-      this.uiController.showInfo(this.selectedObject);
-    this.cameraController.update();
-    this.stats.end();
+
+    this.renderer.setAnimationLoop(() => {
+      this.stats.begin();
+      this.timeController.update();
+      if (this.selectedObject)
+        this.uiController.showInfo(this.selectedObject);
+      this.cameraController.update();
+      this.stats.end();
+      this.renderer.render(this.scene, this.cameraController.getCamera());
+    });
   }
 }

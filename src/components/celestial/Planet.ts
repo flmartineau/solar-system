@@ -43,7 +43,7 @@ export class Planet extends CelestialBody {
 
         this.position.set(vector.x, vector.y, vector.z);
 
-        this.refreshOrbitLine();
+        //this.refreshOrbitLine();
     }
 
     updateRotation(): void {
