@@ -45,6 +45,7 @@ export class TimeController {
   public togglePlayPause(): void {
     this.isPlaying = !this.isPlaying;
     this.simulationSpeed = 1;
+    this.mainScene.uiController.updateSpeedDisplay();
     this.mainScene.uiController.togglePlayPauseButton();
   }
 

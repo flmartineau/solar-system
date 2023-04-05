@@ -118,7 +118,32 @@ export class UIController {
     let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
     const speedElement: HTMLInputElement = document.getElementById('simulation-speed') as HTMLInputElement;
     if (speedElement) {
-      speedElement.innerText = 'x ' + simulationSpeed.toString();
+      speedElement.innerText = this.getSpeedString(simulationSpeed);
+    }
+    this.updateSpeedSlider();
+  }
+
+  public updateSpeedSlider() {
+    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    const speedSlider: HTMLInputElement = document.getElementById('sim-speed-slider') as HTMLInputElement;
+    if (speedSlider) {
+      speedSlider.value = simulationSpeed.toString();
+    }
+  }
+
+  private getSpeedString(speed: number): string {
+    if (Math.abs(speed) < 60) {
+      return speed + ' sec/sec';
+    } else if (Math.abs(speed) < 3600) {
+      return (speed / 60).toFixed(2) + ' min/sec';
+    } else if (Math.abs(speed) < 86400) {
+      return (speed / 3600).toFixed(2) + ' h/sec';
+    } else if (Math.abs(speed) < 31536000) {
+      return (speed / 86400).toFixed(2) + ' d/sec';
+    } else if (Math.abs(speed) < 3153600000) {
+      return (speed / 31536000).toFixed(2) + ' y/sec';
+    } else {
+      return '0 sec/sec';
     }
   }
 
