@@ -13,7 +13,7 @@ export class Label extends Sprite {
         canvas.width = 256;
         canvas.height = 72;
         if (context) {
-            context.font = '48px Arial';
+            context.font = 'bold 48px Roboto, sans-serif';
             context.textAlign = 'center';
             context.fillStyle = 'white';
             context.fillText(celestialBody.name.toUpperCase(), canvas.width / 2, canvas.height / 2);
