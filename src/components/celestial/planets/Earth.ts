@@ -8,6 +8,8 @@ import { AdditiveBlending, BackSide, Color, FrontSide, Mesh, MeshPhongMaterial, 
 
 export class Earth extends Planet {
 
+  public glowSphere: Mesh | null;
+
   constructor(mainScene: MainScene) {
 
     const NAME: string = 'Earth';
@@ -21,6 +23,7 @@ export class Earth extends Planet {
 
     super(NAME, constants.Earth, material, mainScene, Body.Earth);
 
+    this.glowSphere = null;
 
     this.addClouds();
     this.addGlow();
@@ -34,11 +37,6 @@ export class Earth extends Planet {
       alphaMap: cloudTexture
     });
     this.add(new Mesh(geometry, atmosphere));
-  }
-
-  refreshGlow() {
-    this.remove(this.children[1]);
-    this.addGlow();
   }
 
   addGlow() {

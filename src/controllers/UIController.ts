@@ -70,7 +70,7 @@ export class UIController {
     });
     const toggleOrbitsIcon = document.getElementById('toggleOrbits') as HTMLImageElement;
     if (toggleOrbitsIcon) {
-      toggleOrbitsIcon.src = orbitLinesVisible ? '/assets/icons/orbit_lines_on.png' : '/assets/icons/orbit_lines_off.png';
+      toggleOrbitsIcon.src = orbitLinesVisible ? './assets/icons/orbit_lines_on.png' : './assets/icons/orbit_lines_off.png';
     }
   }
 
@@ -84,7 +84,7 @@ export class UIController {
 
     const toggleLabelsIcon = document.getElementById('toggleLabels') as HTMLImageElement;
     if (toggleLabelsIcon) {
-      toggleLabelsIcon.src = labelsVisible ? '/assets/icons/planet_labels_on.png' : '/assets/icons/planet_labels_off.png';
+      toggleLabelsIcon.src = labelsVisible ? 'assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
     }
   }
 

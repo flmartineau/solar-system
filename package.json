@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "astronomy-engine": "^2.1.17",
+    "gh-pages": "^5.0.0",
     "moment": "^2.29.4",
     "stats.js": "^0.17.0",
     "three": "^0.151.2"
@@ -11,7 +12,9 @@
   "main": "index.js",
   "devDependencies": {
     "@types/three": "^0.150.0",
+    "copy-webpack-plugin": "^11.0.0",
     "file-loader": "^6.2.0",
+    "html-loader": "^4.2.0",
     "lil-gui": "^0.18.1",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.3",
@@ -21,7 +24,8 @@
   },
   "scripts": {
     "start": "webpack serve",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",

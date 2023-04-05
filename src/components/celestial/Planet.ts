@@ -85,6 +85,7 @@ export class Planet extends CelestialBody {
 
         if (isVisible) {
             this.mainScene.scene.remove(this.orbitLine);
+            this.orbitLine.geometry.dispose();
             this.orbitLine = this.createOrbitLine();
             this.mainScene.scene.add(this.orbitLine);
         }
