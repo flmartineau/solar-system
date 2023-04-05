@@ -6,6 +6,7 @@ import { Sun } from '../components/celestial/Sun';
 import { Earth } from '../components/celestial/planets/Earth';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
+import { PlanetOrbitalPeriod } from 'astronomy-engine';
 
 export class TimeController {
   private planets: Array<Planet>;
@@ -13,8 +14,8 @@ export class TimeController {
   private currentDate: Date;
   private simulationSpeed: number;
   private isPlaying: boolean;
-  private deltaTime: number;
   private clock: Clock;
+  private refreshOrbitLineTimer: number;
 
   private mainScene: MainScene;
 
@@ -25,8 +26,8 @@ export class TimeController {
     this.currentDate = new Date();
     this.simulationSpeed = 1;
     this.isPlaying = true;
-    this.deltaTime = 0.016; // One frame every 16ms (60fps)
     this.clock = new Clock();
+    this.refreshOrbitLineTimer = 0;
   }
 
   getElapsedTime(): number {
@@ -62,38 +63,57 @@ export class TimeController {
   }
 
   public update(): void {
-
     if (!this.isPlaying) {
       this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
         celestialBody.updateLabel();
       });
       return;
     }
-
+  
     const deltaTime = this.getDeltaTime();
     const elapsedTime = deltaTime * 1000 * this.simulationSpeed;
-
+  
     this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
+    this.refreshOrbitLineTimer += deltaTime * this.simulationSpeed;
 
     if (this.sun && this.sun.rotationSpeed)
-      this.sun.rotateY(this.sun.rotationSpeed * this.deltaTime * this.simulationSpeed);
-
+      this.sun.rotateY(this.sun.rotationSpeed * deltaTime * this.simulationSpeed);
+  
     this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
       if (celestialBody instanceof Planet) {
         celestialBody.updateOrbit();
         celestialBody.updateRotation();
+
+
+        celestialBody.lastOrbitLineUpdateTime += elapsedTime;
+
+        const orbitalPeriod = PlanetOrbitalPeriod(celestialBody.body) * 24 * 60 * 60 * 1000;
+
+        // Check if it's time to update the orbit line
+        if (celestialBody.lastOrbitLineUpdateTime >= orbitalPeriod) {
+          if (celestialBody instanceof Earth) 
+          console.log('refreshing orbit line');
+          celestialBody.refreshOrbitLine();
+          celestialBody.lastOrbitLineUpdateTime = 0;
+      }
+
+
+
       }
       celestialBody.updateLabel();
     });
-
+  
+    
+  
     this.mainScene.uiController.updateDateDisplay();
-
+  
     this.mainScene.uiController.updateTimeDisplay();
-
+  
     this.mainScene.uiController.updateSpeedDisplay();
-
+  
     this.clock.elapsedTime = 0;
   }
+  
 
   public getCurrentDate(): Date {
     return this.currentDate;

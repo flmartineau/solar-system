@@ -90,7 +90,6 @@ export class CameraController {
     this.camera.position.copy(newPosition);
     this.controls.update();
 
-    // Attendre un peu avant de passer à l'étape suivante
     await new Promise<void>((resolve) => setTimeout(() => resolve(), 16));
   }
 }

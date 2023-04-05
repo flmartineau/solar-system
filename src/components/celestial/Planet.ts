@@ -12,7 +12,8 @@ export class Planet extends CelestialBody {
     public distanceToSun: number;
     private orbitLine: THREE.Line;
     public mainScene: MainScene
-    private body: Body;
+    public body: Body;
+    public lastOrbitLineUpdateTime: number;
 
     constructor(
         name: string,
@@ -26,6 +27,7 @@ export class Planet extends CelestialBody {
         this.body = body;
         this.mainScene = mainScene;
         this.orbitLine = this.createOrbitLine();
+        this.lastOrbitLineUpdateTime = 0;
 
         this.mainScene.scene.add(this.orbitLine);
     }
@@ -42,8 +44,6 @@ export class Planet extends CelestialBody {
         vector.applyAxisAngle(new THREE.Vector3(1, 0, 0), -110 * Math.PI / 180);
 
         this.position.set(vector.x, vector.y, vector.z);
-
-        //this.refreshOrbitLine();
     }
 
     updateRotation(): void {
@@ -51,7 +51,7 @@ export class Planet extends CelestialBody {
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 
-    private createOrbitGeometry(segments: number = 250): THREE.BufferGeometry {
+    private createOrbitGeometry(segments: number = 2000): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];
         const period = PlanetOrbitalPeriod(this.body) * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.mainScene.timeController.getCurrentDate();
