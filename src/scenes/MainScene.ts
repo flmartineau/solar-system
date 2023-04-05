@@ -70,9 +70,9 @@ export class MainScene {
     // Load the skybox textures
     const loader = new CubeTextureLoader();
     this.skybox = loader.load([
-      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg',
-      '../../assets/textures/stars_2.jpg','../../assets/textures/stars_2.jpg'
+      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg',
+      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg',
+      './assets/textures/stars_2.jpg','./assets/textures/stars_2.jpg'
     ]);
     this.skybox.encoding = THREE.sRGBEncoding;
 

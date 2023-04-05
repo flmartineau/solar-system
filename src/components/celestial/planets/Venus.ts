@@ -9,7 +9,7 @@ export class Venus extends Planet {
   constructor(mainScene: MainScene) {
     
     const NAME: string = 'Venus';
-    const TEXTUREPATH: string = '../../assets/textures/venus.jpg';
+    const TEXTUREPATH: string = './assets/textures/venus.jpg';
 
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });

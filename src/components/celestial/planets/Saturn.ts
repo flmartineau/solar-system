@@ -9,7 +9,7 @@ export class Saturn extends Planet {
   constructor(mainScene: MainScene) {
 
     const NAME: string = 'Saturn';
-    const TEXTUREPATH: string = '../../assets/textures/saturn.jpg';
+    const TEXTUREPATH: string = './assets/textures/saturn.jpg';
 
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });

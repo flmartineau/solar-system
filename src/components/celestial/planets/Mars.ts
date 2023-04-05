@@ -9,7 +9,7 @@ export class Mars extends Planet {
   constructor(mainScene: MainScene) {
 
     const NAME: string = 'Mars';
-    const TEXTUREPATH: string = '../../assets/textures/mars.jpg';
+    const TEXTUREPATH: string = './assets/textures/mars.jpg';
     
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });

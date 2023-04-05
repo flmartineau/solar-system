@@ -13,9 +13,9 @@ export class Earth extends Planet {
   constructor(mainScene: MainScene) {
 
     const NAME: string = 'Earth';
-    const TEXTUREPATH: string = '../../assets/textures/earth_daymap.jpg';
-    const NIGHT_TEXTUREPATH: string = '../../assets/textures/earth_nightmap.jpg';
-    const CLOUD_TEXTUREPATH: string = '../../assets/textures/earth_clouds.jpg';
+    const TEXTUREPATH: string = './assets/textures/earth_daymap.jpg';
+    const NIGHT_TEXTUREPATH: string = './assets/textures/earth_nightmap.jpg';
+    const CLOUD_TEXTUREPATH: string = './assets/textures/earth_clouds.jpg';
 
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });

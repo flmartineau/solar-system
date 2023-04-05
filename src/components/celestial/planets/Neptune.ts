@@ -9,7 +9,7 @@ export class Neptune extends Planet {
   constructor(mainScene: MainScene) {
 
     const NAME: string = 'Neptune';
-    const TEXTUREPATH: string = '../../assets/textures/neptune.jpg';
+    const TEXTUREPATH: string = './assets/textures/neptune.jpg';
 
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
