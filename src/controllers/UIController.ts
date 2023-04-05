@@ -107,5 +107,13 @@ export class UIController {
 
   }
 
+  public updateSpeedDisplay() {
+    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    const speedElement: HTMLInputElement = document.getElementById('simulation-speed') as HTMLInputElement;
+    if (speedElement) {
+      speedElement.innerText = 'x ' + simulationSpeed.toString();
+    }
+  }
+
 
 }

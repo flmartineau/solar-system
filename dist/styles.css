@@ -42,6 +42,13 @@ body {
   background-color: black;
 }
 
+
+#simulation-speed {
+  color: white;
+  margin-left: 8px;
+}
+
+
 #control-panel {
   position: fixed;
   bottom: 0;

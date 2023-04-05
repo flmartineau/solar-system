@@ -76,6 +76,8 @@ export class TimeController {
     this.mainScene.uiController.updateDateDisplay();
 
     this.mainScene.uiController.updateTimeDisplay();
+
+    this.mainScene.uiController.updateSpeedDisplay();
   }
 
   public getCurrentDate(): Date {

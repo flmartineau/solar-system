@@ -4,7 +4,6 @@ import * as THREE from 'three';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
 import { Material} from 'three';
-import { GUI } from 'lil-gui';
 
 
 
@@ -76,7 +75,7 @@ export class Planet extends CelestialBody {
 
     createOrbitLine(): THREE.Line {
         const orbitGeometry = this.createOrbitGeometry();
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x333333 });
         const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
         return orbitLine;
     }
