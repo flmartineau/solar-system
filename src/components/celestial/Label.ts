@@ -1,6 +1,5 @@
 import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
 import { CelestialBody } from "./CelestialBody";
-import { SIZE_FACTOR } from "../../utils/constants";
 
 export class Label extends Sprite {
 

@@ -14,7 +14,8 @@ export class Earth extends Planet {
     const NIGHT_TEXTUREPATH: string = './assets/textures/earth_nightmap.jpg';
     const CLOUD_TEXTUREPATH: string = './assets/textures/earth_clouds.jpg';
 
-    const texture = new TextureLoader().load(TEXTUREPATH);
+    const texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+
     const material = new MeshPhongMaterial({ map: texture });
 
     super(NAME, constants.Earth, material, mainScene, Body.Earth);
@@ -25,7 +26,7 @@ export class Earth extends Planet {
 
   private addClouds(): void {
     const geometry = new SphereGeometry(this.getRadius() * 1.001, 128, 128);
-    const cloudTexture = new TextureLoader().load('assets/textures/earth_clouds.jpg');
+    const cloudTexture = this.getMainScene().getTextureLoader().load('assets/textures/earth_clouds.jpg');
     const atmosphere = new MeshPhongMaterial({
       side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture });
     this.add(new Mesh(geometry, atmosphere));

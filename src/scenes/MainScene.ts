@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding } from 'three';
+import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader } from 'three';
 import Stats from 'stats.js';
 
 import { Sun } from '../components/celestial/Sun';
@@ -22,6 +22,7 @@ import { UIController } from '../controllers/UIController';
 export class MainScene {
   private scene: Scene;
   private renderer: WebGLRenderer;
+  private textureLoader: TextureLoader;
   private timeController: TimeController;
   private cameraController: CameraController;
   private uiController: UIController;
@@ -48,6 +49,7 @@ export class MainScene {
   constructor(container: HTMLElement) {
     this.scene = new Scene();
     this.renderer = new WebGLRenderer();
+    this.textureLoader = new TextureLoader();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.sortObjects = true;
     this.renderer.autoClear = true;
@@ -105,6 +107,10 @@ export class MainScene {
 
   public getRenderer(): WebGLRenderer {
     return this.renderer;
+  }
+
+  public getTextureLoader(): TextureLoader {
+    return this.textureLoader;
   }
 
   public getTimeController(): TimeController {

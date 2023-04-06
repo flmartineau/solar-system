@@ -10,7 +10,10 @@ export class Planet extends CelestialBody {
     private orbitalPeriod: number;
     private orbitLine: Line;
     private body: Body;
+
     private lastOrbitLineUpdateTime: number;
+    private orbitLineGeometry: BufferGeometry;
+    private orbitLineMaterial: LineBasicMaterial;
 
     constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body) {
 
@@ -18,8 +21,11 @@ export class Planet extends CelestialBody {
         this.distanceToSun = 0;
         this.orbitalPeriod = PlanetOrbitalPeriod(body);
         this.body = body;
+        this.orbitLineGeometry = new BufferGeometry();
+        this.orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
         this.orbitLine = this.createOrbitLine();
         this.lastOrbitLineUpdateTime = 0;
+        
 
         this.getMainScene().getScene().add(this.orbitLine);
     }
@@ -66,7 +72,7 @@ export class Planet extends CelestialBody {
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 
-    private createOrbitGeometry(segments: number = 2000): BufferGeometry {
+    private updateOrbitGeometry(segments: number = 2000): BufferGeometry {
         const points: Vector3[] = [];
         const period = this.orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.getMainScene().getTimeController().getCurrentDate();
@@ -83,14 +89,12 @@ export class Planet extends CelestialBody {
         }
 
         points.push(v0);
-        return new BufferGeometry().setFromPoints(points);
+        return this.orbitLineGeometry.setFromPoints(points);
     }
 
     private createOrbitLine(): Line {
-        const orbitGeometry = this.createOrbitGeometry();
-        const orbitMaterial = new LineBasicMaterial({ color: 0x333333 });
-        const orbitLine = new Line(orbitGeometry, orbitMaterial);
-        return orbitLine;
+        const orbitGeometry = this.updateOrbitGeometry();
+        return new Line(orbitGeometry, this.orbitLineMaterial);
     }
 
     public refreshOrbitLine(): void {

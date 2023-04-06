@@ -6,7 +6,7 @@ import { CelestialBody } from './CelestialBody';
 export class Star extends CelestialBody {
 
     constructor(mainScene: MainScene, name: string, constants: SunConfig, texturePath: string) {
-            const texture = new TextureLoader().load(texturePath);
+            const texture = mainScene.getTextureLoader().load(texturePath);
             const material = new MeshBasicMaterial({ map: texture });
             super(mainScene, name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, constants.rotationSpeed);
         }
