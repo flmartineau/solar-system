@@ -1,16 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
-
-
+/*!**********************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles.scss ***!
+  \**********************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap);
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/styles.scss (1) ***!
+  \**************************************************************************************************************/
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   overflow: hidden;
 }
 
-p, h1, h2, h3, h4, h5, h6, input {
-  font-family: 'Roboto', sans-serif;
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input {
+  font-family: "Roboto", sans-serif;
 }
-
 
 #game-container {
   width: 100%;
@@ -47,21 +57,6 @@ p, h1, h2, h3, h4, h5, h6, input {
   z-index: 1;
 }
 
-
-#current-date {
-  font-size: 40px;
-  color: white;
-  border: none;
-  background-color: black;
-}
-
-#current-time {
-  font-size: 40px;
-  color: white;
-  border: none;
-  background-color: black;
-}
-
 #current-date-time {
   position: fixed;
   display: flex;
@@ -70,19 +65,28 @@ p, h1, h2, h3, h4, h5, h6, input {
   justify-content: center;
   margin-top: 28px;
 }
+#current-date-time #current-date {
+  font-size: 40px;
+  color: white;
+  border: none;
+  background-color: black;
+}
+#current-date-time #current-time {
+  font-size: 40px;
+  color: white;
+  border: none;
+  background-color: black;
+}
 
 .speed-controls {
   width: 80%;
   align-items: center;
   display: flex;
 }
-
-#sim-speed-slider {
+.speed-controls #sim-speed-slider {
   width: 60%;
 }
-
-
-#simulation-speed {
+.speed-controls #simulation-speed {
   color: white;
   width: 40%;
   align-items: center;
@@ -92,7 +96,6 @@ p, h1, h2, h3, h4, h5, h6, input {
   font-weight: bold;
   user-select: none;
 }
-
 
 #control-panel {
   position: fixed;
@@ -108,21 +111,17 @@ p, h1, h2, h3, h4, h5, h6, input {
   width: 25%;
   justify-content: space-between;
 }
+#control-panel .play-pause #play-pause-icon {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  filter: invert(100%);
+}
 
 #current-date-icon {
   cursor: pointer;
   width: 32px;
   height: 32px;
-  ;
-  filter: invert(100%);
-}
-
-
-#play-pause-icon {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  ;
   filter: invert(100%);
 }
 
@@ -146,15 +145,13 @@ button {
   padding-top: 20px;
   user-select: none;
 }
-
-.sidebar-item {
+#sidebar .sidebar-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
 }
-
-.sidebar-text {
+#sidebar .sidebar-item .sidebar-text {
   font-family: Arial, sans-serif;
   font-weight: bold;
   text-transform: uppercase;
@@ -164,7 +161,6 @@ button {
   color: white;
   user-select: none;
 }
-
 
 #toggleOrbits,
 #toggleLabels {
@@ -184,7 +180,6 @@ button {
   list-style-type: none !important;
   position: absolute !important;
 }
-
 #celestial-body-list li {
   cursor: pointer;
   padding: 5px;
@@ -193,7 +188,6 @@ button {
   text-align: left;
   user-select: none;
 }
-
 #celestial-body-list li:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
