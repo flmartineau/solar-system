@@ -1,19 +1,6 @@
-import {
-  Scene,
-  WebGLRenderer,
-  PointLight,
-  Mesh,
-  CubeTexture,
-  CubeTextureLoader,
-  Sprite,
-  CanvasTexture,
-  SpriteMaterial,
-  Vector3,
-} from 'three';
-
+import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding } from 'three';
 import Stats from 'stats.js';
 
-import * as THREE from 'three';
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
 import { Venus } from '../components/celestial/planets/Venus';
@@ -33,15 +20,16 @@ import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
 
 export class MainScene {
-  public scene: Scene;
-  public renderer: WebGLRenderer;
-  public timeController: TimeController;
-  public cameraController: CameraController;
-  public uiController: UIController;
+  private scene: Scene;
+  private renderer: WebGLRenderer;
+  private timeController: TimeController;
+  private cameraController: CameraController;
+  private uiController: UIController;
   private mouseEvents: MouseEvents;
   private stats: Stats;
 
   private sun: Sun;
+
   //Planets
   private mercury: Mercury;
   private venus: Venus;
@@ -51,9 +39,11 @@ export class MainScene {
   private saturn: Saturn;
   private uranus: Uranus;
   private neptune: Neptune;
+
+
   private skybox: CubeTexture;
 
-  public selectedObject: CelestialBody | null;
+  private selectedObject: CelestialBody | null;
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
@@ -62,9 +52,8 @@ export class MainScene {
     this.renderer.sortObjects = true;
     this.renderer.autoClear = true;
 
-    this.cameraController = new CameraController(this.renderer, this);
+    this.cameraController = new CameraController(this);
     this.uiController = new UIController(this);
-
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -76,9 +65,7 @@ export class MainScene {
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg'
     ]);
-    this.skybox.encoding = THREE.sRGBEncoding;
-
-    // Set the scene background to the skybox
+    this.skybox.encoding = sRGBEncoding;
     this.scene.background = this.skybox;
 
     const light = new PointLight(0xffffff, 1, 0);
@@ -97,35 +84,6 @@ export class MainScene {
     this.uranus = new Uranus(this)
     this.neptune = new Neptune(this)
 
-    this.timeController.setPlanets(this.getPlanets());
-    this.timeController.setSun(this.sun);
-
-    /** AXIS LINES
-    
-    const orbitMaterialX = new THREE.LineBasicMaterial({ color: 0xff0000 });  //RED
-    let pointsX = [];
-    pointsX.push(new THREE.Vector3(0, 0, 0));
-    pointsX.push(new THREE.Vector3(100, 0, 0));
-    const orbitGeometryX = new THREE.BufferGeometry().setFromPoints(pointsX);        
-    const orbitLineX = new THREE.Line(orbitGeometryX, orbitMaterialX);
-    const orbitMaterialY = new THREE.LineBasicMaterial({ color: 0x00ff00 }); //GREEN
-    let pointsY = [];
-    pointsY.push(new THREE.Vector3(0, 0, 0));
-    pointsY.push(new THREE.Vector3(0, 100, 0));
-    const orbitGeometryY = new THREE.BufferGeometry().setFromPoints(pointsY); 
-    const orbitLineY = new THREE.Line(orbitGeometryY, orbitMaterialY);
-    let pointsZ = [];
-    pointsZ.push(new THREE.Vector3(0, 0, 0));
-    pointsZ.push(new THREE.Vector3(0, 0, 100));
-    const orbitMaterialZ = new THREE.LineBasicMaterial({ color: 0x0000ff }); //BLUE
-    const orbitGeometryZ = new THREE.BufferGeometry().setFromPoints(pointsZ);
-    const orbitLineZ = new THREE.Line(orbitGeometryZ, orbitMaterialZ);
-    this.scene.add(orbitLineX);
-    this.scene.add(orbitLineY);
-    this.scene.add(orbitLineZ);
-    */
-
-
     this.stats = new Stats();
     this.stats.showPanel(0);
     this.stats.dom.style.right = '0px';
@@ -134,7 +92,6 @@ export class MainScene {
 
     this.uiController.createCelestialObjectList();
 
-
     this.animate();
 
     this.mouseEvents = new MouseEvents(this);
@@ -142,11 +99,34 @@ export class MainScene {
     TemplateHelper.initTemplates(this.mouseEvents);
   }
 
-  async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void) {
-    const response = await fetch(contentUrl);
-    const content = await response.text();
+  public getScene(): Scene {
+    return this.scene;
+  }
 
-    const container = document.getElementById(containerId);
+  public getRenderer(): WebGLRenderer {
+    return this.renderer;
+  }
+
+  public getTimeController(): TimeController {
+    return this.timeController;
+  }
+
+  public getUIController(): UIController {
+    return this.uiController;
+  }
+
+  public getCameraController(): CameraController {
+    return this.cameraController;
+  }
+
+  public getSelectedObject(): CelestialBody | null {
+    return this.selectedObject;
+  }
+
+  async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
+    const response: Response = await fetch(contentUrl);
+    const content: string = await response.text();
+    const container: HTMLElement | null = document.getElementById(containerId);
     container!.innerHTML = content;
     if (callback) {
       callback();

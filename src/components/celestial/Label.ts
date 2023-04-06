@@ -8,8 +8,8 @@ export class Label extends Sprite {
 
     constructor(celestialBody: CelestialBody) {
 
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+        const canvas: HTMLCanvasElement = document.createElement('canvas');
+        const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
         canvas.width = 256;
         canvas.height = 72;
         if (context) {
@@ -29,18 +29,17 @@ export class Label extends Sprite {
         this.position.copy(celestialBody.position.clone());
     }
 
-    getCelestialBody(): CelestialBody {
+    public getCelestialBody(): CelestialBody {
         return this.celestialBody;
     }
 
-
-    update(camera: PerspectiveCamera): void {
+    public update(camera: PerspectiveCamera): void {
         if (this.visible) {
             const distanceToCamera: number = camera.position.distanceTo(this.position);
 
             this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
             this.position.copy(this.celestialBody.position.clone());
-            this.position.y = this.celestialBody.position.y + (this.celestialBody.radius * 1.2);
+            this.position.y = this.celestialBody.position.y + (this.celestialBody.getRadius() * 1.2);
             this.lookAt(camera.position);
         }
     }

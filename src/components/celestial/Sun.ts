@@ -12,6 +12,4 @@ export class Sun extends Star {
     super(mainScene, NAME, constants.Sun, TEXTUREPATH);
   }
 
-
-
 }

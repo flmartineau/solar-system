@@ -4,12 +4,13 @@ import { MainScene } from '../../scenes/MainScene';
 
 
 export class CelestialBody extends Mesh {
-    public mainScene: MainScene;
     public name: string;
-    public rotationSpeed: number | undefined;
-    public mass: number;
-    public temperature: number;
-    public radius: number;
+
+    private mainScene: MainScene;
+    private rotationSpeed: number | undefined;
+    private mass: number;
+    private temperature: number;
+    private radius: number;
     private label: Label;
 
     constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
@@ -17,6 +18,7 @@ export class CelestialBody extends Mesh {
 
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
+
         this.mainScene = mainScene;
         this.name = name;
         this.rotationSpeed = rotationSpeed;
@@ -28,22 +30,36 @@ export class CelestialBody extends Mesh {
         this.addToMainScene();
     }
 
-    addToMainScene(): void { 
-        this.mainScene.scene.add(this);
-        this.mainScene.scene.add(this.label);
+    public getMainScene(): MainScene {
+        return this.mainScene;
     }
 
+    public addToMainScene(): void { 
+        this.mainScene.getScene().add(this);
+        this.mainScene.getScene().add(this.label);
+    }
     
-    getLabel(): Label {
+    public getLabel(): Label {
         return this.label;
     }
 
-    setLabelVisibility(visibility: boolean): void {
-        this.label.visible
+    public updateLabel(): void {
+        this.label.update(this.mainScene.getCameraController().getCamera());
     }
 
-    updateLabel(): void {
-        this.label.update(this.mainScene.cameraController.getCamera());
+    public getRadius(): number {
+        return this.radius;
     }
 
+    public getTemperature(): number {
+        return this.temperature;
+    }
+
+    public getMass(): number {
+        return this.mass;
+    }
+
+    public getRotationSpeed(): number {
+        return this.rotationSpeed ? this.rotationSpeed : 0;
+    }
 }

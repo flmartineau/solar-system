@@ -1,14 +1,11 @@
+import { AdditiveBlending, BackSide, Color, FrontSide, Mesh, MeshPhongMaterial, ShaderMaterial, SphereGeometry, TextureLoader } from 'three';
+
 import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
-import { AdditiveBlending, BackSide, Color, FrontSide, Mesh, MeshPhongMaterial, ShaderMaterial, SphereGeometry, TextureLoader } from 'three';
-
-
 
 export class Earth extends Planet {
-
-  public glowSphere: Mesh | null;
 
   constructor(mainScene: MainScene) {
 
@@ -20,34 +17,27 @@ export class Earth extends Planet {
     const texture = new TextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
 
-
     super(NAME, constants.Earth, material, mainScene, Body.Earth);
-
-    this.glowSphere = null;
 
     this.addClouds();
     this.addGlow();
   }
 
-  addClouds() {
-    const geometry = new SphereGeometry(this.radius * 1.001, 128, 128);
+  private addClouds(): void {
+    const geometry = new SphereGeometry(this.getRadius() * 1.001, 128, 128);
     const cloudTexture = new TextureLoader().load('assets/textures/earth_clouds.jpg');
     const atmosphere = new MeshPhongMaterial({
-      side: FrontSide, map: cloudTexture, transparent: true,
-      alphaMap: cloudTexture
-    });
+      side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture });
     this.add(new Mesh(geometry, atmosphere));
   }
 
-  addGlow() {
-    // TODO ajust glow parameters
-
+  private addGlow(): void {
     let glowMaterial = new ShaderMaterial({
       uniforms: {
         "c": { value: 0.4 },
         "p": { value: 4.5 },
         glowColor: { value: new Color(0x0096ff) },
-        viewVector: { value: this.mainScene.cameraController.getCamera().position }
+        viewVector: { value: this.getMainScene().getCameraController().getCamera().position }
       },
       vertexShader: `
                 uniform vec3 viewVector;
@@ -74,14 +64,8 @@ export class Earth extends Planet {
       transparent: true
     });
 
-    let earthGlow = new Mesh(new SphereGeometry(this.radius, 128, 128), glowMaterial);
+    let earthGlow = new Mesh(new SphereGeometry(this.getRadius(), 128, 128), glowMaterial);
     earthGlow.scale.multiplyScalar(1.02);
     this.add(earthGlow);
-  }
-
-
-
-  getBody(): Body {
-    return Body.Earth;
   }
 }

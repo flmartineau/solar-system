@@ -1,5 +1,5 @@
 import { MainScene } from '../scenes/MainScene';
-import { Raycaster, Vector2 } from 'three';
+import { Intersection, Object3D, Raycaster, Vector2 } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
@@ -11,14 +11,12 @@ export class MouseEvents {
   private uiController: UIController;
   private timeController: TimeController;
   private raycaster: Raycaster;
-  private mouse: Vector2;
 
   constructor(mainScene: MainScene) {
     this.mainScene = mainScene;
-    this.uiController = mainScene.uiController;
-    this.timeController = mainScene.timeController;
+    this.uiController = mainScene.getUIController();
+    this.timeController = mainScene.getTimeController();
     this.raycaster = new Raycaster();
-    this.mouse = new Vector2();
 
     // Add the click event listener
     window.addEventListener('click', (event) => this.onClick(event), false);
@@ -43,20 +41,19 @@ export class MouseEvents {
   public addDateEventListeners(): void {
     document.getElementById('current-date')?.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        let newDate = (<HTMLInputElement>document.getElementById('current-date')).value;
+        let newDate: string = (<HTMLInputElement>document.getElementById('current-date')).value;
         if (newDate) {
           let currentDate: Date = this.timeController.getCurrentDate();
           let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
-          let newDateDate = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD'); 
+          let newDateDate: Date = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD');
           this.timeController.setCurrentDate(DateHelper.setTimeToDate(currentTime, newDateDate));
         }
       }
     });
 
     document.getElementById('current-time')?.addEventListener('keypress', (e) => {
-
       if (e.key === 'Enter') {
-        let newTime = (<HTMLInputElement>document.getElementById('current-time')).value;
+        let newTime: string = (<HTMLInputElement>document.getElementById('current-time')).value;
         if (newTime) {
           let currentDate: Date = this.timeController.getCurrentDate();
           this.timeController.setCurrentDate(DateHelper.setTimeToDate(newTime, currentDate));
@@ -68,57 +65,54 @@ export class MouseEvents {
 
   public addControlEventListeners(): void {
     document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
-    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => {this.timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber);});
+    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { this.timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber); });
     document.getElementById('current-date-icon')?.addEventListener('click', () => this.timeController.setCurrentDate(new Date()));
-    const playPauseButton = document.getElementById('play-pause-icon');
-
-    if (playPauseButton) {
-      playPauseButton.addEventListener('click', () => this.timeController.togglePlayPause());
-    }
-  
-  
-  
+    document.getElementById('play-pause-icon')?.addEventListener('click', () => this.timeController.togglePlayPause());
   }
 
   private onClick(event: MouseEvent): void {
 
-    this.mainScene.cameraController.setFromCamera(event, this.raycaster);
+    this.mainScene.getCameraController().setFromCamera(event, this.raycaster);
 
-    const celestialObjects = this.mainScene.getCelestialObjects();
-    const celestialLabels = this.mainScene.getLabels();
-    const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
-    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
+    const celestialObjects: Array<CelestialBody> = this.mainScene.getCelestialObjects();
+    const celestialLabels: Array<Label> = this.mainScene.getLabels();
+    const intersectsObjects: Array<Intersection<Object3D<Event>>> =
+      this.raycaster.intersectObjects(celestialObjects);
+    const intersectsLabels: Array<Intersection<Object3D<Event>>> =
+      this.raycaster.intersectObjects(celestialLabels);
 
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
-      this.mainScene.selectObject(object as CelestialBody);
+      this.mainScene.selectObject(object as unknown as CelestialBody);
     }
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
-      this.mainScene.selectObject((object as Label).getCelestialBody());
+      this.mainScene.selectObject((object as unknown as Label).getCelestialBody());
     }
   }
 
   private onMouseMove(event: MouseEvent): void {
-    this.mainScene.cameraController.setFromCamera(event, this.raycaster);
+    this.mainScene.getCameraController().setFromCamera(event, this.raycaster);
 
-    const celestialObjects = this.mainScene.getCelestialObjects();
-    const celestialLabels = this.mainScene.getLabels();
-    const intersectsObjects = this.raycaster.intersectObjects(celestialObjects);
-    const intersectsLabels = this.raycaster.intersectObjects(celestialLabels);
+    const celestialObjects: Array<CelestialBody> = this.mainScene.getCelestialObjects();
+    const celestialLabels: Array<Label> = this.mainScene.getLabels();
+    const intersectsObjects: Array<Intersection<Object3D<Event>>> =
+      this.raycaster.intersectObjects(celestialObjects);
+    const intersectsLabels: Array<Intersection<Object3D<Event>>> =
+      this.raycaster.intersectObjects(celestialLabels);
     if (intersectsObjects.length > 0) {
       this.uiController.showInfo(intersectsObjects[0].object);
     } else if (intersectsLabels.length > 0) {
-      this.uiController.showInfo((intersectsLabels[0].object as Label).getCelestialBody());
-    } else if (this.mainScene.selectedObject) {
-        this.uiController.showInfo(this.mainScene.selectedObject);
+      this.uiController.showInfo((intersectsLabels[0].object as unknown as Label).getCelestialBody());
+    } else if (this.mainScene.getSelectedObject()) {
+      this.uiController.showInfo(this.mainScene.getSelectedObject());
     } else {
-        this.uiController.hideInfo();
-      }
+      this.uiController.hideInfo();
+    }
   }
 
   private onWindowResize(): void {
-    this.mainScene.cameraController.updateOnResize();
-    this.mainScene.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.mainScene.getCameraController().updateOnResize();
+    this.mainScene.getRenderer().setSize(window.innerWidth, window.innerHeight);
   }
 }

@@ -3,7 +3,6 @@ import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
-import Stats from 'stats.js'
 
 export class UIController {
   private mainScene: MainScene;
@@ -47,8 +46,8 @@ export class UIController {
       if (infoElement) {
         infoElement.innerHTML = `
           <strong>Name:</strong> ${celestialObject.name}<br>
-          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature:</strong> ${celestialObject.temperature} K
+          <strong>Mass:</strong> ${celestialObject.getMass()} kg<br>
+          <strong>Temperature:</strong> ${celestialObject.getTemperature()} K
         `;
         infoElement.style.display = 'block';
       }
@@ -57,9 +56,9 @@ export class UIController {
       if (infoElement) {
         infoElement.innerHTML = `
           <strong>Name: </strong> ${celestialObject.name}<br>
-          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
-          <strong>Distance From Sun: </strong> ${celestialObject.distanceToSun} km<br>
+          <strong>Mass: </strong> ${celestialObject.getMass()} kg<br>
+          <strong>Temperature: </strong> ${celestialObject.getTemperature()} K<br>
+          <strong>Distance From Sun: </strong> ${celestialObject.getDistanceToSun()} km<br>
           <strong>Orbital Period: </strong> ${celestialObject.getOrbitalPeriod()} days
         `;
         infoElement.style.display = 'block';
@@ -69,7 +68,7 @@ export class UIController {
   }
 
   public hideInfo(): void {
-    if (this.mainScene.selectedObject !== null) 
+    if (this.mainScene.getSelectedObject() !== null) 
       return;
     const infoElement = document.getElementById('info');
     if (infoElement) {
@@ -80,7 +79,7 @@ export class UIController {
   public togglePlayPauseButton(): void {
     const playPauseButton = document.getElementById('play-pause-icon') as HTMLImageElement;
     if (playPauseButton) {
-      playPauseButton.src = this.mainScene.timeController.getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
+      playPauseButton.src = this.mainScene.getTimeController().getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
     }
   }
 
@@ -112,8 +111,8 @@ export class UIController {
   }
 
   public updateTimeDisplay() {
-    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
-    let currentDate: Date = this.mainScene.timeController.getCurrentDate();
+    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
+    let currentDate: Date = this.mainScene.getTimeController().getCurrentDate();
     const timeElement: HTMLInputElement = this.getCurrentTimeElement();
     if (timeElement && simulationSpeed !== 0) {
       timeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
@@ -121,8 +120,8 @@ export class UIController {
   }
 
   public updateDateDisplay() {
-    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
-    let currentDate: Date = this.mainScene.timeController.getCurrentDate();
+    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
+    let currentDate: Date = this.mainScene.getTimeController().getCurrentDate();
     const dateElement: HTMLInputElement = this.getCurrentDateElement();
     if (dateElement && simulationSpeed !== 0) {
       dateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
@@ -131,7 +130,7 @@ export class UIController {
   }
 
   public updateSpeedDisplay() {
-    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
     const speedElement: HTMLInputElement = document.getElementById('simulation-speed') as HTMLInputElement;
     if (speedElement) {
       speedElement.innerText = this.getSpeedString(simulationSpeed);
@@ -140,7 +139,7 @@ export class UIController {
   }
 
   public updateSpeedSlider() {
-    let simulationSpeed: number = this.mainScene.timeController.getSimulationSpeed();
+    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
     const speedSlider: HTMLInputElement = document.getElementById('sim-speed-slider') as HTMLInputElement;
     if (speedSlider) {
       speedSlider.value = simulationSpeed.toString();
