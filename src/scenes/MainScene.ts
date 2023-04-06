@@ -132,6 +132,9 @@ export class MainScene {
     this.stats.dom.style.left = 'auto';
     document.body.appendChild(this.stats.dom);
 
+    this.uiController.createCelestialObjectList();
+
+
     this.animate();
 
     this.mouseEvents = new MouseEvents(this);

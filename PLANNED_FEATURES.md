@@ -3,5 +3,4 @@
 - add barycentric positions
 - add correct rotation axis
 - display lagrange points
-- update UI for time selection
 - add background music

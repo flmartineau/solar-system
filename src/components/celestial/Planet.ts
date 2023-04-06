@@ -10,6 +10,7 @@ import { Material} from 'three';
 export class Planet extends CelestialBody {
 
     public distanceToSun: number;
+    private orbitalPeriod: number;
     private orbitLine: THREE.Line;
     public mainScene: MainScene
     public body: Body;
@@ -24,6 +25,7 @@ export class Planet extends CelestialBody {
 
         super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature);
         this.distanceToSun = 0;
+        this.orbitalPeriod = PlanetOrbitalPeriod(body);
         this.body = body;
         this.mainScene = mainScene;
         this.orbitLine = this.createOrbitLine();
@@ -53,7 +55,7 @@ export class Planet extends CelestialBody {
 
     private createOrbitGeometry(segments: number = 2000): THREE.BufferGeometry {
         const points: THREE.Vector3[] = [];
-        const period = PlanetOrbitalPeriod(this.body) * 24 * 60 * 60 * 1000; //millisecondes
+        const period = this.orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.mainScene.timeController.getCurrentDate();
 
         let v0 = new THREE.Vector3(0, 0, 0);
@@ -93,6 +95,10 @@ export class Planet extends CelestialBody {
 
     getOrbitLine(): THREE.Line {
         return this.orbitLine;
+    }
+
+    getOrbitalPeriod(): number {
+        return this.orbitalPeriod;
     }
 
 }

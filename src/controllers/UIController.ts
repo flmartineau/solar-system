@@ -7,11 +7,26 @@ import Stats from 'stats.js'
 
 export class UIController {
   private mainScene: MainScene;
+  private celestialObjectList: HTMLElement | null;
 
   constructor(mainScene: MainScene) {
     this.mainScene = mainScene;
+    this.celestialObjectList = document.getElementById('celestial-body-list');
   }
 
+  public createCelestialObjectList() {
+    if (!this.celestialObjectList) return;
+    document.getElementById('right-sidebar')?.appendChild(this.celestialObjectList);
+
+    this.mainScene.getCelestialObjects().forEach((celestialObject) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = celestialObject.name;
+      listItem.addEventListener('click', () => {
+        this.mainScene.selectObject(celestialObject);
+      });
+      this.celestialObjectList?.appendChild(listItem);
+    });
+  }
 
   public getInfoElement(): HTMLElement {
     return document.getElementById('info') as HTMLElement;
@@ -41,10 +56,11 @@ export class UIController {
     } else if (celestialObject instanceof Planet) {
       if (infoElement) {
         infoElement.innerHTML = `
-          <strong>Name:</strong> ${celestialObject.name}<br>
-          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature:</strong> ${celestialObject.temperature} K<br>
-          <strong>Distance From Sun:</strong> ${celestialObject.distanceToSun} km
+          <strong>Name: </strong> ${celestialObject.name}<br>
+          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
+          <strong>Distance From Sun: </strong> ${celestialObject.distanceToSun} km<br>
+          <strong>Orbital Period: </strong> ${celestialObject.getOrbitalPeriod()} days
         `;
         infoElement.style.display = 'block';
       }
