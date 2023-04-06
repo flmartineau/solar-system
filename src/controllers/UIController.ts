@@ -22,6 +22,7 @@ export class UIController {
       listItem.textContent = celestialObject.name;
       listItem.addEventListener('click', () => {
         this.mainScene.selectObject(celestialObject);
+        this.mainScene.getAudioController().playClick(1);
       });
       this.celestialObjectList?.appendChild(listItem);
     });
@@ -94,6 +95,8 @@ export class UIController {
     if (toggleOrbitsIcon) {
       toggleOrbitsIcon.src = orbitLinesVisible ? './assets/icons/orbit_lines_on.png' : 'assets/icons/orbit_lines_off.png';
     }
+
+    this.mainScene.getAudioController().playClick(2);
   }
 
   public toggleLabels(): void {
@@ -107,6 +110,29 @@ export class UIController {
     const toggleLabelsIcon = document.getElementById('toggleLabels') as HTMLImageElement;
     if (toggleLabelsIcon) {
       toggleLabelsIcon.src = labelsVisible ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
+    }
+
+    this.mainScene.getAudioController().playClick(2);
+  }
+
+
+  public toggleMusicVolume(): void {
+    const music = document.getElementById('music-icon') as HTMLImageElement;
+    if (music) {
+
+      this.mainScene.getAudioController().toggleVolume();
+
+      switch (this.mainScene.getAudioController().getVolume()) {
+        case 0:
+          music.src = './assets/icons/speaker-mute.png';
+          break;
+        case 0.5:
+          music.src = './assets/icons/speaker-1.png';
+          break;
+        case 1:
+          music.src = './assets/icons/speaker-max.png';
+          break;
+      }
     }
   }
 

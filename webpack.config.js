@@ -50,7 +50,15 @@ module.exports = {
         generator: {
           filename: 'assets/[hash][ext][query]'
         }
-      }
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/music/[name].[ext]',
+          mimetype: 'audio/mpeg',
+        },
+      },
     ],
   },
   plugins: [
@@ -78,5 +86,6 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+    hot: false
   },
 };

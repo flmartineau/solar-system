@@ -3,5 +3,8 @@
 - add barycentric positions
 - add correct rotation axis
 - display lagrange points
-- add background music
 - add dev console
+- add scale grid
+- add settings menu (UI size, metric system, display settings...)
+- add search
+- add loading screen

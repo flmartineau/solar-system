@@ -18,6 +18,7 @@ import { TemplateHelper } from '../helper/TemplateHelper';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
+import { AudioController } from '../controllers/AudioController';
 
 export class MainScene {
   private scene: Scene;
@@ -26,6 +27,7 @@ export class MainScene {
   private timeController: TimeController;
   private cameraController: CameraController;
   private uiController: UIController;
+  private audioController: AudioController;
   private mouseEvents: MouseEvents;
   private stats: Stats;
 
@@ -56,6 +58,7 @@ export class MainScene {
 
     this.cameraController = new CameraController(this);
     this.uiController = new UIController(this);
+    this.audioController = new AudioController();
 
     this.selectedObject = null;
     container.appendChild(this.renderer.domElement);
@@ -125,6 +128,10 @@ export class MainScene {
     return this.cameraController;
   }
 
+  public getAudioController(): AudioController {
+    return this.audioController;
+  }
+
   public getSelectedObject(): CelestialBody | null {
     return this.selectedObject;
   }
@@ -140,7 +147,8 @@ export class MainScene {
   }
 
   getCelestialObjects(): CelestialBody[] {
-    return [this.sun, this.mercury, this.venus, this.earth, this.mars, this.jupiter, this.saturn, this.uranus, this.neptune];
+    return [this.sun, this.mercury, this.venus, this.earth, this.mars, 
+      this.jupiter, this.saturn, this.uranus, this.neptune];
   }
 
   getPlanets(): Planet[] {
@@ -159,6 +167,7 @@ export class MainScene {
     }
     this.selectedObject = object;
     this.cameraController.centerCameraOnObject(this.selectedObject);
+    this.getAudioController().playClick(1);
   }
 
   private animate(): void {

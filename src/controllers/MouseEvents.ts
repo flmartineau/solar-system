@@ -32,6 +32,8 @@ export class MouseEvents {
     if (toggleLabelsButton) {
       toggleLabelsButton.addEventListener('click', () => this.uiController.toggleLabels());
     }
+
+    this.addMusicEventListeners();
   }
 
   public addDateEventListeners(): void {
@@ -60,10 +62,19 @@ export class MouseEvents {
   }
 
   public addControlEventListeners(): void {
-    document.getElementById('play-pause')?.addEventListener('click', () => this.timeController.togglePlayPause());
     document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { this.timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber); });
-    document.getElementById('current-date-icon')?.addEventListener('click', () => this.timeController.setCurrentDate(new Date()));
-    document.getElementById('play-pause-icon')?.addEventListener('click', () => this.timeController.togglePlayPause());
+    document.getElementById('current-date-icon')?.addEventListener('click', () => {
+        this.timeController.setCurrentDate(new Date()); 
+        this.mainScene.getAudioController().playClick(3);
+    });
+    document.getElementById('play-pause-icon')?.addEventListener('click', () => {
+      this.mainScene.getAudioController().playClick(3);
+      this.timeController.togglePlayPause();
+    });
+  }
+
+  public addMusicEventListeners(): void {
+    document.getElementById('music-icon')?.addEventListener('click', () => this.mainScene.getUIController().toggleMusicVolume());
   }
 
   private onClick(event: MouseEvent): void {

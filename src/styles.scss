@@ -173,15 +173,26 @@ button {
       user-select: none;
     }
   }
-}
 
-#toggleOrbits,
-#toggleLabels {
-  margin-top: 10px;
-  cursor: pointer;
-  width: 32px;
-  height: 32px;
-  user-select: none;
+  #toggleOrbits,
+  #toggleLabels {
+    margin-top: 10px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    user-select: none;
+  }
+
+
+  #music-icon {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    bottom: 40px;
+    position: fixed;
+    filter: invert(100%);
+  }
+
 }
 
 #celestial-body-list {

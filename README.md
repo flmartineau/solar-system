@@ -49,3 +49,7 @@ The `dist` folder will be generated with the production-ready files. You can dep
 - TypeScript
 - WebGL
 - Webpack
+
+## Credit
+
+Background music by IvyMusic (https://pixabay.com/music/ambient-space-atmospheric-background-124841)
