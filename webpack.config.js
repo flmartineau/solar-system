@@ -1,6 +1,16 @@
+const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const htmlFiles = fs.readdirSync(path.resolve(__dirname, 'src/ui'))
+  .filter(file => file.endsWith('.html'));
+
+const htmlPlugins = htmlFiles.map(file => new HtmlWebpackPlugin({
+  template: path.resolve(__dirname, `src/ui/${file}`),
+  filename: file,
+}));
 
 module.exports = {
   entry: {
@@ -34,9 +44,22 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash][ext][query]'
+        }
+      }
     ],
   },
   plugins: [
+    ...htmlPlugins,
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+      chunks: ['main', 'styles'],
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {

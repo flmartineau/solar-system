@@ -7,7 +7,14 @@ body {
   overflow: hidden;
 }
 
-p, h1, h2, h3, h4, h5, h6, input {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input {
   font-family: 'Roboto', sans-serif;
 }
 
@@ -65,7 +72,7 @@ p, h1, h2, h3, h4, h5, h6, input {
     border: none;
     background-color: black;
   }
-  
+
   #current-time {
     font-size: 40px;
     color: white;
@@ -82,8 +89,8 @@ p, h1, h2, h3, h4, h5, h6, input {
   #sim-speed-slider {
     width: 60%;
   }
-  
-  
+
+
   #simulation-speed {
     color: white;
     width: 40%;
