@@ -18,12 +18,8 @@ export class MouseEvents {
     this.timeController = mainScene.getTimeController();
     this.raycaster = new Raycaster();
 
-    // Add the click event listener
     window.addEventListener('click', (event) => this.onClick(event), false);
-
-    // Add the mouse move event listener
     window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
-
     window.addEventListener('resize', () => this.onWindowResize(), false);
 
     const toggleOrbitsButton = document.getElementById('toggleOrbits');

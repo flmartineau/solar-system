@@ -56,8 +56,8 @@ export const constants: {
   },
   Earth: {
     radius: 6371 / KM_PER_AU,
-    mass: 5.97237 * Math.pow(10, 24), // Mass of Earth
-    temperature: 288, // Temperature of Earth
+    mass: 5.97237 * Math.pow(10, 24),
+    temperature: 288,
   },
   Mars: {
     radius: 3389 / KM_PER_AU,

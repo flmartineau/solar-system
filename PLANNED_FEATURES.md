@@ -4,3 +4,4 @@
 - add correct rotation axis
 - display lagrange points
 - add background music
+- add dev console
