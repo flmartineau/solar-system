@@ -1,4 +1,4 @@
-import { Body, KM_PER_AU, PlanetOrbitalPeriod } from "astronomy-engine";
+import { KM_PER_AU } from "astronomy-engine";
 
 export interface SunConfig {
   radius: number;

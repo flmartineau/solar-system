@@ -7,18 +7,19 @@ import { Label } from '../components/celestial/Label';
 import { DateHelper } from '../helper/DateHelper';
 
 export class MouseEvents {
-  private mainScene: MainScene;
-  private uiController: UIController;
-  private timeController: TimeController;
-  private raycaster: Raycaster;
+  private _mainScene: MainScene;
+  private _uiController: UIController;
+  private _timeController: TimeController;
+  private _raycaster: Raycaster;
 
-  constructor(mainScene: MainScene) {
-    this.mainScene = mainScene;
-    this.uiController = mainScene.getUIController();
-    this.timeController = mainScene.getTimeController();
-    this.raycaster = new Raycaster();
+  constructor(_mainScene: MainScene) {
+    this._mainScene = _mainScene;
+    this._uiController = _mainScene.getUIController();
+    this._timeController = _mainScene.getTimeController();
+    this._raycaster = new Raycaster();
 
     window.addEventListener('click', (event) => this.onClick(event), false);
+    window.addEventListener('keydown', (event) => this.onKeyDown(event), false);
     window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
     window.addEventListener('resize', () => this.onWindowResize(), false);
 
@@ -26,11 +27,11 @@ export class MouseEvents {
     const toggleLabelsButton = document.getElementById('toggleLabels');
 
     if (toggleOrbitsButton) {
-      toggleOrbitsButton.addEventListener('click', () => this.uiController.toggleOrbitLines());
+      toggleOrbitsButton.addEventListener('click', () => this._uiController.toggleOrbitLines());
     }
 
     if (toggleLabelsButton) {
-      toggleLabelsButton.addEventListener('click', () => this.uiController.toggleLabels());
+      toggleLabelsButton.addEventListener('click', () => this._uiController.toggleLabels());
     }
 
     this.addMusicEventListeners();
@@ -41,10 +42,10 @@ export class MouseEvents {
       if (e.key === 'Enter') {
         let newDate: string = (<HTMLInputElement>document.getElementById('current-date')).value;
         if (newDate) {
-          let currentDate: Date = this.timeController.getCurrentDate();
+          let currentDate: Date = this._timeController.getCurrentDate();
           let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
           let newDateDate: Date = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD');
-          this.timeController.setCurrentDate(DateHelper.setTimeToDate(currentTime, newDateDate));
+          this._timeController.setCurrentDate(DateHelper.setTimeToDate(currentTime, newDateDate));
         }
       }
     });
@@ -53,8 +54,8 @@ export class MouseEvents {
       if (e.key === 'Enter') {
         let newTime: string = (<HTMLInputElement>document.getElementById('current-time')).value;
         if (newTime) {
-          let currentDate: Date = this.timeController.getCurrentDate();
-          this.timeController.setCurrentDate(DateHelper.setTimeToDate(newTime, currentDate));
+          let currentDate: Date = this._timeController.getCurrentDate();
+          this._timeController.setCurrentDate(DateHelper.setTimeToDate(newTime, currentDate));
         }
       }
     });
@@ -62,64 +63,73 @@ export class MouseEvents {
   }
 
   public addControlEventListeners(): void {
-    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { this.timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber); });
+    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { this._timeController.setSpeed((<HTMLInputElement>e.target).valueAsNumber); });
     document.getElementById('current-date-icon')?.addEventListener('click', () => {
-        this.timeController.setCurrentDate(new Date()); 
-        this.mainScene.getAudioController().playClick(3);
+        this._timeController.setCurrentDate(new Date()); 
+        this._mainScene.getAudioController().playClick(3);
     });
     document.getElementById('play-pause-icon')?.addEventListener('click', () => {
-      this.mainScene.getAudioController().playClick(3);
-      this.timeController.togglePlayPause();
+      this._mainScene.getAudioController().playClick(3);
+      this._timeController.togglePlayPause();
     });
   }
 
   public addMusicEventListeners(): void {
-    document.getElementById('music-icon')?.addEventListener('click', () => this.mainScene.getUIController().toggleMusicVolume());
+    document.getElementById('music-icon')?.addEventListener('click', () => this._mainScene.getUIController().toggleMusicVolume());
   }
 
   private onClick(event: MouseEvent): void {
 
-    this.mainScene.getCameraController().setFromCamera(event, this.raycaster);
+    this._mainScene.getCameraController().setFromCamera(event, this._raycaster);
 
-    const celestialObjects: Array<CelestialBody> = this.mainScene.getCelestialObjects();
-    const celestialLabels: Array<Label> = this.mainScene.getLabels();
+    const celestialObjects: Array<CelestialBody> = this._mainScene.getCelestialObjects();
+    const celestialLabels: Array<Label> = this._mainScene.getLabels();
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
-      this.raycaster.intersectObjects(celestialObjects);
+      this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =
-      this.raycaster.intersectObjects(celestialLabels);
+      this._raycaster.intersectObjects(celestialLabels);
 
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
-      this.mainScene.selectObject(object as unknown as CelestialBody);
+      this._mainScene.selectObject(object as unknown as CelestialBody);
     }
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
-      this.mainScene.selectObject((object as unknown as Label).getCelestialBody());
+      this._mainScene.selectObject((object as unknown as Label).getCelestialBody());
     }
   }
 
-  private onMouseMove(event: MouseEvent): void {
-    this.mainScene.getCameraController().setFromCamera(event, this.raycaster);
+  private onKeyDown(event: KeyboardEvent): void {
+    if (event.key === '²') {
+      this._mainScene.getDevConsoleController().toggleDevConsole();
+    }
+  
+  }
 
-    const celestialObjects: Array<CelestialBody> = this.mainScene.getCelestialObjects();
-    const celestialLabels: Array<Label> = this.mainScene.getLabels();
+
+
+  private onMouseMove(event: MouseEvent): void {
+    this._mainScene.getCameraController().setFromCamera(event, this._raycaster);
+
+    const celestialObjects: Array<CelestialBody> = this._mainScene.getCelestialObjects();
+    const celestialLabels: Array<Label> = this._mainScene.getLabels();
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
-      this.raycaster.intersectObjects(celestialObjects);
+      this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =
-      this.raycaster.intersectObjects(celestialLabels);
+      this._raycaster.intersectObjects(celestialLabels);
     if (intersectsObjects.length > 0) {
-      this.uiController.showInfo(intersectsObjects[0].object);
+      this._uiController.showInfo(intersectsObjects[0].object);
     } else if (intersectsLabels.length > 0) {
-      this.uiController.showInfo((intersectsLabels[0].object as unknown as Label).getCelestialBody());
-    } else if (this.mainScene.getSelectedObject()) {
-      this.uiController.showInfo(this.mainScene.getSelectedObject());
+      this._uiController.showInfo((intersectsLabels[0].object as unknown as Label).getCelestialBody());
+    } else if (this._mainScene.getSelectedObject()) {
+      this._uiController.showInfo(this._mainScene.getSelectedObject());
     } else {
-      this.uiController.hideInfo();
+      this._uiController.hideInfo();
     }
   }
 
   private onWindowResize(): void {
-    this.mainScene.getCameraController().updateOnResize();
-    this.mainScene.getRenderer().setSize(window.innerWidth, window.innerHeight);
+    this._mainScene.getCameraController().updateOnResize();
+    this._mainScene.getRenderer().setSize(window.innerWidth, window.innerHeight);
   }
 }

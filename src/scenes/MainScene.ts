@@ -1,5 +1,4 @@
 import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader } from 'three';
-import Stats from 'stats.js';
 
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
@@ -19,124 +18,125 @@ import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
 import { AudioController } from '../controllers/AudioController';
+import { DevConsoleController } from '../controllers/DevConsoleController';
 
 export class MainScene {
-  private scene: Scene;
-  private renderer: WebGLRenderer;
-  private textureLoader: TextureLoader;
-  private timeController: TimeController;
-  private cameraController: CameraController;
-  private uiController: UIController;
-  private audioController: AudioController;
-  private mouseEvents: MouseEvents;
-  private stats: Stats;
+  private _scene: Scene;
+  private _renderer: WebGLRenderer;
+  private _textureLoader: TextureLoader;
+  private _timeController: TimeController;
+  private _cameraController: CameraController;
+  private _uiController: UIController;
+  private _audioController: AudioController;
+  private _devConsoleController: DevConsoleController;
+  private _mouseEvents: MouseEvents;
 
-  private sun: Sun;
+  private _sun: Sun;
 
   //Planets
-  private mercury: Mercury;
-  private venus: Venus;
-  private earth: Earth;
-  private mars: Mars;
-  private jupiter: Jupiter;
-  private saturn: Saturn;
-  private uranus: Uranus;
-  private neptune: Neptune;
+  private _mercury: Mercury;
+  private _venus: Venus;
+  private _earth: Earth;
+  private _mars: Mars;
+  private _jupiter: Jupiter;
+  private _saturn: Saturn;
+  private _uranus: Uranus;
+  private _neptune: Neptune;
 
 
-  private skybox: CubeTexture;
+  private _skybox: CubeTexture;
 
-  private selectedObject: CelestialBody | null;
+  private _selectedObject: CelestialBody | null;
 
   constructor(container: HTMLElement) {
-    this.scene = new Scene();
-    this.renderer = new WebGLRenderer({
+    this._scene = new Scene();
+    this._renderer = new WebGLRenderer({
       antialias: true,
       logarithmicDepthBuffer: true
     });
-    this.textureLoader = new TextureLoader();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.sortObjects = true;
-    this.renderer.autoClear = true;
+    this._textureLoader = new TextureLoader();
+    this._renderer.setSize(window.innerWidth, window.innerHeight);
+    this._renderer.sortObjects = true;
+    this._renderer.autoClear = true;
 
-    this.cameraController = new CameraController(this);
-    this.uiController = new UIController(this);
-    this.audioController = new AudioController();
+    this._cameraController = new CameraController(this);
+    this._uiController = new UIController(this);
+    this._audioController = new AudioController();
+    this._devConsoleController = new DevConsoleController();
 
-    this.selectedObject = null;
-    container.appendChild(this.renderer.domElement);
+    this._selectedObject = null;
+    container.appendChild(this._renderer.domElement);
 
-    // Load the skybox textures
+    // Load the _skybox textures
     const loader = new CubeTextureLoader();
-    this.skybox = loader.load([
+    this._skybox = loader.load([
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg'
     ]);
-    this.skybox.encoding = sRGBEncoding;
-    this.scene.background = this.skybox;
+    this._skybox.encoding = sRGBEncoding;
+    this._scene.background = this._skybox;
 
     const light = new PointLight(0xffffff, 1, 0);
     light.position.set(0, 0, 0);
-    this.scene.add(light);
+    this._scene.add(light);
 
-    this.timeController = new TimeController(this);
+    this._timeController = new TimeController(this);
 
-    this.sun = new Sun(this);
-    this.mercury = new Mercury(this);
-    this.venus = new Venus(this);
-    this.earth = new Earth(this);
-    this.mars = new Mars(this);
-    this.jupiter = new Jupiter(this)
-    this.saturn = new Saturn(this)
-    this.uranus = new Uranus(this)
-    this.neptune = new Neptune(this)
 
-    this.stats = new Stats();
-    this.stats.showPanel(0);
-    this.stats.dom.style.right = '0px';
-    this.stats.dom.style.left = 'auto';
-    document.body.appendChild(this.stats.dom);
+    this._sun = new Sun(this);
+    this._mercury = new Mercury(this);
+    this._venus = new Venus(this);
+    this._earth = new Earth(this);
+    this._mars = new Mars(this);
+    this._jupiter = new Jupiter(this)
+    this._saturn = new Saturn(this)
+    this._uranus = new Uranus(this)
+    this._neptune = new Neptune(this)
 
-    this.uiController.createCelestialObjectList();
+    this._uiController.createCelestialObjectList();
 
     this.animate();
 
-    this.mouseEvents = new MouseEvents(this);
+    this._mouseEvents = new MouseEvents(this);
 
-    TemplateHelper.initTemplates(this.mouseEvents);
+    TemplateHelper.initTemplates(this._mouseEvents);
   }
 
   public getScene(): Scene {
-    return this.scene;
+    return this._scene;
   }
 
   public getRenderer(): WebGLRenderer {
-    return this.renderer;
+    return this._renderer;
   }
 
   public getTextureLoader(): TextureLoader {
-    return this.textureLoader;
+    return this._textureLoader;
   }
 
   public getTimeController(): TimeController {
-    return this.timeController;
+    return this._timeController;
   }
 
   public getUIController(): UIController {
-    return this.uiController;
+    return this._uiController;
   }
 
   public getCameraController(): CameraController {
-    return this.cameraController;
+    return this._cameraController;
   }
 
   public getAudioController(): AudioController {
-    return this.audioController;
+    return this._audioController;
+  }
+
+  public getDevConsoleController(): DevConsoleController {
+    return this._devConsoleController;
   }
 
   public getSelectedObject(): CelestialBody | null {
-    return this.selectedObject;
+    return this._selectedObject;
   }
 
   async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
@@ -150,8 +150,8 @@ export class MainScene {
   }
 
   getCelestialObjects(): CelestialBody[] {
-    return [this.sun, this.mercury, this.venus, this.earth, this.mars, 
-      this.jupiter, this.saturn, this.uranus, this.neptune];
+    return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
+      this._jupiter, this._saturn, this._uranus, this._neptune];
   }
 
   getPlanets(): Planet[] {
@@ -164,25 +164,25 @@ export class MainScene {
 
   selectObject(object: CelestialBody): void {
 
-    if (this.selectedObject === object) {
-      this.cameraController.zoomToObject(this.selectedObject);
+    if (this._selectedObject === object) {
+      this._cameraController.zoomToObject(this._selectedObject);
       return;
     }
-    this.selectedObject = object;
-    this.cameraController.centerCameraOnObject(this.selectedObject);
+    this._selectedObject = object;
+    this._cameraController.centerCameraOnObject(this._selectedObject);
     this.getAudioController().playClick(1);
   }
 
   private animate(): void {
 
-    this.renderer.setAnimationLoop(() => {
-      this.stats.begin();
-      this.timeController.update();
-      if (this.selectedObject)
-        this.uiController.showInfo(this.selectedObject);
-      this.cameraController.update();
-      this.stats.end();
-      this.renderer.render(this.scene, this.cameraController.getCamera());
+    this._renderer.setAnimationLoop(() => {
+      this._devConsoleController.getStats().begin();
+      this._timeController.update();
+      if (this._selectedObject)
+        this._uiController.showInfo(this._selectedObject);
+      this._cameraController.update();
+      this._devConsoleController.getStats().end();
+      this._renderer.render(this._scene, this._cameraController.getCamera());
     });
   }
 }
