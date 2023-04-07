@@ -72,7 +72,7 @@ export class Planet extends CelestialBody {
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 
-    private updateOrbitGeometry(segments: number = 2000): BufferGeometry {
+    private updateOrbitGeometry(segments: number = 3000): BufferGeometry {
         const points: Vector3[] = [];
         const period = this.orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.getMainScene().getTimeController().getCurrentDate();

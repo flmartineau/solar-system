@@ -63,8 +63,7 @@ export class TimeController {
 
         // Check if it's time to update the orbit line
         if (celestialBody.getLastOrbitLineUpdateTime() >= orbitalPeriod) {
-          if (celestialBody instanceof Earth)
-            celestialBody.refreshOrbitLine();
+          celestialBody.refreshOrbitLine();
           celestialBody.setLastOrbitLineUpdateTime(0);
         }
       } else if (celestialBody instanceof Star) {

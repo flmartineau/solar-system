@@ -50,7 +50,10 @@ export class MainScene {
 
   constructor(container: HTMLElement) {
     this.scene = new Scene();
-    this.renderer = new WebGLRenderer();
+    this.renderer = new WebGLRenderer({
+      antialias: true,
+      logarithmicDepthBuffer: true
+    });
     this.textureLoader = new TextureLoader();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.sortObjects = true;
