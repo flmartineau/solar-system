@@ -15,7 +15,7 @@ export class CameraController {
 
   constructor(mainScene: MainScene) {
 
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000000);
+    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000000);
     this.camera.position.z = 200;
 
     this.focusedObject = null;

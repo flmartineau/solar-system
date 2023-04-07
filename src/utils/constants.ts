@@ -25,6 +25,7 @@ export interface Constants {
   Saturn: PlanetConfig;
   Uranus: PlanetConfig;
   Neptune: PlanetConfig;
+  Pluto: PlanetConfig;
 }
 
 export const constants: {
@@ -37,6 +38,7 @@ export const constants: {
   Saturn: PlanetConfig;
   Uranus: PlanetConfig;
   Neptune: PlanetConfig;
+  Pluto: PlanetConfig;
 } = {
   Sun: {
     radius: 695508 / KM_PER_AU,
@@ -83,6 +85,11 @@ export const constants: {
     radius: 24622 / KM_PER_AU,
     mass: 1.02413 * Math.pow(10, 26),
     temperature: 72,
+  },
+  Pluto: {
+    radius: 1188 / KM_PER_AU,
+    mass: 1.303 * Math.pow(10, 22),
+    temperature: 44,
   },
 };
 

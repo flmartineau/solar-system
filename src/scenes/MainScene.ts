@@ -19,6 +19,7 @@ import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
 import { AudioController } from '../controllers/AudioController';
 import { DevConsoleController } from '../controllers/DevConsoleController';
+import { Pluto } from '../components/celestial/planets/Pluto';
 
 export class MainScene {
   private _scene: Scene;
@@ -42,6 +43,7 @@ export class MainScene {
   private _saturn: Saturn;
   private _uranus: Uranus;
   private _neptune: Neptune;
+  private _pluto: Pluto;
 
 
   private _skybox: CubeTexture;
@@ -89,10 +91,11 @@ export class MainScene {
     this._venus = new Venus(this);
     this._earth = new Earth(this);
     this._mars = new Mars(this);
-    this._jupiter = new Jupiter(this)
-    this._saturn = new Saturn(this)
-    this._uranus = new Uranus(this)
-    this._neptune = new Neptune(this)
+    this._jupiter = new Jupiter(this);
+    this._saturn = new Saturn(this);
+    this._uranus = new Uranus(this);
+    this._neptune = new Neptune(this);
+    this._pluto = new Pluto(this);
 
     this._uiController.createCelestialObjectList();
 
@@ -151,7 +154,7 @@ export class MainScene {
 
   getCelestialObjects(): CelestialBody[] {
     return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
-      this._jupiter, this._saturn, this._uranus, this._neptune];
+      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto];
   }
 
   getPlanets(): Planet[] {
