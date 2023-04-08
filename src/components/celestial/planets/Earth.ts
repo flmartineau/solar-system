@@ -4,6 +4,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
+import { EarthMoon } from '../moons/EarthMoon';
 
 export class Earth extends Planet {
 
@@ -22,6 +23,7 @@ export class Earth extends Planet {
 
     this.addClouds();
     this.addGlow();
+    this.addEarthMoon();
   }
 
   private addClouds(): void {
@@ -68,5 +70,15 @@ export class Earth extends Planet {
     let earthGlow = new Mesh(new SphereGeometry(this.getRadius(), 128, 128), glowMaterial);
     earthGlow.scale.multiplyScalar(1.02);
     this.add(earthGlow);
+  }
+
+  public addEarthMoon(): void {
+    let moon = new EarthMoon(this.getMainScene(), this);
+    this.addMoon(moon);
+  }
+
+
+  public getMoon(): EarthMoon {
+    return this.getMoons()[0];
   }
 }

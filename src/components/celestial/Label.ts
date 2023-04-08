@@ -1,12 +1,12 @@
 import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
 import { CelestialBody } from "./CelestialBody";
+import { Moon } from "./Moon";
 
 export class Label extends Sprite {
 
     private celestialBody: CelestialBody;
 
     constructor(celestialBody: CelestialBody) {
-
         const canvas: HTMLCanvasElement = document.createElement('canvas');
         const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
         canvas.width = 256;
@@ -33,9 +33,15 @@ export class Label extends Sprite {
     }
 
     public update(camera: PerspectiveCamera): void {
-        if (this.visible) {
-            const distanceToCamera: number = camera.position.distanceTo(this.position);
 
+        const distanceToCamera: number = camera.position.distanceTo(this.position);
+
+        if (this.celestialBody.name == 'Moon') {
+            this.visible = (distanceToCamera < 300) && (this.celestialBody as Moon).getPlanet().getLabel().visible;
+        }
+
+
+        if (this.visible || this.celestialBody.name == 'Moon' ) {
             this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
             this.position.copy(this.celestialBody.position.clone());
             this.position.y = this.celestialBody.position.y + (this.celestialBody.getRadius() * 1.2);

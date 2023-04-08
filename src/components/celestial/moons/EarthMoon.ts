@@ -1,19 +1,21 @@
 import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
-import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
 import { MeshPhongMaterial, Texture } from 'three';
+import { Moon } from '../Moon';
+import { Planet } from '../Planet';
 
-export class Pluto extends Planet {
+export class EarthMoon extends Moon {
     
-  constructor(mainScene: MainScene) {
+  constructor(mainScene: MainScene, planet: Planet) {
 
-    const NAME: string = 'Pluto';
-    const TEXTUREPATH: string = './assets/textures/pluto.jpg';
-
+    const NAME: string = 'Moon';
+    const TEXTUREPATH: string = './assets/textures/moon.jpg';
+    
     const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
+    
+    super(NAME, constants.Moon, material, mainScene, Body.Moon, planet);
 
-    super(NAME, constants.Pluto, material, mainScene, Body.Pluto);
   }
 }

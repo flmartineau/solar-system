@@ -2,7 +2,6 @@ import { KM_PER_AU } from "astronomy-engine";
 
 export interface SunConfig {
   radius: number;
-  rotationSpeed: number;
   mass: number;
   temperature: number;
 }
@@ -10,6 +9,12 @@ export interface SunConfig {
 export const SIZE_FACTOR = 10000;
 
 export interface PlanetConfig {
+  radius: number;
+  mass: number;
+  temperature: number;
+}
+
+export interface MoonConfig {
   radius: number;
   mass: number;
   temperature: number;
@@ -26,6 +31,7 @@ export interface Constants {
   Uranus: PlanetConfig;
   Neptune: PlanetConfig;
   Pluto: PlanetConfig;
+  Moon: MoonConfig;
 }
 
 export const constants: {
@@ -39,10 +45,11 @@ export const constants: {
   Uranus: PlanetConfig;
   Neptune: PlanetConfig;
   Pluto: PlanetConfig;
+  Moon: MoonConfig;
+
 } = {
   Sun: {
     radius: 695508 / KM_PER_AU,
-    rotationSpeed: (2 * Math.PI) / (24.47 * 24 * 60 * 60),
     mass: 1.989 * Math.pow(10, 30),
     temperature: 5778,
   },
@@ -90,6 +97,12 @@ export const constants: {
     radius: 1188 / KM_PER_AU,
     mass: 1.303 * Math.pow(10, 22),
     temperature: 44,
+  },
+
+  Moon: {
+    radius: 1737.4 / KM_PER_AU,
+    mass: 7.34767309 * Math.pow(10, 22),
+    temperature: 127,
   },
 };
 

@@ -1,15 +1,16 @@
 import { Label } from '../components/celestial/Label';
+import { Moon } from '../components/celestial/Moon';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
 export class UIController {
-  private mainScene: MainScene;
+  private _mainScene: MainScene;
   private celestialObjectList: HTMLElement | null;
 
   constructor(mainScene: MainScene) {
-    this.mainScene = mainScene;
+    this._mainScene = mainScene;
     this.celestialObjectList = document.getElementById('celestial-body-list');
   }
 
@@ -17,12 +18,12 @@ export class UIController {
     if (!this.celestialObjectList) return;
     document.getElementById('right-sidebar')?.appendChild(this.celestialObjectList);
 
-    this.mainScene.getCelestialObjects().forEach((celestialObject) => {
+    this._mainScene.getCelestialObjects().forEach((celestialObject) => {
       const listItem = document.createElement('li');
       listItem.textContent = celestialObject.name;
       listItem.addEventListener('click', () => {
-        this.mainScene.selectObject(celestialObject);
-        this.mainScene.getAudioController().playClick(1);
+        this._mainScene.selectObject(celestialObject);
+        this._mainScene.getAudioController().playClick(1);
       });
       this.celestialObjectList?.appendChild(listItem);
     });
@@ -64,12 +65,22 @@ export class UIController {
         `;
         infoElement.style.display = 'block';
       }
-
+    } else if (celestialObject instanceof Moon) {
+      if (infoElement) {
+        infoElement.innerHTML = `
+          <strong>Name: </strong> ${celestialObject.name}<br>
+          <strong>Mass: </strong> ${celestialObject.getMass()} kg<br>
+          <strong>Temperature: </strong> ${celestialObject.getTemperature()} K<br>
+        `;
+        infoElement.style.display = 'block';
+      }
+    
+    
     }
   }
 
   public hideInfo(): void {
-    if (this.mainScene.getSelectedObject() !== null) 
+    if (this._mainScene.getSelectedObject() !== null) 
       return;
     const infoElement = document.getElementById('info');
     if (infoElement) {
@@ -80,29 +91,35 @@ export class UIController {
   public togglePlayPauseButton(): void {
     const playPauseButton = document.getElementById('play-pause-icon') as HTMLImageElement;
     if (playPauseButton) {
-      playPauseButton.src = this.mainScene.getTimeController().getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
+      playPauseButton.src = this._mainScene.getTimeController().getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
     }
   }
 
 
   public toggleOrbitLines(): void {
     let orbitLinesVisible = false;
-    this.mainScene.getPlanets().forEach((planet: Planet) => {
+    this._mainScene.getPlanets().forEach((planet: Planet) => {
       planet.getOrbitLine().visible = !planet.getOrbitLine().visible;
       orbitLinesVisible = planet.getOrbitLine().visible;
     });
+
+    this._mainScene.getMoons().forEach((moon: Moon) => {
+      moon.getOrbitLine().visible = !moon.getOrbitLine().visible;
+      orbitLinesVisible = moon.getOrbitLine().visible;
+    });
+
     const toggleOrbitsIcon = document.getElementById('toggleOrbits') as HTMLImageElement;
     if (toggleOrbitsIcon) {
       toggleOrbitsIcon.src = orbitLinesVisible ? './assets/icons/orbit_lines_on.png' : 'assets/icons/orbit_lines_off.png';
     }
 
-    this.mainScene.getAudioController().playClick(2);
+    this._mainScene.getAudioController().playClick(2);
   }
 
   public toggleLabels(): void {
     let labelsVisible = false;
 
-    this.mainScene.getLabels().forEach((label: Label) => {
+    this._mainScene.getLabels().forEach((label: Label) => {
       label.visible = !label.visible;
       labelsVisible = label.visible;
     });
@@ -112,7 +129,7 @@ export class UIController {
       toggleLabelsIcon.src = labelsVisible ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
     }
 
-    this.mainScene.getAudioController().playClick(2);
+    this._mainScene.getAudioController().playClick(2);
   }
 
 
@@ -120,9 +137,9 @@ export class UIController {
     const music = document.getElementById('music-icon') as HTMLImageElement;
     if (music) {
 
-      this.mainScene.getAudioController().toggleVolume();
+      this._mainScene.getAudioController().toggleVolume();
 
-      switch (this.mainScene.getAudioController().getVolume()) {
+      switch (this._mainScene.getAudioController().getVolume()) {
         case 0:
           music.src = './assets/icons/speaker-mute.png';
           break;
@@ -137,8 +154,8 @@ export class UIController {
   }
 
   public updateTimeDisplay() {
-    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
-    let currentDate: Date = this.mainScene.getTimeController().getCurrentDate();
+    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
+    let currentDate: Date = this._mainScene.getTimeController().getCurrentDate();
     const timeElement: HTMLInputElement = this.getCurrentTimeElement();
     if (timeElement && simulationSpeed !== 0) {
       timeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
@@ -146,8 +163,8 @@ export class UIController {
   }
 
   public updateDateDisplay() {
-    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
-    let currentDate: Date = this.mainScene.getTimeController().getCurrentDate();
+    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
+    let currentDate: Date = this._mainScene.getTimeController().getCurrentDate();
     const dateElement: HTMLInputElement = this.getCurrentDateElement();
     if (dateElement && simulationSpeed !== 0) {
       dateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
@@ -156,7 +173,7 @@ export class UIController {
   }
 
   public updateSpeedDisplay() {
-    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
+    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
     const speedElement: HTMLInputElement = document.getElementById('simulation-speed') as HTMLInputElement;
     if (speedElement) {
       speedElement.innerText = this.getSpeedString(simulationSpeed);
@@ -165,7 +182,7 @@ export class UIController {
   }
 
   public updateSpeedSlider() {
-    let simulationSpeed: number = this.mainScene.getTimeController().getSimulationSpeed();
+    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
     const speedSlider: HTMLInputElement = document.getElementById('sim-speed-slider') as HTMLInputElement;
     if (speedSlider) {
       speedSlider.value = simulationSpeed.toString();

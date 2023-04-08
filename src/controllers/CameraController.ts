@@ -6,42 +6,52 @@ import { CelestialBody } from '../components/celestial/CelestialBody';
 
 
 export class CameraController {
-  private camera: PerspectiveCamera;
-  private focusedObject: CelestialBody | null;
-  private cameraOffset: Vector3;
-  private controls: OrbitControls;
-  private mainScene: MainScene;
-  private renderer: WebGLRenderer;
+  private _camera: PerspectiveCamera;
+  private _focusedObject: CelestialBody | null;
+  private _cameraOffset: Vector3;
+  private _controls: OrbitControls;
+  private _mainScene: MainScene;
+  private _renderer: WebGLRenderer;
+
+  private minClippingDistance: number;
 
   constructor(mainScene: MainScene) {
 
-    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000000);
-    this.camera.position.z = 200;
+    this.minClippingDistance = 1.1;
 
-    this.focusedObject = null;
-    this.cameraOffset = new Vector3();
+    mainScene.getDevConsoleController().addFolder('Camera').add(this, 'minClippingDistance', 0, 1.1);
 
-    this.controls = new OrbitControls(this.camera, mainScene.getRenderer().domElement);
-    this.controls.addEventListener('change', () => this.onControlsChange());
-    this.mainScene = mainScene;
-    this.renderer = mainScene.getRenderer();
+    this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000000);
+    this._camera.position.z = 200;
+
+    this._focusedObject = null;
+    this._cameraOffset = new Vector3();
+
+    this._controls = new OrbitControls(this._camera, mainScene.getRenderer().domElement);
+    this._controls.addEventListener('change', () => this.onControlsChange());
+    this._mainScene = mainScene;
+    this._renderer = mainScene.getRenderer();
   }
 
 
   public getCamera(): PerspectiveCamera {
-    return this.camera;
+    return this._camera;
+  }
+
+  public distanceToObject(object: CelestialBody): number {
+    return this._camera.position.distanceTo(object.position);
   }
 
 
   public setFocusedObject(object: CelestialBody | null): void {
     if (object == null || object.name != "") {
-      this.focusedObject = object;
+      this._focusedObject = object;
     }
   }
 
   private onControlsChange(): void {
-    if (this.focusedObject) {
-      this.cameraOffset.copy(this.camera.position).sub(this.focusedObject.position);
+    if (this._focusedObject) {
+      this._cameraOffset.copy(this._camera.position).sub(this._focusedObject.position);
     }
   }
 
@@ -50,28 +60,28 @@ export class CameraController {
     if (!(object instanceof CelestialBody))
       return;
 
-    const initialDistance: number = this.camera.position.distanceTo(object.position);
+    const initialDistance: number = this._camera.position.distanceTo(object.position);
 
-    this.controls.target.copy(object.position);
-    this.controls.update();
+    this._controls.target.copy(object.position);
+    this._controls.update();
 
-    const newDistance: number = this.camera.position.distanceTo(object.position);
+    const newDistance: number = this._camera.position.distanceTo(object.position);
     const scalingFactor: number = initialDistance / newDistance;
-    const newPosition: Vector3 = this.camera.position.clone().sub(object.position).multiplyScalar(scalingFactor).add(object.position);
-    this.camera.position.copy(newPosition);
-    this.controls.update();
+    const newPosition: Vector3 = this._camera.position.clone().sub(object.position).multiplyScalar(scalingFactor).add(object.position);
+    this._camera.position.copy(newPosition);
+    this._controls.update();
 
     if (object == null || object.name != "") {
       this.setFocusedObject(object);
-      this.cameraOffset.copy(this.camera.position).sub(object.position);
+      this._cameraOffset.copy(this._camera.position).sub(object.position);
     }
 
     // Set the minDistance property to prevent clipping
-    this.controls.minDistance = object.getRadius() * 1.1;
+    this._controls.minDistance = object.getRadius() * this.minClippingDistance;
   }
 
   public async zoomToObject(object: CelestialBody): Promise<void> {
-    const currentDistance: number = this.camera.position.distanceTo(object.position);
+    const currentDistance: number = this._camera.position.distanceTo(object.position);
     const steps: number = 30;
 
     const targetDistance: number = object.getRadius() * 3;
@@ -83,34 +93,34 @@ export class CameraController {
     const distanceStep: number = (currentDistance - (targetDistance + object.getRadius())) / steps;
 
     for (let i: number = 0; i < steps; i++) {
-      const newPosition: Vector3 = this.camera.position.clone().sub(object.position).normalize().multiplyScalar(-distanceStep).add(this.camera.position);
-      this.camera.position.copy(newPosition);
-      this.controls.update();
+      const newPosition: Vector3 = this._camera.position.clone().sub(object.position).normalize().multiplyScalar(-distanceStep).add(this._camera.position);
+      this._camera.position.copy(newPosition);
+      this._controls.update();
       await new Promise<void>((resolve) => setTimeout(() => resolve(), 16));
     }
   }
 
 
   public update(): void {
-    if (this.focusedObject) {
-      this.camera.position.copy(this.focusedObject.position).add(this.cameraOffset);
-      this.controls.target.copy(this.focusedObject.position);
-      this.controls.update();
+    if (this._focusedObject) {
+      this._camera.position.copy(this._focusedObject.position).add(this._cameraOffset);
+      this._controls.target.copy(this._focusedObject.position);
+      this._controls.update();
     }
-    this.renderer.render(this.mainScene.getScene(), this.camera);
+    this._renderer.render(this._mainScene.getScene(), this._camera);
   }
 
 
   public updateOnResize(): void {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
+    this._camera.aspect = window.innerWidth / window.innerHeight;
+    this._camera.updateProjectionMatrix();
   }
 
   public setFromCamera(event: MouseEvent, raycaster: Raycaster): void {
     const mouse = new Vector2();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, this.camera);
+    raycaster.setFromCamera(mouse, this._camera);
   }
 
 }

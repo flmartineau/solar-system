@@ -2,61 +2,63 @@ import { Clock } from 'three';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Planet } from '../components/celestial/Planet';
 import { Star } from '../components/celestial/Star';
-import { Earth } from '../components/celestial/planets/Earth';
 import { MainScene } from '../scenes/MainScene';
 import { PlanetOrbitalPeriod } from 'astronomy-engine';
 
 export class TimeController {
-  private currentDate: Date;
-  private simulationSpeed: number;
-  private isPlaying: boolean;
-  private clock: Clock;
+  private _currentDate: Date;
+  private _simulationSpeed: number;
+  private _isPlaying: boolean;
+  private _clock: Clock;
 
-  private mainScene: MainScene;
+  private _mainScene: MainScene;
 
   constructor(mainScene: MainScene) {
-    this.mainScene = mainScene;
-    this.currentDate = new Date();
-    this.simulationSpeed = 1;
-    this.isPlaying = true;
-    this.clock = new Clock();
+    this._mainScene = mainScene;
+    this._currentDate = new Date();
+    this._simulationSpeed = 1;
+    this._isPlaying = true;
+    this._clock = new Clock();
   }
 
   public getDeltaTime(): number {
-    return this.clock.getDelta();
+    return this._clock.getDelta();
   }
 
   public togglePlayPause(): void {
-    this.isPlaying = !this.isPlaying;
-    this.simulationSpeed = 1;
-    this.mainScene.getUIController().updateSpeedDisplay();
-    this.mainScene.getUIController().togglePlayPauseButton();
+    this._isPlaying = !this._isPlaying;
+    this._simulationSpeed = 1;
+    this._mainScene.getUIController().updateSpeedDisplay();
+    this._mainScene.getUIController().togglePlayPauseButton();
   }
 
   public setSpeed(speed: number): void {
-    if (!this.isPlaying) {
+    if (!this._isPlaying) {
       this.togglePlayPause();
     }
-    this.simulationSpeed = speed;
+    this._simulationSpeed = speed;
   }
 
   public update(): void {
-    if (!this.isPlaying) {
-      this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+    if (!this._isPlaying) {
+      this._mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+        if (celestialBody instanceof Planet)
+          (celestialBody as Planet).updateLabel();
         celestialBody.updateLabel();
       });
       return;
     }
 
     const deltaTime: number = this.getDeltaTime();
-    const elapsedTime: number = deltaTime * 1000 * this.simulationSpeed;
+    const elapsedTime: number = deltaTime * 1000 * this._simulationSpeed;
 
-    this.currentDate = new Date(this.currentDate.getTime() + elapsedTime);
+    this._currentDate = new Date(this._currentDate.getTime() + elapsedTime);
 
-    this.mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+    this._mainScene.getCelestialObjects().forEach((celestialBody: CelestialBody) => {
+      celestialBody.updateRotation();
+
       if (celestialBody instanceof Planet) {
         celestialBody.updateOrbit();
-        celestialBody.updateRotation();
         celestialBody.setLastOrbitLineUpdateTime(celestialBody.getLastOrbitLineUpdateTime() + elapsedTime);
 
         const orbitalPeriod: number = PlanetOrbitalPeriod(celestialBody.getBody()) * 24 * 60 * 60 * 1000;
@@ -66,37 +68,38 @@ export class TimeController {
           celestialBody.refreshOrbitLine();
           celestialBody.setLastOrbitLineUpdateTime(0);
         }
-      } else if (celestialBody instanceof Star) {
-        celestialBody.rotateY(celestialBody.getRotationSpeed() * deltaTime * this.simulationSpeed);
-      }
+      } 
+      
       celestialBody.updateLabel();
+      
+      
     });
 
-    this.mainScene.getUIController().updateDateDisplay();
-    this.mainScene.getUIController().updateTimeDisplay();
-    this.mainScene.getUIController().updateSpeedDisplay();
+    this._mainScene.getUIController().updateDateDisplay();
+    this._mainScene.getUIController().updateTimeDisplay();
+    this._mainScene.getUIController().updateSpeedDisplay();
 
-    this.clock.elapsedTime = 0;
+    this._clock.elapsedTime = 0;
   }
 
 
   public getCurrentDate(): Date {
-    return this.currentDate;
+    return this._currentDate;
   }
 
   public getSimulationSpeed(): number {
-    return this.simulationSpeed;
+    return this._simulationSpeed;
   }
 
   public setCurrentDate(currentDate: Date): void {
     this.togglePlayPause();
-    this.currentDate = currentDate;
+    this._currentDate = currentDate;
     this.update();
 
     this.togglePlayPause();
   }
 
   public getIsPlaying(): boolean {
-    return this.isPlaying;
+    return this._isPlaying;
   }
 }

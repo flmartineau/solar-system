@@ -1,62 +1,72 @@
-import { AxisInfo, Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis, Vector } from 'astronomy-engine';
+import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
 import { BufferGeometry, Line, LineBasicMaterial, Material, Vector3} from 'three';
+import { EarthMoon } from './moons/EarthMoon';
+import { Moon } from './Moon';
 
 export class Planet extends CelestialBody {
 
-    private distanceToSun: number;
-    private orbitalPeriod: number;
-    private orbitLine: Line;
-    private body: Body;
+    private _distanceToSun: number;
+    private _orbitalPeriod: number;
+    private _orbitLine: Line;
+    private _moons: Array<Moon> = [];
+    private _position: Vector3 = new Vector3(0, 0, 0);
 
-    private lastOrbitLineUpdateTime: number;
-    private orbitLineGeometry: BufferGeometry;
-    private orbitLineMaterial: LineBasicMaterial;
+    private _lastOrbitLineUpdateTime: number;
+    private _orbitLineGeometry: BufferGeometry;
+    private _orbitLineMaterial: LineBasicMaterial;
 
     constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body) {
 
-        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature);
-        this.distanceToSun = 0;
-        this.orbitalPeriod = PlanetOrbitalPeriod(body);
-        this.body = body;
-        this.orbitLineGeometry = new BufferGeometry();
-        this.orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
-        this.orbitLine = this.createOrbitLine();
-        this.lastOrbitLineUpdateTime = 0;
+        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
+        this._distanceToSun = 0;
+        this._orbitalPeriod = PlanetOrbitalPeriod(body);
+        this._orbitLineGeometry = new BufferGeometry();
+        this._orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
+        this._orbitLine = this.createOrbitLine();
+        this._lastOrbitLineUpdateTime = 0;
         
 
-        this.getMainScene().getScene().add(this.orbitLine);
+        this.getMainScene().getScene().add(this._orbitLine);
+    }
+
+    public getName() {
+        return this.name;
     }
 
     public getDistanceToSun(): number {
-        return this.distanceToSun;
+        return this._distanceToSun;
     }
 
-    public getBody(): Body {
-        return this.body;
+    public getMoons(): Array<Moon> {
+        return this._moons;
+    }
+
+    public addMoon(moon: Moon): void {
+        this._moons.push(moon);
     }
 
     public getLastOrbitLineUpdateTime(): number {
-        return this.lastOrbitLineUpdateTime;
+        return this._lastOrbitLineUpdateTime;
     }
 
     public setLastOrbitLineUpdateTime(time: number): void {
-        this.lastOrbitLineUpdateTime = time;
+        this._lastOrbitLineUpdateTime = time;
     }
 
     public getOrbitLine(): Line {
-        return this.orbitLine;
+        return this._orbitLine;
     }
 
     public getOrbitalPeriod(): number {
-        return this.orbitalPeriod;
+        return this._orbitalPeriod;
     }
 
     public updateOrbit(): void {
-        this.distanceToSun = Math.round(HelioDistance(this.body, this.getMainScene().getTimeController().getCurrentDate())* KM_PER_AU);
-        let v: Vector = HelioVector(this.body, this.getMainScene().getTimeController().getCurrentDate());
+        this._distanceToSun = Math.round(HelioDistance(this.getBody(), this.getMainScene().getTimeController().getCurrentDate())* KM_PER_AU);
+        let v: Vector = HelioVector(this.getBody(), this.getMainScene().getTimeController().getCurrentDate());
         let x: number = v.x * SIZE_FACTOR;
         let y: number = v.y * SIZE_FACTOR;
         let z: number = v.z * SIZE_FACTOR;
@@ -64,23 +74,26 @@ export class Planet extends CelestialBody {
 
         vector.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
-        this.position.set(vector.x, vector.y, vector.z);
-    }
+        this._position = vector;
 
-    public updateRotation(): void {
-        let axisInfo: AxisInfo = RotationAxis(this.body, this.getMainScene().getTimeController().getCurrentDate());
-        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
+        this.position.set(this._position.x, this._position.y, this._position.z);
+
+        this._moons.forEach((moon: Moon) => {
+            moon.updateOrbit();
+            moon.refreshOrbitLine();
+        });
+
     }
 
     private updateOrbitGeometry(segments: number = 3000): BufferGeometry {
         const points: Vector3[] = [];
-        const period = this.orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
+        const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.getMainScene().getTimeController().getCurrentDate();
 
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {
-            let v = HelioVector(this.body, date);
+            let v = HelioVector(this.getBody(), date);
             let v3 = new Vector3(v.x * SIZE_FACTOR, v.y * SIZE_FACTOR, v.z * SIZE_FACTOR);
             v3.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
             points.push(v3);
@@ -89,22 +102,33 @@ export class Planet extends CelestialBody {
         }
 
         points.push(v0);
-        return this.orbitLineGeometry.setFromPoints(points);
+        return this._orbitLineGeometry.setFromPoints(points);
     }
 
     private createOrbitLine(): Line {
         const orbitGeometry = this.updateOrbitGeometry();
-        return new Line(orbitGeometry, this.orbitLineMaterial);
+        return new Line(orbitGeometry, this._orbitLineMaterial);
     }
 
     public refreshOrbitLine(): void {
-        const isVisible: boolean = this.orbitLine.visible;
+        const isVisible: boolean = this._orbitLine.visible;
 
         if (isVisible) {
-            this.getMainScene().getScene().remove(this.orbitLine);
-            this.orbitLine.geometry.dispose();
-            this.orbitLine = this.createOrbitLine();
-            this.getMainScene().getScene().add(this.orbitLine);
+            this.getMainScene().getScene().remove(this._orbitLine);
+            this._orbitLine.geometry.dispose();
+            this._orbitLine = this.createOrbitLine();
+            this.getMainScene().getScene().add(this._orbitLine);
+        }
+    }
+
+    public addMoons(): void {
+        switch (this.name) {
+            case 'Earth':
+                let moon = new EarthMoon(this.getMainScene(), this);
+                this._moons.push(moon);
+                break;
+            default:
+                break;
         }
     }
 }

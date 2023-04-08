@@ -1,27 +1,29 @@
 import { Mesh, SphereGeometry, Material } from 'three';
 import { Label } from './Label';
 import { MainScene } from '../../scenes/MainScene';
+import { AxisInfo, RotationAxis, Body } from 'astronomy-engine';
 
 
 export class CelestialBody extends Mesh {
     public name: string;
 
     private mainScene: MainScene;
-    private rotationSpeed: number | undefined;
     private mass: number;
     private temperature: number;
     private radius: number;
     private label: Label;
+    private _body: Body;
+
 
     constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
-        mass: number, temperature: number, rotationSpeed?: number) {
+        mass: number, temperature: number, body: Body) {
 
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
 
         this.mainScene = mainScene;
+        this._body = body;
         this.name = name;
-        this.rotationSpeed = rotationSpeed;
         this.mass = mass;
         this.temperature = temperature;
         this.radius = radius;
@@ -59,7 +61,12 @@ export class CelestialBody extends Mesh {
         return this.mass;
     }
 
-    public getRotationSpeed(): number {
-        return this.rotationSpeed ? this.rotationSpeed : 0;
+    public getBody(): Body {
+        return this._body;
+    }
+
+    public updateRotation(): void {
+        let axisInfo: AxisInfo = RotationAxis(this._body, this.getMainScene().getTimeController().getCurrentDate());
+        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 }

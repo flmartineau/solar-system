@@ -20,6 +20,8 @@ import { UIController } from '../controllers/UIController';
 import { AudioController } from '../controllers/AudioController';
 import { DevConsoleController } from '../controllers/DevConsoleController';
 import { Pluto } from '../components/celestial/planets/Pluto';
+import { EarthMoon } from '../components/celestial/moons/EarthMoon';
+import { Moon } from '../components/celestial/Moon';
 
 export class MainScene {
   private _scene: Scene;
@@ -45,6 +47,9 @@ export class MainScene {
   private _neptune: Neptune;
   private _pluto: Pluto;
 
+  //Moons
+  private _moon: EarthMoon;
+
 
   private _skybox: CubeTexture;
 
@@ -61,10 +66,10 @@ export class MainScene {
     this._renderer.sortObjects = true;
     this._renderer.autoClear = true;
 
+    this._devConsoleController = new DevConsoleController();
     this._cameraController = new CameraController(this);
     this._uiController = new UIController(this);
     this._audioController = new AudioController();
-    this._devConsoleController = new DevConsoleController();
 
     this._selectedObject = null;
     container.appendChild(this._renderer.domElement);
@@ -96,6 +101,8 @@ export class MainScene {
     this._uranus = new Uranus(this);
     this._neptune = new Neptune(this);
     this._pluto = new Pluto(this);
+
+    this._moon = this._earth.getMoon();
 
     this._uiController.createCelestialObjectList();
 
@@ -154,11 +161,15 @@ export class MainScene {
 
   getCelestialObjects(): CelestialBody[] {
     return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
-      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto];
+      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto, this._moon];
   }
 
   getPlanets(): Planet[] {
     return this.getCelestialObjects().filter((object: CelestialBody) => object instanceof Planet) as Planet[];
+  }
+  
+  getMoons(): Moon[] {
+    return this.getCelestialObjects().filter((object: CelestialBody) => object instanceof Moon) as Moon[];
   }
 
   getLabels(): Array<Label> {
