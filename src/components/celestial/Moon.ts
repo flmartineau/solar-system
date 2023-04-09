@@ -22,14 +22,14 @@ export class Moon extends CelestialBody {
 
         this._planet = planet;
         this._orbitLine = this.createOrbitLine();
-        this.getMainScene().getScene().add(this._orbitLine);
+        this.mainScene.getScene().add(this._orbitLine);
     }
 
 
     private updateOrbitGeometry(segments: number = 200): BufferGeometry {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
-        let date: Date = this.getMainScene().getTimeController().getCurrentDate();
+        let date: Date = this.mainScene.getTimeController().getCurrentDate();
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {
@@ -44,7 +44,7 @@ export class Moon extends CelestialBody {
             date = new Date(date.getTime() + (period / segments));
         }
 
-        let helio: Vector = HelioVector(this._planet.getBody(), this.getMainScene().getTimeController().getCurrentDate());
+        let helio: Vector = HelioVector(this._planet.getBody(), this.mainScene.getTimeController().getCurrentDate());
         let translate = new Vector3(helio.x * SIZE_FACTOR, helio.y * SIZE_FACTOR, helio.z * SIZE_FACTOR)
         .applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
@@ -62,18 +62,16 @@ export class Moon extends CelestialBody {
     public refreshOrbitLine(): void {
         const isVisible: boolean = this._orbitLine.visible;
 
-        if (this.getMainScene().getCameraController().distanceToObject(this) > 2000 || !isVisible) {
-            this.getMainScene().getScene().remove(this._orbitLine);
+        if (this.mainScene.getCameraController().distanceToObject(this) > 2000 || !isVisible) {
+            this.mainScene.getScene().remove(this._orbitLine);
             return;
         }
 
-
-
         if (isVisible) {
-            this.getMainScene().getScene().remove(this._orbitLine);
+            this.mainScene.getScene().remove(this._orbitLine);
             this._orbitLine.geometry.dispose();
             this._orbitLine = this.createOrbitLine();
-            this.getMainScene().getScene().add(this._orbitLine);
+            this.mainScene.getScene().add(this._orbitLine);
         }
     }
 
@@ -86,8 +84,8 @@ export class Moon extends CelestialBody {
     }
 
     public updateOrbit(): void {
-        let helioVector: Vector = HelioVector(this._planet.getBody(), this.getMainScene().getTimeController().getCurrentDate());
-        let geoVector: Vector = GeoVector(this.getBody(), this.getMainScene().getTimeController().getCurrentDate(), true);
+        let helioVector: Vector = HelioVector(this._planet.getBody(), this.mainScene.getTimeController().getCurrentDate());
+        let geoVector: Vector = GeoVector(this.getBody(), this.mainScene.getTimeController().getCurrentDate(), true);
                 
         let x: number = (helioVector.x + geoVector.x) * SIZE_FACTOR;
         let y: number = (helioVector.y + geoVector.y) * SIZE_FACTOR;

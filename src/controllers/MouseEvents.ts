@@ -1,5 +1,5 @@
 import { MainScene } from '../scenes/MainScene';
-import { Intersection, Object3D, Raycaster, Vector2 } from 'three';
+import { Intersection, Line, LineBasicMaterial, Object3D, Raycaster, Vector2 } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
@@ -89,13 +89,10 @@ export class MouseEvents {
 
     const celestialObjects: Array<CelestialBody> = this._mainScene.getCelestialObjects();
     const celestialLabels: Array<Label> = this._mainScene.getLabels();
-    const orbitLines: Array<Object3D> = this._mainScene.getOrbitLines();
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialLabels);
-    const intersectsOrbitLines: Array<Intersection<Object3D<Event>>> =
-      this._raycaster.intersectObjects(orbitLines);
 
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
@@ -104,10 +101,6 @@ export class MouseEvents {
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
       this._mainScene.selectObject((object as unknown as Label).getCelestialBody());
-    }
-    if (intersectsOrbitLines.length > 0) {
-      const object = intersectsOrbitLines[0].object;
-      this._mainScene.selectObject((object as unknown as CelestialBody));
     }
   }
 
@@ -125,6 +118,7 @@ export class MouseEvents {
 
     const celestialObjects: Array<CelestialBody> = this._mainScene.getCelestialObjects();
     const celestialLabels: Array<Label> = this._mainScene.getLabels();
+    const orbitLines: Array<Line> = this._mainScene.getOrbitLines();
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =

@@ -71,6 +71,11 @@ export class TimeController {
       } 
       
       celestialBody.updateLabel();
+
+      if (celestialBody instanceof Star) {
+        let distanceToCamera = this._mainScene.getCameraController().distanceToObject(celestialBody);
+        celestialBody.visible = (distanceToCamera < 3000);
+      }
       
       
     });

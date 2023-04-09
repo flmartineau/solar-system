@@ -7,7 +7,7 @@ import { AxisInfo, RotationAxis, Body } from 'astronomy-engine';
 export class CelestialBody extends Mesh {
     public name: string;
 
-    private mainScene: MainScene;
+    private _mainScene: MainScene;
     private mass: number;
     private temperature: number;
     private radius: number;
@@ -21,7 +21,7 @@ export class CelestialBody extends Mesh {
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
 
-        this.mainScene = mainScene;
+        this._mainScene = mainScene;
         this._body = body;
         this.name = name;
         this.mass = mass;
@@ -32,8 +32,8 @@ export class CelestialBody extends Mesh {
         this.addToMainScene();
     }
 
-    public getMainScene(): MainScene {
-        return this.mainScene;
+    get mainScene(): MainScene {
+        return this._mainScene;
     }
 
     public addToMainScene(): void { 
@@ -66,7 +66,7 @@ export class CelestialBody extends Mesh {
     }
 
     public updateRotation(): void {
-        let axisInfo: AxisInfo = RotationAxis(this._body, this.getMainScene().getTimeController().getCurrentDate());
+        let axisInfo: AxisInfo = RotationAxis(this._body, this._mainScene.getTimeController().getCurrentDate());
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
 }

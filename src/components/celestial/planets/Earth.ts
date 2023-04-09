@@ -28,7 +28,7 @@ export class Earth extends Planet {
 
   private addClouds(): void {
     const geometry = new SphereGeometry(this.getRadius() * 1.001, 128, 128);
-    const cloudTexture = this.getMainScene().getTextureLoader().load('assets/textures/earth_clouds.jpg');
+    const cloudTexture = this.mainScene.getTextureLoader().load('assets/textures/earth_clouds.jpg');
     const atmosphere = new MeshPhongMaterial({
       side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture });
     this.add(new Mesh(geometry, atmosphere));
@@ -40,7 +40,7 @@ export class Earth extends Planet {
         "c": { value: 0.4 },
         "p": { value: 4.5 },
         glowColor: { value: new Color(0x0096ff) },
-        viewVector: { value: this.getMainScene().getCameraController().getCamera().position }
+        viewVector: { value: this.mainScene.getCameraController().getCamera().position }
       },
       vertexShader: `
                 uniform vec3 viewVector;
@@ -73,7 +73,7 @@ export class Earth extends Planet {
   }
 
   public addEarthMoon(): void {
-    let moon = new EarthMoon(this.getMainScene(), this);
+    let moon = new EarthMoon(this.mainScene, this);
     this.addMoon(moon);
   }
 

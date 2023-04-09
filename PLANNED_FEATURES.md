@@ -3,8 +3,12 @@
 - add barycentric positions
 - add correct rotation axis
 - display lagrange points
-- add dev console
 - add scale grid
 - add settings menu (UI size, metric system, display settings...)
 - add search
 - add loading screen
+- improved graphics
+- add rings
+- global events menu
+- add orbit line class
+- add JSON for planet constants and make calculations with no library

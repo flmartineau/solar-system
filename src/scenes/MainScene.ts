@@ -23,6 +23,7 @@ import { Pluto } from '../components/celestial/planets/Pluto';
 import { EarthMoon } from '../components/celestial/moons/EarthMoon';
 import { Moon } from '../components/celestial/Moon';
 
+
 export class MainScene {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
@@ -83,11 +84,7 @@ export class MainScene {
     ]);
     this._skybox.encoding = sRGBEncoding;
     this._scene.background = this._skybox;
-
-    const light = new PointLight(0xffffff, 1, 0);
-    light.position.set(0, 0, 0);
-    this._scene.add(light);
-
+    
     this._timeController = new TimeController(this);
 
 

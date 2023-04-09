@@ -25,11 +25,12 @@ export class Planet extends CelestialBody {
         this._orbitalPeriod = PlanetOrbitalPeriod(body);
         this._orbitLineGeometry = new BufferGeometry();
         this._orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
+        this._orbitLineMaterial.depthWrite = false;
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
         
 
-        this.getMainScene().getScene().add(this._orbitLine);
+        this.mainScene.getScene().add(this._orbitLine);
     }
 
     public getName() {
@@ -65,8 +66,8 @@ export class Planet extends CelestialBody {
     }
 
     public updateOrbit(): void {
-        this._distanceToSun = Math.round(HelioDistance(this.getBody(), this.getMainScene().getTimeController().getCurrentDate())* KM_PER_AU);
-        let v: Vector = HelioVector(this.getBody(), this.getMainScene().getTimeController().getCurrentDate());
+        this._distanceToSun = Math.round(HelioDistance(this.getBody(), this.mainScene.getTimeController().getCurrentDate())* KM_PER_AU);
+        let v: Vector = HelioVector(this.getBody(), this.mainScene.getTimeController().getCurrentDate());
         let x: number = v.x * SIZE_FACTOR;
         let y: number = v.y * SIZE_FACTOR;
         let z: number = v.z * SIZE_FACTOR;
@@ -88,7 +89,7 @@ export class Planet extends CelestialBody {
     private updateOrbitGeometry(segments: number = 3000): BufferGeometry {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
-        let date: Date = this.getMainScene().getTimeController().getCurrentDate();
+        let date: Date = this.mainScene.getTimeController().getCurrentDate();
 
         let v0 = new Vector3(0, 0, 0);
 
@@ -115,17 +116,17 @@ export class Planet extends CelestialBody {
         const isVisible: boolean = this._orbitLine.visible;
 
         if (isVisible) {
-            this.getMainScene().getScene().remove(this._orbitLine);
+            this.mainScene.getScene().remove(this._orbitLine);
             this._orbitLine.geometry.dispose();
             this._orbitLine = this.createOrbitLine();
-            this.getMainScene().getScene().add(this._orbitLine);
+            this.mainScene.getScene().add(this._orbitLine);
         }
     }
 
     public addMoons(): void {
         switch (this.name) {
             case 'Earth':
-                let moon = new EarthMoon(this.getMainScene(), this);
+                let moon = new EarthMoon(this.mainScene, this);
                 this._moons.push(moon);
                 break;
             default:
