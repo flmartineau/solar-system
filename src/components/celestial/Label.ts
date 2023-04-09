@@ -1,12 +1,14 @@
 import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
 import { CelestialBody } from "./CelestialBody";
 import { Moon } from "./Moon";
+import { MainScene } from "../../scenes/MainScene";
 
 export class Label extends Sprite {
 
-    private celestialBody: CelestialBody;
+    private _celestialBody: CelestialBody;
+    private _mainScene: MainScene;
 
-    constructor(celestialBody: CelestialBody) {
+    constructor(mainScene: MainScene, celestialBody: CelestialBody) {
         const canvas: HTMLCanvasElement = document.createElement('canvas');
         const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
         canvas.width = 256;
@@ -21,30 +23,35 @@ export class Label extends Sprite {
         const texture = new CanvasTexture(canvas);
         const material = new SpriteMaterial({ map: texture, transparent: true });
         super(material);
-
-        this.celestialBody = celestialBody;
+        this._mainScene = mainScene;
+        this._celestialBody = celestialBody;
 
         this.scale.set(0.15, 0.0375, 1);
         this.position.copy(celestialBody.position.clone());
     }
 
     public getCelestialBody(): CelestialBody {
-        return this.celestialBody;
+        return this._celestialBody;
+    }
+
+    public getMainScene(): MainScene {
+        return this._mainScene;
     }
 
     public update(camera: PerspectiveCamera): void {
 
         const distanceToCamera: number = camera.position.distanceTo(this.position);
 
-        if (this.celestialBody.name == 'Moon') {
-            this.visible = (distanceToCamera < 300) && (this.celestialBody as Moon).getPlanet().getLabel().visible;
+        if (this._celestialBody.name == 'Moon') {
+            const moonsVisibility: boolean = this.getMainScene().getUIController().getMoonsVisibility();
+            this.visible = (distanceToCamera < 300) && (this._celestialBody as Moon).getPlanet().getLabel().visible && moonsVisibility;
         }
 
 
-        if (this.visible || this.celestialBody.name == 'Moon' ) {
+        if (this.visible || this._celestialBody.name == 'Moon' ) {
             this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
-            this.position.copy(this.celestialBody.position.clone());
-            this.position.y = this.celestialBody.position.y + (this.celestialBody.getRadius() * 1.2);
+            this.position.copy(this._celestialBody.position.clone());
+            this.position.y = this._celestialBody.position.y + (this._celestialBody.getRadius() * 1.2);
             this.lookAt(camera.position);
         }
     }

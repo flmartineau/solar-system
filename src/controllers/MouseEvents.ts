@@ -25,6 +25,7 @@ export class MouseEvents {
 
     const toggleOrbitsButton = document.getElementById('toggleOrbits');
     const toggleLabelsButton = document.getElementById('toggleLabels');
+    const toggleMoonsButton = document.getElementById('toggleMoons');
 
     if (toggleOrbitsButton) {
       toggleOrbitsButton.addEventListener('click', () => this._uiController.toggleOrbitLines());
@@ -32,6 +33,10 @@ export class MouseEvents {
 
     if (toggleLabelsButton) {
       toggleLabelsButton.addEventListener('click', () => this._uiController.toggleLabels());
+    }
+
+    if (toggleMoonsButton) {
+      toggleMoonsButton.addEventListener('click', () => this._uiController.toggleMoons());
     }
 
     this.addMusicEventListeners();
@@ -84,10 +89,13 @@ export class MouseEvents {
 
     const celestialObjects: Array<CelestialBody> = this._mainScene.getCelestialObjects();
     const celestialLabels: Array<Label> = this._mainScene.getLabels();
+    const orbitLines: Array<Object3D> = this._mainScene.getOrbitLines();
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialLabels);
+    const intersectsOrbitLines: Array<Intersection<Object3D<Event>>> =
+      this._raycaster.intersectObjects(orbitLines);
 
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
@@ -96,6 +104,10 @@ export class MouseEvents {
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
       this._mainScene.selectObject((object as unknown as Label).getCelestialBody());
+    }
+    if (intersectsOrbitLines.length > 0) {
+      const object = intersectsOrbitLines[0].object;
+      this._mainScene.selectObject((object as unknown as CelestialBody));
     }
   }
 

@@ -54,7 +54,8 @@ export class Moon extends CelestialBody {
 
     private createOrbitLine(): Line {
         const orbitGeometry = this.updateOrbitGeometry();
-        return new Line(orbitGeometry, this._orbitLineMaterial);
+        this._orbitLine = new Line(orbitGeometry, this._orbitLineMaterial);
+        return this._orbitLine;
     }
     
 

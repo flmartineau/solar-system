@@ -27,7 +27,7 @@ export class CelestialBody extends Mesh {
         this.mass = mass;
         this.temperature = temperature;
         this.radius = radius;
-        this.label = new Label(this);
+        this.label = new Label(mainScene, this);
 
         this.addToMainScene();
     }

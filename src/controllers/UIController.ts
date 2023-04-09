@@ -9,6 +9,9 @@ export class UIController {
   private _mainScene: MainScene;
   private celestialObjectList: HTMLElement | null;
 
+  private labelsVisibility: boolean = true;
+  private moonsVisibility: boolean = true;
+
   constructor(mainScene: MainScene) {
     this._mainScene = mainScene;
     this.celestialObjectList = document.getElementById('celestial-body-list');
@@ -27,6 +30,10 @@ export class UIController {
       });
       this.celestialObjectList?.appendChild(listItem);
     });
+  }
+
+  public getMoonsVisibility(): boolean {
+    return this.moonsVisibility;
   }
 
   public getInfoElement(): HTMLElement {
@@ -97,7 +104,7 @@ export class UIController {
 
 
   public toggleOrbitLines(): void {
-    let orbitLinesVisible = false;
+    let orbitLinesVisible: boolean = false;
     this._mainScene.getPlanets().forEach((planet: Planet) => {
       planet.getOrbitLine().visible = !planet.getOrbitLine().visible;
       orbitLinesVisible = planet.getOrbitLine().visible;
@@ -117,18 +124,29 @@ export class UIController {
   }
 
   public toggleLabels(): void {
-    let labelsVisible = false;
-
+    this.labelsVisibility = !this.labelsVisibility;
     this._mainScene.getLabels().forEach((label: Label) => {
-      label.visible = !label.visible;
-      labelsVisible = label.visible;
+      label.visible = this.labelsVisibility
     });
 
     const toggleLabelsIcon = document.getElementById('toggleLabels') as HTMLImageElement;
     if (toggleLabelsIcon) {
-      toggleLabelsIcon.src = labelsVisible ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
+      toggleLabelsIcon.src = this.labelsVisibility ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
     }
 
+    this._mainScene.getAudioController().playClick(2);
+  }
+
+
+  public toggleMoons(): void {
+    this.moonsVisibility = !this.moonsVisibility;
+
+    this._mainScene.setMoonsVibility(this.moonsVisibility);
+    
+    const toggleMoonsIcon = document.getElementById('toggleMoons') as HTMLImageElement;
+    if (toggleMoonsIcon) {
+     toggleMoonsIcon.src = this.moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
+    }
     this._mainScene.getAudioController().playClick(2);
   }
 

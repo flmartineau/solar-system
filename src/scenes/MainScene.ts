@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader } from 'three';
+import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader, Line } from 'three';
 
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
@@ -149,6 +149,14 @@ export class MainScene {
     return this._selectedObject;
   }
 
+  public setMoonsVibility(visible: boolean): void {
+    this.getMoons().forEach((moon: Moon) => {
+      moon.getOrbitLine().visible = visible;
+      moon.getLabel().visible = visible;
+      moon.visible = visible;
+    });
+  }
+
   async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
     const response: Response = await fetch(contentUrl);
     const content: string = await response.text();
@@ -174,6 +182,19 @@ export class MainScene {
 
   getLabels(): Array<Label> {
     return this.getCelestialObjects().map((object: CelestialBody) => object.getLabel());
+  }
+
+  getOrbitLines(): Array<Line> {
+
+    let moonOrbitLines: Array<Line> = [];
+    let planetOrbitLines: Array<Line> = [];
+    this.getMoons().forEach((moon: Moon) => {
+      moonOrbitLines.push(moon.getOrbitLine());
+    });
+    this.getPlanets().forEach((planet: Planet) => {
+      planetOrbitLines.push(planet.getOrbitLine());
+    });
+    return moonOrbitLines.concat(planetOrbitLines);
   }
 
   selectObject(object: CelestialBody): void {
