@@ -32,10 +32,6 @@ export class DevConsoleController {
         this._devConsole.domElement.style.display = this._visibility ? 'block' : 'none';
     }
 
-    public add(object: object, property: string) {
-        this._devConsole.add(object, property);
-    }
-
     public addFolder(title: string): GUI {
         return this._devConsole.addFolder(title);
     }

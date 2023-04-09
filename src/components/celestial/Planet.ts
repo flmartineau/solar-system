@@ -2,23 +2,22 @@ import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, Rotat
 import { CelestialBody } from './CelestialBody';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial, Material, PointLight, Vector3} from 'three';
+import { BufferGeometry, ColorRepresentation, Material, PointLight, Vector3} from 'three';
 import { EarthMoon } from './moons/EarthMoon';
 import { Moon } from './Moon';
 import {Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
+import { OrbitLine } from './OrbitLine';
 
 
 export class Planet extends CelestialBody {
 
     private _distanceToSun: number;
     private _orbitalPeriod: number;
-    private _orbitLine: Line;
+    private _orbitLine: OrbitLine;
     private _moons: Array<Moon> = [];
     private _position: Vector3 = new Vector3(0, 0, 0);
 
     private _lastOrbitLineUpdateTime: number;
-    private _orbitLineGeometry: BufferGeometry;
-    private _orbitLineMaterial: LineBasicMaterial;
 
     private _pointLight;
     private _lensflare = new Lensflare();
@@ -29,9 +28,7 @@ export class Planet extends CelestialBody {
         super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
         this._distanceToSun = 0;
         this._orbitalPeriod = PlanetOrbitalPeriod(body);
-        this._orbitLineGeometry = new BufferGeometry();
-        this._orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
-        this._orbitLineMaterial.depthWrite = false;
+        
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
         this._pointLight = new PointLight(lightColor, 0, 0);
@@ -60,7 +57,7 @@ export class Planet extends CelestialBody {
         this._lastOrbitLineUpdateTime = time;
     }
 
-    get orbitLine(): Line {
+    get orbitLine(): OrbitLine {
         return this._orbitLine;
     }
 
@@ -102,7 +99,7 @@ export class Planet extends CelestialBody {
 
     }
 
-    private updateOrbitGeometry(segments: number = 3000): BufferGeometry {
+    private updateOrbitGeometry(segments: number = 3000): Vector3[] {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.mainScene.timeController.currentDate;
@@ -119,12 +116,13 @@ export class Planet extends CelestialBody {
         }
 
         points.push(v0);
-        return this._orbitLineGeometry.setFromPoints(points);
+        return points;
     }
 
-    private createOrbitLine(): Line {
+    private createOrbitLine(): OrbitLine {
         const orbitGeometry = this.updateOrbitGeometry();
-        this._orbitLine = new Line(orbitGeometry, this._orbitLineMaterial);
+        this._orbitLine = new OrbitLine(this);
+        this._orbitLine.geometry.setFromPoints(orbitGeometry);
         return this._orbitLine;
     }
 

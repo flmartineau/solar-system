@@ -3,6 +3,7 @@ import { PerspectiveCamera, Vector3, WebGLRenderer, Raycaster, Vector2 } from 't
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
 import { CelestialBody } from '../components/celestial/CelestialBody';
+import GUI from 'lil-gui';
 
 
 export class CameraController {
@@ -13,15 +14,23 @@ export class CameraController {
   private _mainScene: MainScene;
   private _renderer: WebGLRenderer;
 
-  private minClippingDistance: number;
+  private _minClippingDistance: number;
+  private _fov: number;
 
   constructor(mainScene: MainScene) {
 
-    this.minClippingDistance = 1.1;
+    this._minClippingDistance = 1.1;
+    this._fov = 70;
 
-    mainScene.devConsoleController.addFolder('Camera').add(this, 'minClippingDistance', 0, 1.1);
+    let gui: GUI = mainScene.devConsoleController.addFolder('Camera')
+      gui.add(this, '_minClippingDistance', 0, 1.1)
+      gui.add(this, '_fov', 0, 180)
+        .onChange(() => {
+          this._camera.fov = this._fov;
+          this._camera.updateProjectionMatrix();
+        });
 
-    this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000000);
+    this._camera = new PerspectiveCamera(this._fov, window.innerWidth / window.innerHeight, 0.01, 2000000);
     this._camera.position.z = 200;
 
     this._focusedObject = null;
@@ -76,7 +85,7 @@ export class CameraController {
     }
 
     // Set the minDistance property to prevent clipping
-    this._controls.minDistance = object.radius * this.minClippingDistance;
+    this._controls.minDistance = object.radius * this._minClippingDistance;
   }
 
   public async zoomToObject(object: CelestialBody): Promise<void> {

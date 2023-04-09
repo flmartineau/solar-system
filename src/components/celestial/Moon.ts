@@ -1,25 +1,21 @@
-import { BufferGeometry, Line, LineBasicMaterial, Material, Vector3 } from 'three';
+import { BufferGeometry, LineBasicMaterial, Material, Vector3 } from 'three';
 import { MainScene } from '../../scenes/MainScene';
 import { MoonConfig, SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
 import { Vector, Body, GeoVector, HelioVector } from 'astronomy-engine';
 import { Planet } from './Planet';
+import { OrbitLine } from './OrbitLine';
 
 export class Moon extends CelestialBody {
 
     private _orbitalPeriod: number;
-    private _orbitLine: Line;
+    private _orbitLine: OrbitLine;
     private _planet: Planet;
-
-    private _orbitLineGeometry: BufferGeometry;
-    private _orbitLineMaterial: LineBasicMaterial;
 
     constructor(name: string, constants: MoonConfig, material: Material, mainScene: MainScene, body: Body, planet: Planet) {
         super(mainScene, name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
         this._orbitalPeriod = 27,322 * 24 * 60 * 60 * 1000; //millisecondes;
-        this._orbitLineGeometry = new BufferGeometry();
-        this._orbitLineMaterial = new LineBasicMaterial({ color: 0x333333 });
-
+        
         this._planet = planet;
         this._orbitLine = this.createOrbitLine();
         this.mainScene.scene.add(this._orbitLine);
@@ -29,11 +25,11 @@ export class Moon extends CelestialBody {
         return this._planet;
     }
 
-    get orbitLine(): Line {
+    get orbitLine(): OrbitLine {
         return this._orbitLine;
     }
 
-    private updateOrbitGeometry(segments: number = 200): BufferGeometry {
+    private updateOrbitGeometry(segments: number = 200): Vector3[] {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
         let date: Date = this.mainScene.timeController.currentDate;
@@ -50,18 +46,19 @@ export class Moon extends CelestialBody {
             if (i== 0) v0 = v3;
             date = new Date(date.getTime() + (period / segments));
         }
+        points.push(v0);
+        return points;
+    }
 
+    private createOrbitLine(): OrbitLine {
         let helio: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
         let translate = new Vector3(helio.x * SIZE_FACTOR, helio.y * SIZE_FACTOR, helio.z * SIZE_FACTOR)
         .applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
-        points.push(v0);
-        return this._orbitLineGeometry.setFromPoints(points).translate(translate.x, translate.y, translate.z);
-    }
-
-    private createOrbitLine(): Line {
         const orbitGeometry = this.updateOrbitGeometry();
-        this._orbitLine = new Line(orbitGeometry, this._orbitLineMaterial);
+        this._orbitLine = new OrbitLine(this);
+        this._orbitLine.geometry.setFromPoints(orbitGeometry);
+        this._orbitLine.geometry.translate(translate.x, translate.y, translate.z);
         return this._orbitLine;
     }
     

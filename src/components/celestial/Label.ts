@@ -1,4 +1,4 @@
-import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial } from "three";
+import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial, Vector3 } from "three";
 import { CelestialBody } from "./CelestialBody";
 import { Moon } from "./Moon";
 import { MainScene } from "../../scenes/MainScene";
@@ -7,6 +7,9 @@ export class Label extends Sprite {
 
     private _celestialBody: CelestialBody;
     private _mainScene: MainScene;
+
+    private _width: number;
+    private _height: number;
 
     constructor(mainScene: MainScene, celestialBody: CelestialBody) {
         const canvas: HTMLCanvasElement = document.createElement('canvas');
@@ -27,7 +30,10 @@ export class Label extends Sprite {
         this._mainScene = mainScene;
         this._celestialBody = celestialBody;
 
-        this.scale.set(0.15, 0.0375, 1);
+        this._width = 0.15;
+        this._height = 0.0375;
+
+        this.scale.set(this._width, this._height, 1);
         this.position.copy(celestialBody.position.clone());
     }
 
@@ -40,7 +46,6 @@ export class Label extends Sprite {
     }
 
     public update(camera: PerspectiveCamera): void {
-
         const distanceToCamera: number = camera.position.distanceTo(this.position);
 
         if (this._celestialBody.name == 'Moon') {
@@ -50,7 +55,7 @@ export class Label extends Sprite {
 
 
         if (this.visible || this._celestialBody.name == 'Moon' ) {
-            this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
+            this.scale.set(this._width * distanceToCamera, this._height * distanceToCamera, 1);
             this.position.copy(this._celestialBody.position.clone());
             this.position.y = this._celestialBody.position.y + (this._celestialBody.radius * 1.2);
             this.lookAt(camera.position);
