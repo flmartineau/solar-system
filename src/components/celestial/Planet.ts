@@ -2,9 +2,11 @@ import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, Rotat
 import { CelestialBody } from './CelestialBody';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { BufferGeometry, Line, LineBasicMaterial, Material, Vector3} from 'three';
+import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial, Material, PointLight, Vector3} from 'three';
 import { EarthMoon } from './moons/EarthMoon';
 import { Moon } from './Moon';
+import {Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
+
 
 export class Planet extends CelestialBody {
 
@@ -18,7 +20,11 @@ export class Planet extends CelestialBody {
     private _orbitLineGeometry: BufferGeometry;
     private _orbitLineMaterial: LineBasicMaterial;
 
-    constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body) {
+    private _pointLight;
+    private _lensflare = new Lensflare();
+    private _textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
+
+    constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body, lightColor: ColorRepresentation) {
 
         super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
         this._distanceToSun = 0;
@@ -28,6 +34,11 @@ export class Planet extends CelestialBody {
         this._orbitLineMaterial.depthWrite = false;
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
+        this._pointLight = new PointLight(lightColor, 0, 0);
+    
+        this._lensflare.addElement(new LensflareElement(this._textureFlare, 20, 0, this._pointLight.color));
+       
+        this._pointLight.add(this._lensflare);
         
 
         this.mainScene.scene.add(this._orbitLine);
@@ -57,6 +68,12 @@ export class Planet extends CelestialBody {
         return this._orbitalPeriod;
     }
 
+    public updateLighting(): void {
+        this.mainScene.scene.remove(this._pointLight);
+        this._pointLight.position.set(this.position.x, this.position.y, this.position.z);
+        this.mainScene.scene.add(this._pointLight);
+      }
+
     public addMoon(moon: Moon): void {
         this._moons.push(moon);
     }
@@ -79,6 +96,9 @@ export class Planet extends CelestialBody {
             moon.updateOrbit();
             moon.refreshOrbitLine();
         });
+
+
+        this.updateLighting();
 
     }
 

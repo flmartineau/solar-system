@@ -2,7 +2,7 @@ import { Body, KM_PER_AU } from 'astronomy-engine';
 import { SIZE_FACTOR, constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
-import { DoubleSide, Mesh, MeshLambertMaterial, MeshPhongMaterial, RingGeometry, Texture } from 'three';
+import { ColorRepresentation, DoubleSide, Mesh, MeshLambertMaterial, MeshPhongMaterial, RingGeometry, Texture } from 'three';
 
 export class Saturn extends Planet {
     
@@ -13,8 +13,10 @@ export class Saturn extends Planet {
 
     const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
+    const lightColor: ColorRepresentation = 0xcfb090;
 
-    super(NAME, constants.Saturn, material, mainScene, Body.Saturn);
+
+    super(NAME, constants.Saturn, material, mainScene, Body.Saturn, lightColor);
 
     //this.addRings();
   }

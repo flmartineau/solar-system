@@ -1,4 +1,4 @@
-import { AdditiveBlending, BackSide, Color, FrontSide, Mesh, MeshPhongMaterial, ShaderMaterial, SphereGeometry, TextureLoader } from 'three';
+import { AdditiveBlending, BackSide, Color, ColorRepresentation, FrontSide, Mesh, MeshPhongMaterial, ShaderMaterial, SphereGeometry, TextureLoader } from 'three';
 
 import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
@@ -19,7 +19,9 @@ export class Earth extends Planet {
 
     const material = new MeshPhongMaterial({ map: texture });
 
-    super(NAME, constants.Earth, material, mainScene, Body.Earth);
+    const lightColor: ColorRepresentation = 0x2d5b7c;
+
+    super(NAME, constants.Earth, material, mainScene, Body.Earth, lightColor);
 
     this.addClouds();
     this.addGlow();

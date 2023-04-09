@@ -2,7 +2,7 @@ import { Body } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
-import { MeshPhongMaterial, Texture } from 'three';
+import { ColorRepresentation, MeshPhongMaterial, Texture } from 'three';
 
 export class Mercury extends Planet {
     
@@ -13,7 +13,8 @@ export class Mercury extends Planet {
 
     const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
+    const lightColor: ColorRepresentation = 0xa29d98;
 
-    super(NAME, constants.Mercury, material, mainScene, Body.Mercury);
+    super(NAME, constants.Mercury, material, mainScene, Body.Mercury, lightColor);
   }
 }
