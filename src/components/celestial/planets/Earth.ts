@@ -6,6 +6,9 @@ import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
 import { EarthMoon } from '../moons/EarthMoon';
 
+import glowFragmentShader from '../../../assets/shaders/earth/glowFragment.glsl';
+import glowVertexShader from '../../../assets/shaders/earth/glowVertex.glsl';
+
 export class Earth extends Planet {
 
   constructor(mainScene: MainScene) {
@@ -44,26 +47,8 @@ export class Earth extends Planet {
         glowColor: { value: new Color(0x0096ff) },
         viewVector: { value: this.mainScene.cameraController.camera.position }
       },
-      vertexShader: `
-                uniform vec3 viewVector;
-                uniform float c;
-                uniform float p;
-                varying float intensity;
-                void main() {
-                    vec3 vNormal = normalize( normalMatrix * normal );
-                    vec3 vNormel = normalize( normalMatrix * viewVector );
-                    intensity = pow( c - dot(vNormal, vNormel), p );
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-                }
-            `,
-      fragmentShader: `
-                uniform vec3 glowColor;
-                varying float intensity;
-                void main() {
-                    vec3 glow = glowColor * intensity * 0.5;
-                    gl_FragColor = vec4( glow, 10.0 );
-                }
-            `,
+      vertexShader: glowVertexShader,
+      fragmentShader: glowFragmentShader,
       side: BackSide,
       blending: AdditiveBlending,
       transparent: true

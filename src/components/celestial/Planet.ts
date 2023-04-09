@@ -2,7 +2,7 @@ import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, Rotat
 import { CelestialBody } from './CelestialBody';
 import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { BufferGeometry, ColorRepresentation, Material, PointLight, Vector3} from 'three';
+import { ColorRepresentation, Material, PointLight, Texture, Vector3} from 'three';
 import { EarthMoon } from './moons/EarthMoon';
 import { Moon } from './Moon';
 import {Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
@@ -21,13 +21,14 @@ export class Planet extends CelestialBody {
 
     private _pointLight;
     private _lensflare = new Lensflare();
-    private _textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
+    private _textureFlare: Texture;
 
     constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body, lightColor: ColorRepresentation) {
 
         super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
         this._distanceToSun = 0;
         this._orbitalPeriod = PlanetOrbitalPeriod(body);
+        this._textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
         
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
