@@ -7,79 +7,77 @@ import { MainScene } from '../scenes/MainScene';
 
 export class UIController {
   private _mainScene: MainScene;
-  private celestialObjectList: HTMLElement | null;
+  private _celestialObjectList: HTMLElement | null;
 
-  private labelsVisibility: boolean = true;
-  private moonsVisibility: boolean = true;
+  private _labelsVisibility: boolean = true;
+  private _moonsVisibility: boolean = true;
 
   constructor(mainScene: MainScene) {
     this._mainScene = mainScene;
-    this.celestialObjectList = document.getElementById('celestial-body-list');
+    this._celestialObjectList = document.getElementById('celestial-body-list');
   }
 
   public createCelestialObjectList() {
-    if (!this.celestialObjectList) return;
-    document.getElementById('right-sidebar')?.appendChild(this.celestialObjectList);
+    if (!this._celestialObjectList) return;
+    document.getElementById('right-sidebar')?.appendChild(this._celestialObjectList);
 
-    this._mainScene.getCelestialObjects().forEach((celestialObject) => {
+    this._mainScene.celestialObjects.forEach((celestialObject) => {
       const listItem = document.createElement('li');
       listItem.textContent = celestialObject.name;
       listItem.addEventListener('click', () => {
         this._mainScene.selectObject(celestialObject);
-        this._mainScene.getAudioController().playClick(1);
+        this._mainScene.audioController.playClick(1);
       });
-      this.celestialObjectList?.appendChild(listItem);
+      this._celestialObjectList?.appendChild(listItem);
     });
   }
 
-  public getMoonsVisibility(): boolean {
-    return this.moonsVisibility;
+  get moonsVisibility(): boolean {
+    return this._moonsVisibility;
   }
 
-  public getInfoElement(): HTMLElement {
+  get infoElement(): HTMLElement {
     return document.getElementById('info') as HTMLElement;
   }
 
-  public getCurrentDateElement(): HTMLInputElement {
+  get currentDateElement(): HTMLInputElement {
     return document.getElementById('current-date') as HTMLInputElement;
   }
 
-  public getCurrentTimeElement(): HTMLInputElement {
+  get currentTimeElement(): HTMLInputElement {
     return document.getElementById('current-time') as HTMLInputElement;
   }
 
   public showInfo(celestialObject: any): void {
-    const infoElement = this.getInfoElement();
-
     if (celestialObject instanceof Star) {
-      if (infoElement) {
-        infoElement.innerHTML = `
+      if (this.infoElement) {
+        this.infoElement.innerHTML = `
           <strong>Name:</strong> ${celestialObject.name}<br>
-          <strong>Mass:</strong> ${celestialObject.getMass()} kg<br>
-          <strong>Temperature:</strong> ${celestialObject.getTemperature()} K
+          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature:</strong> ${celestialObject.temperature} K
         `;
-        infoElement.style.display = 'block';
+        this.infoElement.style.display = 'block';
       }
 
     } else if (celestialObject instanceof Planet) {
-      if (infoElement) {
-        infoElement.innerHTML = `
+      if (this.infoElement) {
+        this.infoElement.innerHTML = `
           <strong>Name: </strong> ${celestialObject.name}<br>
-          <strong>Mass: </strong> ${celestialObject.getMass()} kg<br>
-          <strong>Temperature: </strong> ${celestialObject.getTemperature()} K<br>
-          <strong>Distance From Sun: </strong> ${celestialObject.getDistanceToSun()} km<br>
-          <strong>Orbital Period: </strong> ${celestialObject.getOrbitalPeriod()} days
+          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
+          <strong>Distance From Sun: </strong> ${celestialObject.distanceToSun} km<br>
+          <strong>Orbital Period: </strong> ${celestialObject.orbitalPeriod} days
         `;
-        infoElement.style.display = 'block';
+        this.infoElement.style.display = 'block';
       }
     } else if (celestialObject instanceof Moon) {
-      if (infoElement) {
-        infoElement.innerHTML = `
+      if (this.infoElement) {
+        this.infoElement.innerHTML = `
           <strong>Name: </strong> ${celestialObject.name}<br>
-          <strong>Mass: </strong> ${celestialObject.getMass()} kg<br>
-          <strong>Temperature: </strong> ${celestialObject.getTemperature()} K<br>
+          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
+          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
         `;
-        infoElement.style.display = 'block';
+        this.infoElement.style.display = 'block';
       }
     
     
@@ -87,7 +85,7 @@ export class UIController {
   }
 
   public hideInfo(): void {
-    if (this._mainScene.getSelectedObject() !== null) 
+    if (this._mainScene.selectedObject !== null) 
       return;
     const infoElement = document.getElementById('info');
     if (infoElement) {
@@ -98,7 +96,7 @@ export class UIController {
   public togglePlayPauseButton(): void {
     const playPauseButton = document.getElementById('play-pause-icon') as HTMLImageElement;
     if (playPauseButton) {
-      playPauseButton.src = this._mainScene.getTimeController().getIsPlaying() ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
+      playPauseButton.src = this._mainScene.timeController.isPlaying ? './assets/icons/pause_button.png' : './assets/icons/play_button.png';
     }
   }
 
@@ -106,13 +104,13 @@ export class UIController {
   public toggleOrbitLines(): void {
     let orbitLinesVisible: boolean = false;
     this._mainScene.getPlanets().forEach((planet: Planet) => {
-      planet.getOrbitLine().visible = !planet.getOrbitLine().visible;
-      orbitLinesVisible = planet.getOrbitLine().visible;
+      planet.orbitLine.visible = !planet.orbitLine.visible;
+      orbitLinesVisible = planet.orbitLine.visible;
     });
 
     this._mainScene.getMoons().forEach((moon: Moon) => {
-      moon.getOrbitLine().visible = !moon.getOrbitLine().visible;
-      orbitLinesVisible = moon.getOrbitLine().visible;
+      moon.orbitLine.visible = !moon.orbitLine.visible;
+      orbitLinesVisible = moon.orbitLine.visible;
     });
 
     const toggleOrbitsIcon = document.getElementById('toggleOrbits') as HTMLImageElement;
@@ -120,34 +118,34 @@ export class UIController {
       toggleOrbitsIcon.src = orbitLinesVisible ? './assets/icons/orbit_lines_on.png' : 'assets/icons/orbit_lines_off.png';
     }
 
-    this._mainScene.getAudioController().playClick(2);
+    this._mainScene.audioController.playClick(2);
   }
 
   public toggleLabels(): void {
-    this.labelsVisibility = !this.labelsVisibility;
+    this._labelsVisibility = !this._labelsVisibility;
     this._mainScene.getLabels().forEach((label: Label) => {
-      label.visible = this.labelsVisibility
+      label.visible = this._labelsVisibility
     });
 
     const toggleLabelsIcon = document.getElementById('toggleLabels') as HTMLImageElement;
     if (toggleLabelsIcon) {
-      toggleLabelsIcon.src = this.labelsVisibility ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
+      toggleLabelsIcon.src = this._labelsVisibility ? './assets/icons/planet_labels_on.png' : 'assets/icons/planet_labels_off.png';
     }
 
-    this._mainScene.getAudioController().playClick(2);
+    this._mainScene.audioController.playClick(2);
   }
 
 
   public toggleMoons(): void {
-    this.moonsVisibility = !this.moonsVisibility;
+    this._moonsVisibility = !this._moonsVisibility;
 
-    this._mainScene.setMoonsVibility(this.moonsVisibility);
+    this._mainScene.moonsVibility = this._moonsVisibility;
     
     const toggleMoonsIcon = document.getElementById('toggleMoons') as HTMLImageElement;
     if (toggleMoonsIcon) {
-     toggleMoonsIcon.src = this.moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
+     toggleMoonsIcon.src = this._moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
     }
-    this._mainScene.getAudioController().playClick(2);
+    this._mainScene.audioController.playClick(2);
   }
 
 
@@ -155,9 +153,9 @@ export class UIController {
     const music = document.getElementById('music-icon') as HTMLImageElement;
     if (music) {
 
-      this._mainScene.getAudioController().toggleVolume();
+      this._mainScene.audioController.toggleVolume();
 
-      switch (this._mainScene.getAudioController().getVolume()) {
+      switch (this._mainScene.audioController.volume) {
         case 0:
           music.src = './assets/icons/speaker-mute.png';
           break;
@@ -172,26 +170,24 @@ export class UIController {
   }
 
   public updateTimeDisplay() {
-    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
-    let currentDate: Date = this._mainScene.getTimeController().getCurrentDate();
-    const timeElement: HTMLInputElement = this.getCurrentTimeElement();
-    if (timeElement && simulationSpeed !== 0) {
-      timeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
+    let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
+    let currentDate: Date = this._mainScene.timeController.currentDate;
+    if (this.currentTimeElement && simulationSpeed !== 0) {
+      this.currentTimeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
     }
   }
 
   public updateDateDisplay() {
-    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
-    let currentDate: Date = this._mainScene.getTimeController().getCurrentDate();
-    const dateElement: HTMLInputElement = this.getCurrentDateElement();
-    if (dateElement && simulationSpeed !== 0) {
-      dateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
+    let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
+    let currentDate: Date = this._mainScene.timeController.currentDate;
+    if (this.currentDateElement && simulationSpeed !== 0) {
+      this.currentDateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
     }
 
   }
 
   public updateSpeedDisplay() {
-    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
+    let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
     const speedElement: HTMLInputElement = document.getElementById('simulation-speed') as HTMLInputElement;
     if (speedElement) {
       speedElement.innerText = this.getSpeedString(simulationSpeed);
@@ -200,7 +196,7 @@ export class UIController {
   }
 
   public updateSpeedSlider() {
-    let simulationSpeed: number = this._mainScene.getTimeController().getSimulationSpeed();
+    let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
     const speedSlider: HTMLInputElement = document.getElementById('sim-speed-slider') as HTMLInputElement;
     if (speedSlider) {
       speedSlider.value = simulationSpeed.toString();

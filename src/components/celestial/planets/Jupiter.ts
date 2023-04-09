@@ -11,7 +11,7 @@ export class Jupiter extends Planet {
     const NAME: string = 'Jupiter';
     const TEXTUREPATH: string = './assets/textures/jupiter.jpg';
 
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
 
     super(NAME, constants.Jupiter, material, mainScene, Body.Jupiter);

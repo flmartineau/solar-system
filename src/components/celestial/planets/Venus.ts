@@ -11,7 +11,7 @@ export class Venus extends Planet {
     const NAME: string = 'Venus';
     const TEXTUREPATH: string = './assets/textures/venus.jpg';
 
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
 
     super(NAME, constants.Venus, material, mainScene, Body.Venus);

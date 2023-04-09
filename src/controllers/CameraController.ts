@@ -19,7 +19,7 @@ export class CameraController {
 
     this.minClippingDistance = 1.1;
 
-    mainScene.getDevConsoleController().addFolder('Camera').add(this, 'minClippingDistance', 0, 1.1);
+    mainScene.devConsoleController.addFolder('Camera').add(this, 'minClippingDistance', 0, 1.1);
 
     this._camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 2000000);
     this._camera.position.z = 200;
@@ -27,26 +27,25 @@ export class CameraController {
     this._focusedObject = null;
     this._cameraOffset = new Vector3();
 
-    this._controls = new OrbitControls(this._camera, mainScene.getRenderer().domElement);
+    this._controls = new OrbitControls(this._camera, mainScene.renderer.domElement);
     this._controls.addEventListener('change', () => this.onControlsChange());
     this._mainScene = mainScene;
-    this._renderer = mainScene.getRenderer();
+    this._renderer = mainScene.renderer;
   }
 
 
-  public getCamera(): PerspectiveCamera {
+  get camera(): PerspectiveCamera {
     return this._camera;
+  }
+
+  set focusedObject(object: CelestialBody | null) {
+    if (object == null || object.name != "") {
+      this._focusedObject = object;
+    }
   }
 
   public distanceToObject(object: CelestialBody): number {
     return this._camera.position.distanceTo(object.position);
-  }
-
-
-  public setFocusedObject(object: CelestialBody | null): void {
-    if (object == null || object.name != "") {
-      this._focusedObject = object;
-    }
   }
 
   private onControlsChange(): void {
@@ -72,25 +71,25 @@ export class CameraController {
     this._controls.update();
 
     if (object == null || object.name != "") {
-      this.setFocusedObject(object);
+      this.focusedObject = object;
       this._cameraOffset.copy(this._camera.position).sub(object.position);
     }
 
     // Set the minDistance property to prevent clipping
-    this._controls.minDistance = object.getRadius() * this.minClippingDistance;
+    this._controls.minDistance = object.radius * this.minClippingDistance;
   }
 
   public async zoomToObject(object: CelestialBody): Promise<void> {
     const currentDistance: number = this._camera.position.distanceTo(object.position);
     const steps: number = 30;
 
-    const targetDistance: number = object.getRadius() * 3;
+    const targetDistance: number = object.radius * 3;
 
     if (currentDistance < targetDistance)
       return;
 
 
-    const distanceStep: number = (currentDistance - (targetDistance + object.getRadius())) / steps;
+    const distanceStep: number = (currentDistance - (targetDistance + object.radius)) / steps;
 
     for (let i: number = 0; i < steps; i++) {
       const newPosition: Vector3 = this._camera.position.clone().sub(object.position).normalize().multiplyScalar(-distanceStep).add(this._camera.position);
@@ -107,7 +106,7 @@ export class CameraController {
       this._controls.target.copy(this._focusedObject.position);
       this._controls.update();
     }
-    this._renderer.render(this._mainScene.getScene(), this._camera);
+    this._renderer.render(this._mainScene.scene, this._camera);
   }
 
 

@@ -15,7 +15,7 @@ export class Earth extends Planet {
     const NIGHT_TEXTUREPATH: string = './assets/textures/earth_nightmap.jpg';
     const CLOUD_TEXTUREPATH: string = './assets/textures/earth_clouds.jpg';
 
-    const texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture = mainScene.textureLoader.load(TEXTUREPATH);
 
     const material = new MeshPhongMaterial({ map: texture });
 
@@ -27,8 +27,8 @@ export class Earth extends Planet {
   }
 
   private addClouds(): void {
-    const geometry = new SphereGeometry(this.getRadius() * 1.001, 128, 128);
-    const cloudTexture = this.mainScene.getTextureLoader().load('assets/textures/earth_clouds.jpg');
+    const geometry = new SphereGeometry(this.radius * 1.001, 128, 128);
+    const cloudTexture = this.mainScene.textureLoader.load('assets/textures/earth_clouds.jpg');
     const atmosphere = new MeshPhongMaterial({
       side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture });
     this.add(new Mesh(geometry, atmosphere));
@@ -40,7 +40,7 @@ export class Earth extends Planet {
         "c": { value: 0.4 },
         "p": { value: 4.5 },
         glowColor: { value: new Color(0x0096ff) },
-        viewVector: { value: this.mainScene.getCameraController().getCamera().position }
+        viewVector: { value: this.mainScene.cameraController.camera.position }
       },
       vertexShader: `
                 uniform vec3 viewVector;
@@ -67,7 +67,7 @@ export class Earth extends Planet {
       transparent: true
     });
 
-    let earthGlow = new Mesh(new SphereGeometry(this.getRadius(), 128, 128), glowMaterial);
+    let earthGlow = new Mesh(new SphereGeometry(this.radius, 128, 128), glowMaterial);
     earthGlow.scale.multiplyScalar(1.02);
     this.add(earthGlow);
   }
@@ -79,6 +79,6 @@ export class Earth extends Planet {
 
 
   public getMoon(): EarthMoon {
-    return this.getMoons()[0];
+    return this.moons[0];
   }
 }

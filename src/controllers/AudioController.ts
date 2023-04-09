@@ -13,6 +13,17 @@ export class AudioController {
         this.setupBackgroundMusic();
     }
 
+    get volume(): number {
+        return this._volume;
+    }
+
+    set volume(_volume: number) {
+        this._volume = _volume;
+        if (this._musicElement) {
+            this._musicElement.volume = this._volume;
+        }
+    }
+
     private setupBackgroundMusic(): void {
         if (this._musicElement) {
             this._musicElement.src = spaceAtmosphericBackground;
@@ -21,22 +32,11 @@ export class AudioController {
         }
     }
 
-    public getVolume(): number {
-        return this._volume;
-    }
-
-    public changeVolume(_volume: number): void {
-        this._volume = _volume;
-        if (this._musicElement) {
-            this._musicElement.volume = this._volume;
-        }
-    }
-
     public toggleVolume(): void {
         const volumes: Array<number> = [1, 0, 0.5];
         const currentVolumeIndex: number = volumes.indexOf(this._volume);
         const nextVolumeIndex: number = (currentVolumeIndex + 1) % volumes.length;
-        this.changeVolume(volumes[nextVolumeIndex]);
+        this.volume = volumes[nextVolumeIndex];
     }
 
     public playClick(clickType: number) {

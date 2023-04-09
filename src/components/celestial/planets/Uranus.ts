@@ -11,7 +11,7 @@ export class Uranus extends Planet {
     const NAME: string = 'Uranus';
     const TEXTUREPATH: string = './assets/textures/uranus.jpg';
 
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
 
     super(NAME, constants.Uranus, material, mainScene, Body.Uranus);

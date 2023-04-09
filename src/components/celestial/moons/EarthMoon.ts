@@ -12,7 +12,7 @@ export class EarthMoon extends Moon {
     const NAME: string = 'Moon';
     const TEXTUREPATH: string = './assets/textures/moon.jpg';
     
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
     
     super(NAME, constants.Moon, material, mainScene, Body.Moon, planet);

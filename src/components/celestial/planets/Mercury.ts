@@ -11,7 +11,7 @@ export class Mercury extends Planet {
     const NAME: string = 'Mercury';
     const TEXTUREPATH: string = './assets/textures/mercury.jpg';
 
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
 
     super(NAME, constants.Mercury, material, mainScene, Body.Mercury);

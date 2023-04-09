@@ -30,44 +30,40 @@ export class Planet extends CelestialBody {
         this._lastOrbitLineUpdateTime = 0;
         
 
-        this.mainScene.getScene().add(this._orbitLine);
+        this.mainScene.scene.add(this._orbitLine);
     }
 
-    public getName() {
-        return this.name;
-    }
-
-    public getDistanceToSun(): number {
+    get distanceToSun(): number {
         return this._distanceToSun;
     }
 
-    public getMoons(): Array<Moon> {
+    get moons(): Array<Moon> {
         return this._moons;
+    }
+
+    get lastOrbitLineUpdateTime(): number {
+        return this._lastOrbitLineUpdateTime;
+    }
+
+    set lastOrbitLineUpdateTime(time: number) {
+        this._lastOrbitLineUpdateTime = time;
+    }
+
+    get orbitLine(): Line {
+        return this._orbitLine;
+    }
+
+    get orbitalPeriod(): number {
+        return this._orbitalPeriod;
     }
 
     public addMoon(moon: Moon): void {
         this._moons.push(moon);
     }
 
-    public getLastOrbitLineUpdateTime(): number {
-        return this._lastOrbitLineUpdateTime;
-    }
-
-    public setLastOrbitLineUpdateTime(time: number): void {
-        this._lastOrbitLineUpdateTime = time;
-    }
-
-    public getOrbitLine(): Line {
-        return this._orbitLine;
-    }
-
-    public getOrbitalPeriod(): number {
-        return this._orbitalPeriod;
-    }
-
     public updateOrbit(): void {
-        this._distanceToSun = Math.round(HelioDistance(this.getBody(), this.mainScene.getTimeController().getCurrentDate())* KM_PER_AU);
-        let v: Vector = HelioVector(this.getBody(), this.mainScene.getTimeController().getCurrentDate());
+        this._distanceToSun = Math.round(HelioDistance(this.body, this.mainScene.timeController.currentDate)* KM_PER_AU);
+        let v: Vector = HelioVector(this.body, this.mainScene.timeController.currentDate);
         let x: number = v.x * SIZE_FACTOR;
         let y: number = v.y * SIZE_FACTOR;
         let z: number = v.z * SIZE_FACTOR;
@@ -89,12 +85,12 @@ export class Planet extends CelestialBody {
     private updateOrbitGeometry(segments: number = 3000): BufferGeometry {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
-        let date: Date = this.mainScene.getTimeController().getCurrentDate();
+        let date: Date = this.mainScene.timeController.currentDate;
 
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {
-            let v = HelioVector(this.getBody(), date);
+            let v = HelioVector(this.body, date);
             let v3 = new Vector3(v.x * SIZE_FACTOR, v.y * SIZE_FACTOR, v.z * SIZE_FACTOR);
             v3.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
             points.push(v3);
@@ -116,10 +112,10 @@ export class Planet extends CelestialBody {
         const isVisible: boolean = this._orbitLine.visible;
 
         if (isVisible) {
-            this.mainScene.getScene().remove(this._orbitLine);
+            this.mainScene.scene.remove(this._orbitLine);
             this._orbitLine.geometry.dispose();
             this._orbitLine = this.createOrbitLine();
-            this.mainScene.getScene().add(this._orbitLine);
+            this.mainScene.scene.add(this._orbitLine);
         }
     }
 

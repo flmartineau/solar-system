@@ -11,7 +11,7 @@ export class Mars extends Planet {
     const NAME: string = 'Mars';
     const TEXTUREPATH: string = './assets/textures/mars.jpg';
     
-    const texture: Texture = mainScene.getTextureLoader().load(TEXTUREPATH);
+    const texture: Texture = mainScene.textureLoader.load(TEXTUREPATH);
     const material = new MeshPhongMaterial({ map: texture });
     
     super(NAME, constants.Mars, material, mainScene, Body.Mars);

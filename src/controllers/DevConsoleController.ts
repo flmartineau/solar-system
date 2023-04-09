@@ -22,9 +22,7 @@ export class DevConsoleController {
         this._devConsole.domElement.style.display = 'none'
     }
 
-
-
-    public getStats(): Stats {
+    get stats(): Stats {
         return this._stats;
     }
 

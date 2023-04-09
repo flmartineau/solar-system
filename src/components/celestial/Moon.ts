@@ -22,18 +22,25 @@ export class Moon extends CelestialBody {
 
         this._planet = planet;
         this._orbitLine = this.createOrbitLine();
-        this.mainScene.getScene().add(this._orbitLine);
+        this.mainScene.scene.add(this._orbitLine);
     }
 
+    get planet(): Planet {
+        return this._planet;
+    }
+
+    get orbitLine(): Line {
+        return this._orbitLine;
+    }
 
     private updateOrbitGeometry(segments: number = 200): BufferGeometry {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
-        let date: Date = this.mainScene.getTimeController().getCurrentDate();
+        let date: Date = this.mainScene.timeController.currentDate;
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {
-            let geoVector: Vector = GeoVector(this.getBody(), date, true);
+            let geoVector: Vector = GeoVector(this.body, date, true);
             let x: number = geoVector.x * SIZE_FACTOR;
             let y: number = geoVector.y * SIZE_FACTOR;
             let z: number = geoVector.z * SIZE_FACTOR;
@@ -44,7 +51,7 @@ export class Moon extends CelestialBody {
             date = new Date(date.getTime() + (period / segments));
         }
 
-        let helio: Vector = HelioVector(this._planet.getBody(), this.mainScene.getTimeController().getCurrentDate());
+        let helio: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
         let translate = new Vector3(helio.x * SIZE_FACTOR, helio.y * SIZE_FACTOR, helio.z * SIZE_FACTOR)
         .applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
@@ -62,30 +69,23 @@ export class Moon extends CelestialBody {
     public refreshOrbitLine(): void {
         const isVisible: boolean = this._orbitLine.visible;
 
-        if (this.mainScene.getCameraController().distanceToObject(this) > 2000 || !isVisible) {
-            this.mainScene.getScene().remove(this._orbitLine);
+        if (this.mainScene.cameraController.distanceToObject(this) > 2000 || !isVisible) {
+            this.mainScene.scene.remove(this._orbitLine);
             return;
         }
 
         if (isVisible) {
-            this.mainScene.getScene().remove(this._orbitLine);
+            this.mainScene.scene.remove(this._orbitLine);
             this._orbitLine.geometry.dispose();
             this._orbitLine = this.createOrbitLine();
-            this.mainScene.getScene().add(this._orbitLine);
+            this.mainScene.scene.add(this._orbitLine);
         }
     }
 
-    public getPlanet(): Planet {
-        return this._planet;
-    }
-
-    public getOrbitLine(): Line {
-        return this._orbitLine;
-    }
 
     public updateOrbit(): void {
-        let helioVector: Vector = HelioVector(this._planet.getBody(), this.mainScene.getTimeController().getCurrentDate());
-        let geoVector: Vector = GeoVector(this.getBody(), this.mainScene.getTimeController().getCurrentDate(), true);
+        let helioVector: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
+        let geoVector: Vector = GeoVector(this.body, this.mainScene.timeController.currentDate, true);
                 
         let x: number = (helioVector.x + geoVector.x) * SIZE_FACTOR;
         let y: number = (helioVector.y + geoVector.y) * SIZE_FACTOR;

@@ -31,11 +31,11 @@ export class Label extends Sprite {
         this.position.copy(celestialBody.position.clone());
     }
 
-    public getCelestialBody(): CelestialBody {
+    get celestialBody(): CelestialBody {
         return this._celestialBody;
     }
 
-    public getMainScene(): MainScene {
+    get mainScene(): MainScene {
         return this._mainScene;
     }
 
@@ -44,15 +44,15 @@ export class Label extends Sprite {
         const distanceToCamera: number = camera.position.distanceTo(this.position);
 
         if (this._celestialBody.name == 'Moon') {
-            const moonsVisibility: boolean = this.getMainScene().getUIController().getMoonsVisibility();
-            this.visible = (distanceToCamera < 300) && (this._celestialBody as Moon).getPlanet().getLabel().visible && moonsVisibility;
+            const moonsVisibility: boolean = this.mainScene.uiController.moonsVisibility;
+            this.visible = (distanceToCamera < 300) && (this._celestialBody as Moon).planet.label.visible && moonsVisibility;
         }
 
 
         if (this.visible || this._celestialBody.name == 'Moon' ) {
             this.scale.set(0.15 * distanceToCamera, 0.0375 * distanceToCamera, 1);
             this.position.copy(this._celestialBody.position.clone());
-            this.position.y = this._celestialBody.position.y + (this._celestialBody.getRadius() * 1.2);
+            this.position.y = this._celestialBody.position.y + (this._celestialBody.radius * 1.2);
             this.lookAt(camera.position);
         }
     }

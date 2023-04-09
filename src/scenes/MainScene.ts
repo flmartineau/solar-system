@@ -51,7 +51,6 @@ export class MainScene {
   //Moons
   private _moon: EarthMoon;
 
-
   private _skybox: CubeTexture;
 
   private _selectedObject: CelestialBody | null;
@@ -110,48 +109,78 @@ export class MainScene {
     TemplateHelper.initTemplates(this._mouseEvents);
   }
 
-  public getScene(): Scene {
+  get scene(): Scene {
     return this._scene;
   }
 
-  public getRenderer(): WebGLRenderer {
+  get renderer(): WebGLRenderer {
     return this._renderer;
   }
 
-  public getTextureLoader(): TextureLoader {
+  get textureLoader(): TextureLoader {
     return this._textureLoader;
   }
 
-  public getTimeController(): TimeController {
+  get timeController(): TimeController {
     return this._timeController;
   }
 
-  public getUIController(): UIController {
+  get uiController(): UIController {
     return this._uiController;
   }
 
-  public getCameraController(): CameraController {
+  get cameraController(): CameraController {
     return this._cameraController;
   }
 
-  public getAudioController(): AudioController {
+  get audioController(): AudioController {
     return this._audioController;
   }
 
-  public getDevConsoleController(): DevConsoleController {
+  get devConsoleController(): DevConsoleController {
     return this._devConsoleController;
   }
 
-  public getSelectedObject(): CelestialBody | null {
+  get selectedObject(): CelestialBody | null {
     return this._selectedObject;
   }
 
-  public setMoonsVibility(visible: boolean): void {
+  set moonsVibility(visible: boolean) {
     this.getMoons().forEach((moon: Moon) => {
-      moon.getOrbitLine().visible = visible;
-      moon.getLabel().visible = visible;
+      moon.orbitLine.visible = visible;
+      moon.label.visible = visible;
       moon.visible = visible;
     });
+  }
+
+  get celestialObjects(): CelestialBody[] {
+    return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
+      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto, this._moon];
+  }
+
+  getPlanets(): Planet[] {
+    return this.celestialObjects.filter((object: CelestialBody) => object instanceof Planet) as Planet[];
+  }
+  
+  getMoons(): Moon[] {
+    return this.celestialObjects.filter((object: CelestialBody) => object instanceof Moon) as Moon[];
+  }
+
+  getLabels(): Array<Label> {
+    return this.celestialObjects.map((object: CelestialBody) => object.label);
+  }
+
+  getOrbitLines(): Array<Line> {
+
+    let moonOrbitLines: Array<Line> = [];
+    let planetOrbitLines: Array<Line> = [];
+    this.getMoons().forEach((moon: Moon) => {
+      moonOrbitLines.push(moon.orbitLine);
+    });
+    this.getPlanets().forEach((planet: Planet) => {
+      planetOrbitLines.push(planet.orbitLine);
+    });
+    return moonOrbitLines.concat(planetOrbitLines);
   }
 
   async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
@@ -164,36 +193,6 @@ export class MainScene {
     }
   }
 
-  getCelestialObjects(): CelestialBody[] {
-    return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
-      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto, this._moon];
-  }
-
-  getPlanets(): Planet[] {
-    return this.getCelestialObjects().filter((object: CelestialBody) => object instanceof Planet) as Planet[];
-  }
-  
-  getMoons(): Moon[] {
-    return this.getCelestialObjects().filter((object: CelestialBody) => object instanceof Moon) as Moon[];
-  }
-
-  getLabels(): Array<Label> {
-    return this.getCelestialObjects().map((object: CelestialBody) => object.getLabel());
-  }
-
-  getOrbitLines(): Array<Line> {
-
-    let moonOrbitLines: Array<Line> = [];
-    let planetOrbitLines: Array<Line> = [];
-    this.getMoons().forEach((moon: Moon) => {
-      moonOrbitLines.push(moon.getOrbitLine());
-    });
-    this.getPlanets().forEach((planet: Planet) => {
-      planetOrbitLines.push(planet.getOrbitLine());
-    });
-    return moonOrbitLines.concat(planetOrbitLines);
-  }
-
   selectObject(object: CelestialBody): void {
 
     if (this._selectedObject === object) {
@@ -202,19 +201,19 @@ export class MainScene {
     }
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
-    this.getAudioController().playClick(1);
+    this.audioController.playClick(1);
   }
 
   private animate(): void {
 
     this._renderer.setAnimationLoop(() => {
-      this._devConsoleController.getStats().begin();
+      this._devConsoleController.stats.begin();
       this._timeController.update();
       if (this._selectedObject)
         this._uiController.showInfo(this._selectedObject);
       this._cameraController.update();
-      this._devConsoleController.getStats().end();
-      this._renderer.render(this._scene, this._cameraController.getCamera());
+      this._devConsoleController.stats.end();
+      this._renderer.render(this._scene, this._cameraController.camera);
     });
   }
 }
