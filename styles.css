@@ -161,6 +161,7 @@ button {
   color: white;
   user-select: none;
 }
+#sidebar #toggleMoons,
 #sidebar #toggleOrbits,
 #sidebar #toggleLabels {
   margin-top: 10px;
