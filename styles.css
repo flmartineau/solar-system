@@ -39,6 +39,15 @@ input {
   color: white;
   user-select: none;
 }
+#info .info-element {
+  display: flex;
+}
+#info #info-next-lunar-eclipse {
+  justify-content: center;
+}
+#info #info-next-lunar-eclipse #info-next-lunar-eclipse-button {
+  margin-top: 8px;
+}
 
 #date-container {
   position: relative;
