@@ -1,7 +1,6 @@
 import { Label } from '../components/celestial/Label';
 import { Moon } from '../components/celestial/Moon';
 import { Planet } from '../components/celestial/Planet';
-import { Earth } from '../components/celestial/planets/Earth';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
@@ -79,7 +78,7 @@ export class UIController {
       infoNextLunarEclipse.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
 
       let infoNextSolarEclipse: HTMLButtonElement = document.getElementById('info-next-solar-eclipse') as HTMLButtonElement;
-      infoNextSolarEclipse.style.display = (celestialObject instanceof Earth) ? 'flex' : 'none';
+      infoNextSolarEclipse.style.display = (celestialObject.name === 'Earth') ? 'flex' : 'none';
 
       this.infoElement.style.display = 'block';
     }
@@ -141,7 +140,7 @@ export class UIController {
   public toggleMoons(): void {
     this._moonsVisibility = !this._moonsVisibility;
 
-    this._mainScene.moonsVibility = this._moonsVisibility;
+    this._mainScene.moonsVisibility = this._moonsVisibility;
 
     const toggleMoonsIcon = document.getElementById('toggleMoons') as HTMLImageElement;
     if (toggleMoonsIcon) {

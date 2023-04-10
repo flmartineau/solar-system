@@ -1,15 +1,6 @@
 import { Scene, WebGLRenderer, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader, Line } from 'three';
 
-import { Sun } from '../components/celestial/Sun';
-import { Mercury } from '../components/celestial/planets/Mercury';
-import { Venus } from '../components/celestial/planets/Venus';
-import { Jupiter } from '../components/celestial/planets/Jupiter';
 import { Planet } from '../components/celestial/Planet';
-import { Earth } from '../components/celestial/planets/Earth';
-import { Mars } from '../components/celestial/planets/Mars';
-import { Saturn } from '../components/celestial/planets/Saturn';
-import { Uranus } from '../components/celestial/planets/Uranus';
-import { Neptune } from '../components/celestial/planets/Neptune';
 import { CameraController } from '../controllers/CameraController';
 import { MouseEvents } from '../controllers/MouseEvents';
 import { TimeController } from '../controllers/TimeController';
@@ -19,9 +10,8 @@ import { Label } from '../components/celestial/Label';
 import { UIController } from '../controllers/UIController';
 import { AudioController } from '../controllers/AudioController';
 import { DevConsoleController } from '../controllers/DevConsoleController';
-import { Pluto } from '../components/celestial/planets/Pluto';
-import { EarthMoon } from '../components/celestial/moons/EarthMoon';
 import { Moon } from '../components/celestial/Moon';
+import { SolarSystemFactory } from '../factories/SolarSystemFactory';
 
 
 export class MainScene {
@@ -33,27 +23,14 @@ export class MainScene {
   private _uiController: UIController;
   private _audioController: AudioController;
   private _devConsoleController: DevConsoleController;
+  private _solarSystemFactory?: SolarSystemFactory;
   private _mouseEvents: MouseEvents;
-
-  private _sun: Sun;
-
-  //Planets
-  private _mercury: Mercury;
-  private _venus: Venus;
-  private _earth: Earth;
-  private _mars: Mars;
-  private _jupiter: Jupiter;
-  private _saturn: Saturn;
-  private _uranus: Uranus;
-  private _neptune: Neptune;
-  private _pluto: Pluto;
-
-  //Moons
-  private _moon: EarthMoon;
 
   private _skybox: CubeTexture;
 
   private _selectedObject: CelestialBody | null;
+
+  private _moonsVisibility: boolean;
 
   constructor(container: HTMLElement) {
     this._scene = new Scene();
@@ -72,6 +49,7 @@ export class MainScene {
     this._audioController = new AudioController();
 
     this._selectedObject = null;
+    this._moonsVisibility = true;
     container.appendChild(this._renderer.domElement);
 
     // Load the _skybox textures
@@ -86,28 +64,30 @@ export class MainScene {
     
     this._timeController = new TimeController(this);
 
-
-    this._sun = new Sun(this);
-    this._mercury = new Mercury(this);
-    this._venus = new Venus(this);
-    this._earth = new Earth(this);
-    this._mars = new Mars(this);
-    this._jupiter = new Jupiter(this);
-    this._saturn = new Saturn(this);
-    this._uranus = new Uranus(this);
-    this._neptune = new Neptune(this);
-    this._pluto = new Pluto(this);
-
-    this._moon = this._earth.getMoon();
-
-    this._uiController.createCelestialObjectList();
-
-    this.animate();
-
     this._mouseEvents = new MouseEvents(this);
 
     TemplateHelper.initTemplates(this._mouseEvents);
+
+    this.loadData().then(() => {
+      this._uiController.createCelestialObjectList();
+
+      this.animate();
+
+    });
+
+  
+
+   
+
+    
   }
+
+  private async loadData() {
+    let dataRequest = await fetch('./data/solarsystem.json');
+    let data = await dataRequest.json();
+    this._solarSystemFactory = new SolarSystemFactory(data, this);
+  }
+
 
   get scene(): Scene {
     return this._scene;
@@ -141,11 +121,20 @@ export class MainScene {
     return this._devConsoleController;
   }
 
+  get solarSystemFactory(): SolarSystemFactory {
+    return this._solarSystemFactory as SolarSystemFactory;
+  }
+
   get selectedObject(): CelestialBody | null {
     return this._selectedObject;
   }
 
-  set moonsVibility(visible: boolean) {
+  get moonsVisibility(): boolean {
+    return this._moonsVisibility;
+  }
+
+  set moonsVisibility(visible: boolean) {
+    this._moonsVisibility = visible;
     this.moons.forEach((moon: Moon) => {
       moon.orbitLine.visible = visible;
       moon.label.visible = visible;
@@ -154,12 +143,13 @@ export class MainScene {
   }
 
   get celestialObjects(): CelestialBody[] {
-    return [this._sun, this._mercury, this._venus, this._earth, this._mars, 
-      this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto, this._moon];
+    if (!this.solarSystemFactory)
+     return [];
+    return this.solarSystemFactory?.celestialBodies;
   }
 
-  get earth(): Earth {
-    return this._earth;
+  get earth(): Planet {
+    return this.solarSystemFactory.getPlanetByIndex(2);
   }
 
   get planets(): Planet[] {
@@ -167,7 +157,7 @@ export class MainScene {
   }
   
   get moons(): Moon[] {
-    return this.celestialObjects.filter((object: CelestialBody) => object instanceof Moon) as Moon[];
+    return this.celestialObjects.filter((object: CelestialBody) => object.name == 'Moon') as Moon[];
   }
 
   get labels(): Array<Label> {

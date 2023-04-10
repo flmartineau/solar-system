@@ -27,6 +27,7 @@ export class Label extends Sprite {
         const material = new SpriteMaterial({ map: texture, transparent: true });
         material.depthWrite = false;
         super(material);
+        this.name = celestialBody.name + ' Label';
         this._mainScene = mainScene;
         this._celestialBody = celestialBody;
 

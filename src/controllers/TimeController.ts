@@ -75,7 +75,13 @@ export class TimeController {
       this._mainScene.celestialObjects.forEach((celestialBody: CelestialBody) => {
         celestialBody.updateLabel();
         let distanceToCamera: number = this._mainScene.cameraController.distanceToObject(celestialBody);
-        celestialBody.visible = (distanceToCamera < 3000);
+        if (celestialBody.name == "Moon") {
+          celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
+        } else {
+          celestialBody.visible = (distanceToCamera < 3000);
+        }
+
+
       });
       return;
     }
@@ -87,7 +93,11 @@ export class TimeController {
       celestialBody.update();
       celestialBody.updateLabel();
       let distanceToCamera: number = this._mainScene.cameraController.distanceToObject(celestialBody);
-      celestialBody.visible = (distanceToCamera < 3000);
+      if (celestialBody.name == "Moon") {
+        celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
+      } else {
+        celestialBody.visible = (distanceToCamera < 3000);
+      }
     });
 
     this._mainScene.uiController.updateDateDisplay();

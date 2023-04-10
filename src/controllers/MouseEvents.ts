@@ -6,6 +6,7 @@ import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { DateHelper } from '../helper/DateHelper';
 import { Moon } from '../components/celestial/Moon';
+import { NextGlobalSolarEclipse, NextLunarEclipse } from 'astronomy-engine';
 
 export class MouseEvents {
   private _mainScene: MainScene;
@@ -70,12 +71,11 @@ export class MouseEvents {
 
   public addInfoEventListeners(): void {
     document.getElementById('info-next-lunar-eclipse-button')?.addEventListener('click', () => {
-      let celestialObject: Moon = this._mainScene.moons[0];
-      this._mainScene.timeController.currentDate = celestialObject.nextLunarEclipse;
+      this._mainScene.timeController.currentDate = NextLunarEclipse(this._mainScene.timeController.currentDate).peak.date;
     });
 
     document.getElementById('info-next-solar-eclipse-button')?.addEventListener('click', () => {
-      this._mainScene.timeController.currentDate = this._mainScene.earth.nextSolarEclipse;
+      this._mainScene.timeController.currentDate = NextGlobalSolarEclipse(this._mainScene.timeController.currentDate).peak.date;
     });
   }
 

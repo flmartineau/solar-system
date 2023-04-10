@@ -80,6 +80,14 @@ module.exports = {
         },
       ],
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/data'),
+          to: path.resolve(__dirname, 'dist/data')
+        }
+      ]
+    }),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),

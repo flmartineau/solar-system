@@ -1,12 +1,17 @@
 import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
-import { PlanetConfig, SIZE_FACTOR } from '../../utils/constants';
+import { SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { ColorRepresentation, Material, PointLight, Texture, Vector3} from 'three';
+import { AdditiveBlending, BackSide, Color, ColorRepresentation, FrontSide, HexColorString, Material, Mesh, MeshPhongMaterial, PointLight, ShaderMaterial, SphereGeometry, Texture, Vector3} from 'three';
 import { EarthMoon } from './moons/EarthMoon';
 import { Moon } from './Moon';
 import {Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
 import { OrbitLine } from './OrbitLine';
+
+import glowFragmentShader from '../../assets/shaders/glow/glowFragment.glsl';
+import glowVertexShader from '../../assets/shaders/glow/glowVertex.glsl';
+import { IPlanet } from './interfaces/ISolarSystem';
+
 
 
 export class Planet extends CelestialBody {
@@ -22,17 +27,23 @@ export class Planet extends CelestialBody {
     private _pointLight;
     private _lensflare = new Lensflare();
     private _textureFlare: Texture;
+    private _lightColor: ColorRepresentation;
 
-    constructor(name: string, constants: PlanetConfig, material: Material, mainScene: MainScene, body: Body, lightColor: ColorRepresentation) {
+    constructor(data: IPlanet, mainScene: MainScene) {
 
-        super(mainScene,name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
+        const texture: Texture = mainScene.textureLoader.load(data.textures.base);
+        const material = new MeshPhongMaterial({ map: texture });
+
+
+        super(mainScene,data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body[data.name]);
         this._distanceToSun = 0;
-        this._orbitalPeriod = PlanetOrbitalPeriod(body);
+        this._orbitalPeriod = PlanetOrbitalPeriod(Body[data.name]);
+        this._lightColor = data.color as HexColorString;
         this._textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
         
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
-        this._pointLight = new PointLight(lightColor, 0, 0);
+        this._pointLight = new PointLight(this._lightColor, 0, 0);
     
         this._lensflare.addElement(new LensflareElement(this._textureFlare, 20, 0, this._pointLight.color));
        
@@ -40,6 +51,15 @@ export class Planet extends CelestialBody {
         
 
         this.mainScene.scene.add(this._orbitLine);
+
+        if (data.textures.cloud) {
+            this.addClouds(data.textures.cloud);
+        }
+
+        if (data.hasAtmosphere) {
+            this.addGlow();
+        }
+
     }
 
     get distanceToSun(): number {
@@ -158,4 +178,33 @@ export class Planet extends CelestialBody {
                 break;
         }
     }
+
+    private addClouds(texturePath: string): void {
+        const geometry = new SphereGeometry(this.radius * 1.001, 128, 128);
+        const cloudTexture = this.mainScene.textureLoader.load(texturePath);
+        const atmosphere = new MeshPhongMaterial({
+          side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture });
+        this.add(new Mesh(geometry, atmosphere));
+      }
+
+
+      private addGlow(): void {
+        let glowMaterial = new ShaderMaterial({
+          uniforms: {
+            "c": { value: 0.4 },
+            "p": { value: 4.5 },
+            glowColor: { value: new Color(this._lightColor) },
+            viewVector: { value: this.mainScene.cameraController.camera.position }
+          },
+          vertexShader: glowVertexShader,
+          fragmentShader: glowFragmentShader,
+          side: BackSide,
+          blending: AdditiveBlending,
+          transparent: true
+        });
+    
+        let venusGlow = new Mesh(new SphereGeometry(this.radius, 128, 128), glowMaterial);
+        venusGlow.scale.multiplyScalar(1.02);
+        this.add(venusGlow);
+      }
 }
