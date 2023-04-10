@@ -1,7 +1,6 @@
 import { Label } from '../components/celestial/Label';
 import { Moon } from '../components/celestial/Moon';
 import { Planet } from '../components/celestial/Planet';
-import { Star } from '../components/celestial/Star';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
@@ -49,43 +48,42 @@ export class UIController {
   }
 
   public showInfo(celestialObject: any): void {
-    if (celestialObject instanceof Star) {
-      if (this.infoElement) {
-        this.infoElement.innerHTML = `
-          <strong>Name:</strong> ${celestialObject.name}<br>
-          <strong>Mass:</strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature:</strong> ${celestialObject.temperature} K
-        `;
-        this.infoElement.style.display = 'block';
-      }
 
-    } else if (celestialObject instanceof Planet) {
-      if (this.infoElement) {
-        this.infoElement.innerHTML = `
-          <strong>Name: </strong> ${celestialObject.name}<br>
-          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
-          <strong>Distance From Sun: </strong> ${celestialObject.distanceToSun} km<br>
-          <strong>Orbital Period: </strong> ${celestialObject.orbitalPeriod} days
-        `;
-        this.infoElement.style.display = 'block';
-      }
-    } else if (celestialObject instanceof Moon) {
-      if (this.infoElement) {
-        this.infoElement.innerHTML = `
-          <strong>Name: </strong> ${celestialObject.name}<br>
-          <strong>Mass: </strong> ${celestialObject.mass} kg<br>
-          <strong>Temperature: </strong> ${celestialObject.temperature} K<br>
-        `;
-        this.infoElement.style.display = 'block';
-      }
-    
-    
+    if (this.infoElement) {
+
+      let infoName: HTMLElement = document.getElementById('info-name-value') as HTMLElement;
+      infoName.innerHTML = celestialObject.name;
+
+      let infoMass: HTMLElement = document.getElementById('info-mass-value') as HTMLElement;
+      infoMass.innerHTML = `${celestialObject.mass} kg`;
+
+      let infoTemperature: HTMLElement = document.getElementById('info-temperature-value') as HTMLElement;
+      infoTemperature.innerHTML = `${celestialObject.temperature} K`;
+
+      let infoDistanceFromSun: HTMLElement = document.getElementById('info-distance-sun-value') as HTMLElement;
+      infoDistanceFromSun.innerHTML = `${celestialObject.distanceToSun} km`;
+      document.getElementById('info-distance-sun')!.style.display = (celestialObject instanceof Planet) ? 'flex' : 'none';
+
+      let infoDistanceFromPlanet: HTMLElement = document.getElementById('info-distance-planet-value') as HTMLElement;
+      infoDistanceFromPlanet.innerHTML = `${celestialObject.distanceToPlanet} km`;
+      document.getElementById('info-distance-planet')!.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
+
+
+      let infoOrbitalPeriod: HTMLElement = document.getElementById('info-orbital-period-value') as HTMLElement;
+      infoOrbitalPeriod.innerHTML = `${celestialObject.orbitalPeriod} days`;
+      document.getElementById('info-orbital-period')!.style.display = (celestialObject instanceof Planet) ? 'flex' : 'none';
+
+
+      let infoNextLunarEclipse: HTMLButtonElement = document.getElementById('info-next-lunar-eclipse') as HTMLButtonElement;
+      infoNextLunarEclipse.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
+
+      this.infoElement.style.display = 'block';
     }
+
   }
 
   public hideInfo(): void {
-    if (this._mainScene.selectedObject !== null) 
+    if (this._mainScene.selectedObject !== null)
       return;
     const infoElement = document.getElementById('info');
     if (infoElement) {
@@ -140,10 +138,10 @@ export class UIController {
     this._moonsVisibility = !this._moonsVisibility;
 
     this._mainScene.moonsVibility = this._moonsVisibility;
-    
+
     const toggleMoonsIcon = document.getElementById('toggleMoons') as HTMLImageElement;
     if (toggleMoonsIcon) {
-     toggleMoonsIcon.src = this._moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
+      toggleMoonsIcon.src = this._moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
     }
     this._mainScene.audioController.playClick(2);
   }

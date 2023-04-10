@@ -1,19 +1,24 @@
-import { BufferGeometry, LineBasicMaterial, Material, Vector3 } from 'three';
+import { Material, Vector3 } from 'three';
 import { MainScene } from '../../scenes/MainScene';
 import { MoonConfig, SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
-import { Vector, Body, GeoVector, HelioVector } from 'astronomy-engine';
+import { Vector, Body, GeoVector, HelioVector, KM_PER_AU, NextLunarEclipse } from 'astronomy-engine';
 import { Planet } from './Planet';
 import { OrbitLine } from './OrbitLine';
 
 export class Moon extends CelestialBody {
 
+    private _distanceToPlanet: number;
     private _orbitalPeriod: number;
     private _orbitLine: OrbitLine;
     private _planet: Planet;
 
+    private _nextLunarEclipse: Date;
+
     constructor(name: string, constants: MoonConfig, material: Material, mainScene: MainScene, body: Body, planet: Planet) {
         super(mainScene, name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
+        this._distanceToPlanet = 0;
+        this._nextLunarEclipse = NextLunarEclipse(mainScene.timeController.currentDate).peak.date;
         this._orbitalPeriod = 27,322 * 24 * 60 * 60 * 1000; //millisecondes;
         
         this._planet = planet;
@@ -27,6 +32,14 @@ export class Moon extends CelestialBody {
 
     get orbitLine(): OrbitLine {
         return this._orbitLine;
+    }
+
+    get distanceToPlanet(): number {
+        return this._distanceToPlanet;
+    }
+
+    get nextLunarEclipse(): Date {
+        return this._nextLunarEclipse;
     }
 
     private updateOrbitGeometry(segments: number = 200): Vector3[] {
@@ -83,6 +96,12 @@ export class Moon extends CelestialBody {
     public updateOrbit(): void {
         let helioVector: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
         let geoVector: Vector = GeoVector(this.body, this.mainScene.timeController.currentDate, true);
+
+        this._distanceToPlanet = Math.round(
+            Math.sqrt(Math.pow(geoVector.x, 2) + Math.pow(geoVector.y, 2) + Math.pow(geoVector.z, 2))*KM_PER_AU);
+
+
+        this._nextLunarEclipse = NextLunarEclipse(this.mainScene.timeController.currentDate).peak.date;
                 
         let x: number = (helioVector.x + geoVector.x) * SIZE_FACTOR;
         let y: number = (helioVector.y + geoVector.y) * SIZE_FACTOR;

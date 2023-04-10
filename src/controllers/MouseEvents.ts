@@ -5,6 +5,7 @@ import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { DateHelper } from '../helper/DateHelper';
+import { Moon } from '../components/celestial/Moon';
 
 export class MouseEvents {
   private _mainScene: MainScene;
@@ -65,6 +66,13 @@ export class MouseEvents {
       }
     });
 
+  }
+
+  public addInfoEventListeners(): void {
+    document.getElementById('info-next-lunar-eclipse-button')?.addEventListener('click', () => {
+      let celestialObject: Moon = this._mainScene.getMoons()[0];
+      this._mainScene.timeController.currentDate = celestialObject.nextLunarEclipse;
+    });
   }
 
   public addControlEventListeners(): void {

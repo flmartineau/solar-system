@@ -4,14 +4,14 @@
     "gh-pages": "^5.0.0",
     "moment": "^2.29.4",
     "stats.js": "^0.17.0",
-    "three": "^0.151.2"
+    "three": "^0.151.3"
   },
   "name": "space-time-voyage",
   "description": "",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "@types/three": "^0.150.0",
+    "@types/three": "^0.150.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
     "file-loader": "^6.2.0",
@@ -19,6 +19,7 @@
     "html-webpack-plugin": "^5.5.0",
     "lil-gui": "^0.18.1",
     "mini-css-extract-plugin": "^2.7.5",
+    "raw-loader": "^4.0.2",
     "sass": "^1.60.0",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",

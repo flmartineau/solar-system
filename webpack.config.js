@@ -59,6 +59,10 @@ module.exports = {
           mimetype: 'audio/mpeg',
         },
       },
+      {
+        test: /\.glsl$/,
+        use: 'raw-loader',
+      },
     ],
   },
   plugins: [
