@@ -78,7 +78,9 @@ export class Planet extends CelestialBody {
 
     public update(): void {
         super.update();
-        this._distanceToSun = Math.round(HelioDistance(this.body, this.mainScene.timeController.currentDate)* KM_PER_AU);
+        
+        if (this.isSelected)
+            this._distanceToSun = Math.round(HelioDistance(this.body, this.mainScene.timeController.currentDate)* KM_PER_AU);
         let v: Vector = HelioVector(this.body, this.mainScene.timeController.currentDate);
         let x: number = v.x * SIZE_FACTOR;
         let y: number = v.y * SIZE_FACTOR;
@@ -96,10 +98,7 @@ export class Planet extends CelestialBody {
             moon.refreshOrbitLine();
         });
 
-
         this.updateLighting();
-
-
 
         this.lastOrbitLineUpdateTime = this.lastOrbitLineUpdateTime + this.mainScene.timeController.elapsedTime;
         // Check if it's time to update the orbit line

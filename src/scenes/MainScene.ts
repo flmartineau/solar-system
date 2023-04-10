@@ -192,10 +192,14 @@ export class MainScene {
     if (object.name == '')
       return;
 
+      object.isSelected = true;
+
     if (this._selectedObject === object) {
       this._cameraController.zoomToObject(this._selectedObject);
       return;
     }
+    if (this._selectedObject)
+      this._selectedObject.isSelected = false;
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
     this.audioController.playClick(1);

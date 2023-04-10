@@ -94,15 +94,16 @@ export class Moon extends CelestialBody {
 
 
     public updateOrbit(): void {
+
         let helioVector: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
         let geoVector: Vector = GeoVector(this.body, this.mainScene.timeController.currentDate, true);
 
-        this._distanceToPlanet = Math.round(
-            Math.sqrt(Math.pow(geoVector.x, 2) + Math.pow(geoVector.y, 2) + Math.pow(geoVector.z, 2))*KM_PER_AU);
+        if (this.isSelected) {
+            this._distanceToPlanet = Math.round(
+                Math.sqrt(Math.pow(geoVector.x, 2) + Math.pow(geoVector.y, 2) + Math.pow(geoVector.z, 2))*KM_PER_AU);
+            this._nextLunarEclipse = NextLunarEclipse(this.mainScene.timeController.currentDate).peak.date;
+        }
 
-
-        this._nextLunarEclipse = NextLunarEclipse(this.mainScene.timeController.currentDate).peak.date;
-                
         let x: number = (helioVector.x + geoVector.x) * SIZE_FACTOR;
         let y: number = (helioVector.y + geoVector.y) * SIZE_FACTOR;
         let z: number = (helioVector.z + geoVector.z) * SIZE_FACTOR;

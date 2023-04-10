@@ -1,5 +1,5 @@
 - Real Time rotation coordinates of Planets
-- Infos : next eclipse date, apoapsis, seasons, moon phases, transit
+- Infos : apoapsis, seasons, moon phases, transit
 - add barycentric positions
 - add correct rotation axis
 - display lagrange points
@@ -10,5 +10,4 @@
 - improved graphics
 - add rings
 - global events menu
-- add orbit line class
 - add JSON for planet constants and make calculations with no library

@@ -14,6 +14,8 @@ export class CelestialBody extends Mesh {
     private _label: Label;
     private _body: Body;
 
+    private _isSelected: boolean = false;
+
 
     constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
         mass: number, temperature: number, body: Body) {
@@ -56,13 +58,22 @@ export class CelestialBody extends Mesh {
         return this._body;
     }
 
+    get isSelected(): boolean {
+        return this._isSelected;
+    }
+
+    set isSelected(value: boolean) {
+        this._isSelected = value;
+    }
+
     public addToMainScene(): void { 
         this.mainScene.scene.add(this);
         this.mainScene.scene.add(this._label);
     }
 
     public update(): void {
-        this.updateRotation();
+        if (this.visible)
+            this.updateRotation();
     }
 
     public updateLabel(): void {

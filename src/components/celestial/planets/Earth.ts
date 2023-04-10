@@ -6,9 +6,8 @@ import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
 import { EarthMoon } from '../moons/EarthMoon';
 
-import glowFragmentShader from '../../../assets/shaders/earth/glowFragment.glsl';
-import glowVertexShader from '../../../assets/shaders/earth/glowVertex.glsl';
-import { NextLocalSolarEclipse } from 'astronomy-engine';
+import glowFragmentShader from '../../../assets/shaders/glow/glowFragment.glsl';
+import glowVertexShader from '../../../assets/shaders/glow/glowVertex.glsl';
 
 export class Earth extends Planet {
 
@@ -80,7 +79,8 @@ export class Earth extends Planet {
 
 
   public update(): void {
-      this._nextSolarEclipse = NextGlobalSolarEclipse(this.mainScene.timeController.currentDate).peak.date;
+      if (this.isSelected)
+        this._nextSolarEclipse = NextGlobalSolarEclipse(this.mainScene.timeController.currentDate).peak.date;
       super.update();
   }
 }
