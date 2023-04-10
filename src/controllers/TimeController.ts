@@ -8,6 +8,7 @@ import { PlanetOrbitalPeriod } from 'astronomy-engine';
 export class TimeController {
   private _currentDate: Date;
   private _simulationSpeed: number;
+  private _elapsedTime: number;
   private _isPlaying: boolean;
   private _clock: Clock;
 
@@ -19,6 +20,7 @@ export class TimeController {
     this._simulationSpeed = 1;
     this._isPlaying = true;
     this._clock = new Clock();
+    this._elapsedTime = this.deltaTime * 1000 * this._simulationSpeed;
   }
 
   get deltaTime(): number {
@@ -27,6 +29,14 @@ export class TimeController {
 
   get simulationSpeed(): number {
     return this._simulationSpeed;
+  }
+
+  get elapsedTime(): number {
+    return this._elapsedTime;
+  }
+
+  set elapsedTime(elapsedTime: number) {
+    this._elapsedTime = elapsedTime;
   }
 
   set simulationSpeed(speed: number) {
@@ -63,41 +73,21 @@ export class TimeController {
   public update(): void {
     if (!this._isPlaying) {
       this._mainScene.celestialObjects.forEach((celestialBody: CelestialBody) => {
-        if (celestialBody instanceof Planet)
-          (celestialBody as Planet).updateLabel();
         celestialBody.updateLabel();
+        let distanceToCamera: number = this._mainScene.cameraController.distanceToObject(celestialBody);
+        celestialBody.visible = (distanceToCamera < 3000);
       });
       return;
     }
 
-    const elapsedTime: number =  this.deltaTime * 1000 * this._simulationSpeed;
-
-    this._currentDate = new Date(this._currentDate.getTime() + elapsedTime);
+    this.elapsedTime = this.deltaTime * 1000 * this._simulationSpeed;
+    this._currentDate = new Date(this._currentDate.getTime() + this.elapsedTime);
 
     this._mainScene.celestialObjects.forEach((celestialBody: CelestialBody) => {
-      celestialBody.updateRotation();
-
-      if (celestialBody instanceof Planet) {
-        celestialBody.updateOrbit();
-        celestialBody.lastOrbitLineUpdateTime = celestialBody.lastOrbitLineUpdateTime + elapsedTime;
-
-        const orbitalPeriod: number = PlanetOrbitalPeriod(celestialBody.body) * 24 * 60 * 60 * 1000;
-
-        // Check if it's time to update the orbit line
-        if (celestialBody.lastOrbitLineUpdateTime >= orbitalPeriod) {
-          celestialBody.refreshOrbitLine();
-          celestialBody.lastOrbitLineUpdateTime = 0;
-        }
-      } 
-      
+      celestialBody.update();
       celestialBody.updateLabel();
-
-      if (celestialBody instanceof Star) {
-        let distanceToCamera = this._mainScene.cameraController.distanceToObject(celestialBody);
-        celestialBody.visible = (distanceToCamera < 3000);
-      }
-      
-      
+      let distanceToCamera: number = this._mainScene.cameraController.distanceToObject(celestialBody);
+      celestialBody.visible = (distanceToCamera < 3000);
     });
 
     this._mainScene.uiController.updateDateDisplay();

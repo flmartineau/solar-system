@@ -41,6 +41,15 @@ input {
     display: flex;
   }
 
+  #info-next-solar-eclipse {
+    justify-content: center;
+
+    #info-next-solar-eclipse-button {
+      margin-top: 8px;
+    }
+  }
+
+
   #info-next-lunar-eclipse {
     justify-content: center;
 

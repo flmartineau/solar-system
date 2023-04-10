@@ -1,6 +1,7 @@
 import { Label } from '../components/celestial/Label';
 import { Moon } from '../components/celestial/Moon';
 import { Planet } from '../components/celestial/Planet';
+import { Earth } from '../components/celestial/planets/Earth';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
@@ -77,6 +78,9 @@ export class UIController {
       let infoNextLunarEclipse: HTMLButtonElement = document.getElementById('info-next-lunar-eclipse') as HTMLButtonElement;
       infoNextLunarEclipse.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
 
+      let infoNextSolarEclipse: HTMLButtonElement = document.getElementById('info-next-solar-eclipse') as HTMLButtonElement;
+      infoNextSolarEclipse.style.display = (celestialObject instanceof Earth) ? 'flex' : 'none';
+
       this.infoElement.style.display = 'block';
     }
 
@@ -101,12 +105,12 @@ export class UIController {
 
   public toggleOrbitLines(): void {
     let orbitLinesVisible: boolean = false;
-    this._mainScene.getPlanets().forEach((planet: Planet) => {
+    this._mainScene.planets.forEach((planet: Planet) => {
       planet.orbitLine.visible = !planet.orbitLine.visible;
       orbitLinesVisible = planet.orbitLine.visible;
     });
 
-    this._mainScene.getMoons().forEach((moon: Moon) => {
+    this._mainScene.moons.forEach((moon: Moon) => {
       moon.orbitLine.visible = !moon.orbitLine.visible;
       orbitLinesVisible = moon.orbitLine.visible;
     });
@@ -121,7 +125,7 @@ export class UIController {
 
   public toggleLabels(): void {
     this._labelsVisibility = !this._labelsVisibility;
-    this._mainScene.getLabels().forEach((label: Label) => {
+    this._mainScene.labels.forEach((label: Label) => {
       label.visible = this._labelsVisibility
     });
 

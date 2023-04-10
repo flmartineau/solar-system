@@ -70,8 +70,12 @@ export class MouseEvents {
 
   public addInfoEventListeners(): void {
     document.getElementById('info-next-lunar-eclipse-button')?.addEventListener('click', () => {
-      let celestialObject: Moon = this._mainScene.getMoons()[0];
+      let celestialObject: Moon = this._mainScene.moons[0];
       this._mainScene.timeController.currentDate = celestialObject.nextLunarEclipse;
+    });
+
+    document.getElementById('info-next-solar-eclipse-button')?.addEventListener('click', () => {
+      this._mainScene.timeController.currentDate = this._mainScene.earth.nextSolarEclipse;
     });
   }
 
@@ -96,7 +100,7 @@ export class MouseEvents {
     this._mainScene.cameraController.setFromCamera(event, this._raycaster);
 
     const celestialObjects: Array<CelestialBody> = this._mainScene.celestialObjects;
-    const celestialLabels: Array<Label> = this._mainScene.getLabels();
+    const celestialLabels: Array<Label> = this._mainScene.labels;
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =
@@ -123,7 +127,7 @@ export class MouseEvents {
     this._mainScene.cameraController.setFromCamera(event, this._raycaster);
 
     const celestialObjects: Array<CelestialBody> = this._mainScene.celestialObjects;
-    const celestialLabels: Array<Label> = this._mainScene.getLabels();
+    const celestialLabels: Array<Label> = this._mainScene.labels;
     const intersectsObjects: Array<Intersection<Object3D<Event>>> =
       this._raycaster.intersectObjects(celestialObjects);
     const intersectsLabels: Array<Intersection<Object3D<Event>>> =

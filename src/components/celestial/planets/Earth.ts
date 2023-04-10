@@ -1,6 +1,6 @@
 import { AdditiveBlending, BackSide, Color, ColorRepresentation, FrontSide, Mesh, MeshPhongMaterial, ShaderMaterial, SphereGeometry, TextureLoader } from 'three';
 
-import { Body } from 'astronomy-engine';
+import { Body, NextGlobalSolarEclipse } from 'astronomy-engine';
 import { constants } from '../../../utils/constants';
 import { Planet } from '../Planet';
 import { MainScene } from '../../../scenes/MainScene';
@@ -8,8 +8,11 @@ import { EarthMoon } from '../moons/EarthMoon';
 
 import glowFragmentShader from '../../../assets/shaders/earth/glowFragment.glsl';
 import glowVertexShader from '../../../assets/shaders/earth/glowVertex.glsl';
+import { NextLocalSolarEclipse } from 'astronomy-engine';
 
 export class Earth extends Planet {
+
+  private _nextSolarEclipse: Date;
 
   constructor(mainScene: MainScene) {
 
@@ -29,6 +32,12 @@ export class Earth extends Planet {
     this.addClouds();
     this.addGlow();
     this.addEarthMoon();
+    this._nextSolarEclipse = NextGlobalSolarEclipse(mainScene.timeController.currentDate).peak.date;
+  }
+
+
+  get nextSolarEclipse(): Date {
+    return this._nextSolarEclipse;
   }
 
   private addClouds(): void {
@@ -67,5 +76,11 @@ export class Earth extends Planet {
 
   public getMoon(): EarthMoon {
     return this.moons[0];
+  }
+
+
+  public update(): void {
+      this._nextSolarEclipse = NextGlobalSolarEclipse(this.mainScene.timeController.currentDate).peak.date;
+      super.update();
   }
 }

@@ -60,7 +60,10 @@ export class CelestialBody extends Mesh {
         this.mainScene.scene.add(this);
         this.mainScene.scene.add(this._label);
     }
-    
+
+    public update(): void {
+        this.updateRotation();
+    }
 
     public updateLabel(): void {
         this._label.update(this.mainScene.cameraController.camera);

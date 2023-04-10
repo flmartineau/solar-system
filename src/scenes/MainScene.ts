@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, PointLight, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader, Line } from 'three';
+import { Scene, WebGLRenderer, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader, Line } from 'three';
 
 import { Sun } from '../components/celestial/Sun';
 import { Mercury } from '../components/celestial/planets/Mercury';
@@ -146,7 +146,7 @@ export class MainScene {
   }
 
   set moonsVibility(visible: boolean) {
-    this.getMoons().forEach((moon: Moon) => {
+    this.moons.forEach((moon: Moon) => {
       moon.orbitLine.visible = visible;
       moon.label.visible = visible;
       moon.visible = visible;
@@ -158,42 +158,39 @@ export class MainScene {
       this._jupiter, this._saturn, this._uranus, this._neptune, this._pluto, this._moon];
   }
 
-  getPlanets(): Planet[] {
+  get earth(): Earth {
+    return this._earth;
+  }
+
+  get planets(): Planet[] {
     return this.celestialObjects.filter((object: CelestialBody) => object instanceof Planet) as Planet[];
   }
   
-  getMoons(): Moon[] {
+  get moons(): Moon[] {
     return this.celestialObjects.filter((object: CelestialBody) => object instanceof Moon) as Moon[];
   }
 
-  getLabels(): Array<Label> {
+  get labels(): Array<Label> {
     return this.celestialObjects.map((object: CelestialBody) => object.label);
   }
 
-  getOrbitLines(): Array<Line> {
+  get orbitLines(): Array<Line> {
 
     let moonOrbitLines: Array<Line> = [];
     let planetOrbitLines: Array<Line> = [];
-    this.getMoons().forEach((moon: Moon) => {
+    this.moons.forEach((moon: Moon) => {
       moonOrbitLines.push(moon.orbitLine);
     });
-    this.getPlanets().forEach((planet: Planet) => {
+    this.planets.forEach((planet: Planet) => {
       planetOrbitLines.push(planet.orbitLine);
     });
     return moonOrbitLines.concat(planetOrbitLines);
   }
 
-  async fetchAndInsertContent(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
-    const response: Response = await fetch(contentUrl);
-    const content: string = await response.text();
-    const container: HTMLElement | null = document.getElementById(containerId);
-    container!.innerHTML = content;
-    if (callback) {
-      callback();
-    }
-  }
-
   selectObject(object: CelestialBody): void {
+
+    if (object.name == '')
+      return;
 
     if (this._selectedObject === object) {
       this._cameraController.zoomToObject(this._selectedObject);
