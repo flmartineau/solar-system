@@ -42,6 +42,12 @@ input {
 #info .info-element {
   display: flex;
 }
+#info #info-next-solar-eclipse {
+  justify-content: center;
+}
+#info #info-next-solar-eclipse #info-next-solar-eclipse-button {
+  margin-top: 8px;
+}
 #info #info-next-lunar-eclipse {
   justify-content: center;
 }
