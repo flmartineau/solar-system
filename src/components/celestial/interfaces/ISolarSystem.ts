@@ -32,7 +32,7 @@ export interface IPlanet {
 
 export interface IMoon {
     id: string;
-    name: string;
+    name: 'Moon';
     radius: number;
     mass: number;
     color: string;

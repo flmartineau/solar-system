@@ -1,17 +1,16 @@
 import { CelestialBody } from "../components/celestial/CelestialBody";
 import { Planet } from "../components/celestial/Planet";
-import { Star } from "../components/celestial/Star";
 import { Sun } from "../components/celestial/Sun";
 import { MainScene } from "../scenes/MainScene";
-import { EarthMoon } from "../components/celestial/moons/EarthMoon";
-import { IPlanet, ISolarSystem, ISun } from "../components/celestial/interfaces/ISolarSystem";
+import { IMoon, IPlanet, ISolarSystem, ISun } from "../components/celestial/interfaces/ISolarSystem";
+import { Moon } from "../components/celestial/Moon";
 
 export class SolarSystemFactory {
 
     private _data: any;
     private _mainScene: MainScene;
 
-    private _sun: Star;
+    private _sun: Sun;
     private _planets: Array<Planet>;
 
     constructor(data: ISolarSystem, mainScene: MainScene) {
@@ -23,7 +22,7 @@ export class SolarSystemFactory {
     }
 
     public buildSun(data: ISun): Sun {
-       return new Sun(this._mainScene);
+       return new Sun(data, this._mainScene);
     }
 
     private buildPlanets(data: IPlanet[]): Array<Planet> {
@@ -32,26 +31,20 @@ export class SolarSystemFactory {
         data.forEach((p: IPlanet) => {
             let planet = new Planet(p, this._mainScene);
             planets.push(planet);
-
             if (p.moons.length > 0) {
                 this.buildMoons(planet, p.moons);
             }
-
         });
 
         return planets;
     }
 
-
     private buildMoons(planet: Planet, data: any): void {
-
-        if (planet.name !== 'Earth')
-            return;
-
-        let moon = new EarthMoon(this._mainScene, planet);
-        planet.addMoon(moon);
+        data.forEach((m: IMoon) => {
+            let moon = new Moon(m, this._mainScene, planet);
+            planet.addMoon(moon);
+        });
     }
-
 
     public getPlanet(name: string): Planet | undefined {
         return this._planets.find((p: Planet) => p.name === name);
@@ -61,7 +54,7 @@ export class SolarSystemFactory {
         return this._planets[index];
     }
 
-    public get sun(): Star {
+    public get sun(): Sun {
         return this._sun;
     }
 

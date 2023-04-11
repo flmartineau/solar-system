@@ -2,8 +2,7 @@ import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, Rotat
 import { CelestialBody } from './CelestialBody';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { AdditiveBlending, BackSide, Color, ColorRepresentation, FrontSide, HexColorString, Material, Mesh, MeshPhongMaterial, PointLight, ShaderMaterial, SphereGeometry, Texture, Vector3} from 'three';
-import { EarthMoon } from './moons/EarthMoon';
+import { AdditiveBlending, BackSide, Color, ColorRepresentation, FrontSide, HexColorString, LineBasicMaterial, Material, Mesh, MeshPhongMaterial, PointLight, ShaderMaterial, SphereGeometry, Texture, Vector3} from 'three';
 import { Moon } from './Moon';
 import {Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
 import { OrbitLine } from './OrbitLine';
@@ -86,6 +85,11 @@ export class Planet extends CelestialBody {
         return this._orbitalPeriod;
     }
 
+    set isSelected(value: boolean) {
+        super.isSelected = value;
+        (this.orbitLine.material as LineBasicMaterial).color = new Color(value ? 0x0f2e82 : 0x333333);
+    }
+
     public updateLighting(): void {
         this.mainScene.scene.remove(this._pointLight);
         this._pointLight.position.set(this.position.x, this.position.y, this.position.z);
@@ -165,17 +169,6 @@ export class Planet extends CelestialBody {
             this._orbitLine.geometry.dispose();
             this._orbitLine = this.createOrbitLine();
             this.mainScene.scene.add(this._orbitLine);
-        }
-    }
-
-    public addMoons(): void {
-        switch (this.name) {
-            case 'Earth':
-                let moon = new EarthMoon(this.mainScene, this);
-                this._moons.push(moon);
-                break;
-            default:
-                break;
         }
     }
 

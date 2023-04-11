@@ -1,10 +1,11 @@
-import { Material, Vector3 } from 'three';
+import { MeshPhongMaterial, Texture, Vector3 } from 'three';
 import { MainScene } from '../../scenes/MainScene';
-import { MoonConfig, SIZE_FACTOR } from '../../utils/constants';
+import { SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
-import { Vector, Body, GeoVector, HelioVector, KM_PER_AU, NextLunarEclipse } from 'astronomy-engine';
+import { Vector, Body, GeoVector, HelioVector, KM_PER_AU } from 'astronomy-engine';
 import { Planet } from './Planet';
 import { OrbitLine } from './OrbitLine';
+import { IMoon } from './interfaces/ISolarSystem';
 
 export class Moon extends CelestialBody {
 
@@ -13,10 +14,14 @@ export class Moon extends CelestialBody {
     private _orbitLine: OrbitLine;
     private _planet: Planet;
 
-    constructor(name: string, constants: MoonConfig, material: Material, mainScene: MainScene, body: Body, planet: Planet) {
-        super(mainScene, name, constants.radius * SIZE_FACTOR, material, constants.mass, constants.temperature, body);
+    constructor(data: IMoon, mainScene: MainScene, planet: Planet) {
+        
+        const texture: Texture = mainScene.textureLoader.load(data.textures.base);
+        const material = new MeshPhongMaterial({ map: texture });
+        
+        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body[data.name]);
         this._distanceToPlanet = 0;
-        this._orbitalPeriod = 27,322 * 24 * 60 * 60 * 1000; //millisecondes;
+        this._orbitalPeriod = data.orbit.period;
         
         this._planet = planet;
         this._orbitLine = this.createOrbitLine();

@@ -1,9 +1,6 @@
 import { Clock } from 'three';
 import { CelestialBody } from '../components/celestial/CelestialBody';
-import { Planet } from '../components/celestial/Planet';
-import { Star } from '../components/celestial/Star';
 import { MainScene } from '../scenes/MainScene';
-import { PlanetOrbitalPeriod } from 'astronomy-engine';
 
 export class TimeController {
   private _currentDate: Date;

@@ -72,9 +72,9 @@
                 },
                 "moons": [
                     {
-                        "id": 301,
+                        "id": "3A",
                         "name": "Moon",
-                        "radius": 1737.1,
+                        "radius": 1737.4,
                         "mass": 7.342e22,
                         "color": "#a29d98",
                         "textures": {
@@ -109,44 +109,7 @@
                     "period": 686.9796,
                     "inclination": 1.850
                 },
-                "moons": [
-                    {
-                        "id": 401,
-                        "name": "Phobos",
-                        "radius": 11.2667,
-                        "mass": 1.0659e16,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/phobos.jpg"
-                        },
-                        "temperature": 233,
-                        "rotationPeriod": 0.31891,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 9376,
-                            "period": 0.31891,
-                            "inclination": 1.075
-                        }
-                    },
-                    {
-                        "id": 402,
-                        "name": "Deimos",
-                        "radius": 6.2,
-                        "mass": 1.4762e15,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/deimos.jpg"
-                        },
-                        "temperature": 233,
-                        "rotationPeriod": 1.26244,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 23463.2,
-                            "period": 1.26244,
-                            "inclination": 0.93
-                        }
-                    }
-                ]
+                "moons": []
             },
             {
                 "id": 5,
@@ -165,80 +128,7 @@
                     "period": 4332.589,
                     "inclination": 1.304
                 },
-                "moons": [
-                    {
-                        "id": 501,
-                        "name": "Io",
-                        "radius": 1821.6,
-                        "mass": 8.931938e22,
-                        "color": "#dab76e",
-                        "textures": {
-                            "base": "./assets/textures/io.jpg"
-                        },
-                        "temperature": 130,
-                        "rotationPeriod": 1.7691378,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 421700,
-                            "period": 1.7691378,
-                            "inclination": 0.04
-                        }
-                    },
-                    {
-                        "id": 502,
-                        "name": "Europa",
-                        "radius": 1560.8,
-                        "mass": 4.799844e22,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/europa.jpg"
-                        },
-                        "temperature": 102,
-                        "rotationPeriod": 3.551181,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 671100,
-                            "period": 3.551181,
-                            "inclination": 0.47
-                        }
-                    },
-                    {
-                        "id": 503,
-                        "name": "Ganymede",
-                        "radius": 2634.1,
-                        "mass": 1.4819e23,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/ganymede.jpg"
-                        },
-                        "temperature": 110,
-                        "rotationPeriod": 7.154553,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 1070400,
-                            "period": 7.154553,
-                            "inclination": 0.20
-                        }
-                    },
-                    {
-                        "id": 504,
-                        "name": "Callisto",
-                        "radius": 2410.3,
-                        "mass": 1.075938e23,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/callisto.jpg"
-                        },
-                        "temperature": 134,
-                        "rotationPeriod": 16.689018,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 1882700,
-                            "period": 16.689018,
-                            "inclination": 0.192
-                        }
-                    }
-                ]
+                "moons": []
             },
             {
                 "id": 6,
@@ -257,62 +147,7 @@
                     "period": 10759.22,
                     "inclination": 2.485
                 },
-                "moons": [
-                    {
-                        "id": 601,
-                        "name": "Titan",
-                        "radius": 2575.5,
-                        "mass": 1.3452e23,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/titan.jpg"
-                        },
-                        "temperature": 94,
-                        "rotationPeriod": 15.945,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 1221870,
-                            "period": 15.945,
-                            "inclination": 0.33
-                        }
-                    },
-                    {
-                        "id": 602,
-                        "name": "Enceladus",
-                        "radius": 252.1,
-                        "mass": 1.08022e20,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/enceladus.jpg"
-                        },
-                        "temperature": 75,
-                        "rotationPeriod": 1.370218,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 238020,
-                            "period": 1.370218,
-                            "inclination": 0.02
-                        }
-                    },
-                    {
-                        "id": 603,
-                        "name": "Mimas",
-                        "radius": 198.2,
-                        "mass": 3.7493e19,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/mimas.jpg"
-                        },
-                        "temperature": 64,
-                        "rotationPeriod": 0.942422,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 185520,
-                            "period": 0.942422,
-                            "inclination": 1.53
-                        }
-                    }
-                ]
+                "moons": []
             },
             {
                 "id": 7,
@@ -331,80 +166,7 @@
                     "period": 30688.5,
                     "inclination": 0.772
                 },
-                "moons": [
-                    {
-                        "id": 701,
-                        "name": "Titania",
-                        "radius": 788.9,
-                        "mass": 3.527e21,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/titania.jpg"
-                        },
-                        "temperature": 70,
-                        "rotationPeriod": 8.706234,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 436300,
-                            "period": 8.706234,
-                            "inclination": 0.340
-                        }
-                    },
-                    {
-                        "id": 702,
-                        "name": "Oberon",
-                        "radius": 761.4,
-                        "mass": 3.014e21,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/oberon.jpg"
-                        },
-                        "temperature": 70,
-                        "rotationPeriod": 13.463234,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 583500,
-                            "period": 13.463234,
-                            "inclination": 0.058
-                        }
-                    },
-                    {
-                        "id": 703,
-                        "name": "Umbriel",
-                        "radius": 584.7,
-                        "mass": 1.172e21,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/umbriel.jpg"
-                        },
-                        "temperature": 70,
-                        "rotationPeriod": 4.144,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 266000,
-                            "period": 4.144,
-                            "inclination": 0.128
-                        }
-                    },
-                    {
-                        "id": 704,
-                        "name": "Ariel",
-                        "radius": 578.9,
-                        "mass": 1.35e21,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/ariel.jpg"
-                        },
-                        "temperature": 70,
-                        "rotationPeriod": 2.520379,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 191240,
-                            "period": 2.520379,
-                            "inclination": 0.260
-                        }
-                    }
-                ]
+                "moons": []
             },
             {
                 "id": 8,
@@ -423,44 +185,7 @@
                     "period": 60182,
                     "inclination": 1.767
                 },
-                "moons": [
-                    {
-                        "id": 801,
-                        "name": "Triton",
-                        "radius": 1353.4,
-                        "mass": 2.14e22,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/triton.jpg"
-                        },
-                        "temperature": 38,
-                        "rotationPeriod": -5.876854,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 354800,
-                            "period": -5.876854,
-                            "inclination": 156.865
-                        }
-                    },
-                    {
-                        "id": 802,
-                        "name": "Nereid",
-                        "radius": 170,
-                        "mass": 3.1e19,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/nereid.jpg"
-                        },
-                        "temperature": 50,
-                        "rotationPeriod": 0.135,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 5513400,
-                            "period": 360.14,
-                            "inclination": 7.090
-                        }
-                    }
-                ]
+                "moons": []
             },
             {
                 "id": 9,
@@ -479,26 +204,7 @@
                     "period": 90465,
                     "inclination": 17.16
                 },
-                "moons": [
-                    {
-                        "id": 901,
-                        "name": "Charon",
-                        "radius": 606,
-                        "mass": 1.586e21,
-                        "color": "#a29d98",
-                        "textures": {
-                            "base": "./assets/textures/charon.jpg"
-                        },
-                        "temperature": 40,
-                        "rotationPeriod": 6.38718,
-                        "hasRings": false,
-                        "orbit": {
-                            "distance": 19591,
-                            "period": 6.38718,
-                            "inclination": 0.001
-                        }
-                    }
-                ]
+                "moons": []
             }
         ]
     }
