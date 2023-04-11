@@ -26,7 +26,12 @@
                 "orbit": {
                     "distance": 57909227,
                     "period": 87.9691,
-                    "inclination": 7
+                    "inclination": 7.00559432,
+                    "semiMajorAxis": 0.38709843,
+                    "eccentricity": 0.20563661,
+                    "longitudeOfAscendingNode": 48.33167,
+                    "argumentOfPeriapsis": 77.45645,
+                    "meanAnomalyAtEpoch": 168.6562
                 },
                 "moons": []
             },
@@ -47,7 +52,12 @@
                 "orbit": {
                     "distance": 108209475,
                     "period": 224.7008,
-                    "inclination": 3.39
+                    "inclination": 3.39471,
+                    "semiMajorAxis": 0.72333199,
+                    "eccentricity": 0.00677323,
+                    "longitudeOfAscendingNode": 76.68069,
+                    "argumentOfPeriapsis": 131.53298,
+                    "meanAnomalyAtEpoch": 50.416
                 },
                 "moons": []
             },
@@ -67,8 +77,13 @@
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 149598262,
-                    "period": 365.2564,
-                    "inclination": 0.00005
+                    "period": 365.256363004,
+                    "inclination": 0.00005,
+                    "semiMajorAxis": 1.00000011,
+                    "eccentricity": 0.01671022,
+                    "longitudeOfAscendingNode": -11.26064,
+                    "argumentOfPeriapsis": 102.94719,
+                    "meanAnomalyAtEpoch": 357.529
                 },
                 "moons": [
                     {
@@ -107,7 +122,12 @@
                 "orbit": {
                     "distance": 227943824,
                     "period": 686.9796,
-                    "inclination": 1.850
+                    "inclination": 1.85061,
+                    "semiMajorAxis": 1.52366231,
+                    "eccentricity": 0.09341233,
+                    "longitudeOfAscendingNode": 49.57854,
+                    "argumentOfPeriapsis": 336.04084,
+                    "meanAnomalyAtEpoch": 19.373
                 },
                 "moons": [
                     {
@@ -163,7 +183,12 @@
                 "orbit": {
                     "distance": 778340821,
                     "period": 4332.589,
-                    "inclination": 1.304
+                    "inclination": 1.30530,
+                    "semiMajorAxis": 5.20336301,
+                    "eccentricity": 0.04839266,
+                    "longitudeOfAscendingNode": 100.398,
+                    "argumentOfPeriapsis": 273.442,
+                    "meanAnomalyAtEpoch": 20.020
                 },
                 "moons": [
                     {
@@ -255,7 +280,12 @@
                 "orbit": {
                     "distance": 1426666422,
                     "period": 10759.22,
-                    "inclination": 2.485
+                    "inclination": 2.48446,
+                    "semiMajorAxis": 9.53707032,
+                    "eccentricity": 0.05415060,
+                    "longitudeOfAscendingNode": 113.71504,
+                    "argumentOfPeriapsis": 92.43194,
+                    "meanAnomalyAtEpoch": 317.021
                 },
                 "moons": [
                     {
@@ -328,8 +358,13 @@
                 "hasRings": true,
                 "orbit": {
                     "distance": 2870658186,
-                    "period": 30688.5,
-                    "inclination": 0.772
+                    "period": 30685.4,
+                    "inclination": 0.76986,
+                    "semiMajorAxis": 19.19126393,
+                    "eccentricity": 0.04716771,
+                    "longitudeOfAscendingNode": 74.22988,
+                    "argumentOfPeriapsis": 170.96424,
+                    "meanAnomalyAtEpoch": 141.050
                 },
                 "moons": [
                     {
@@ -420,8 +455,13 @@
                 "hasRings": true,
                 "orbit": {
                     "distance": 4498396441,
-                    "period": 60182,
-                    "inclination": 1.767
+                    "period": 60189,
+                    "inclination": 1.76917,
+                    "semiMajorAxis": 30.06896348,
+                    "eccentricity": 0.00858587,
+                    "longitudeOfAscendingNode": 131.823,
+                    "argumentOfPeriapsis": 256.932,
+                    "meanAnomalyAtEpoch": 260.2471
                 },
                 "moons": [
                     {
@@ -476,8 +516,13 @@
                 "hasRings": false,
                 "orbit": {
                     "distance": 5906440628,
-                    "period": 90465,
-                    "inclination": 17.16
+                    "period": 90560,
+                    "inclination": 17.14175,
+                    "semiMajorAxis": 39.48211675,
+                    "eccentricity": 0.2488273,
+                    "longitudeOfAscendingNode": 110.088,
+                    "argumentOfPeriapsis": 113.175,
+                    "meanAnomalyAtEpoch": 14.882
                 },
                 "moons": [
                     {

@@ -47,6 +47,11 @@ export interface IOrbit {
     distance: number;
     period: number;
     inclination: number;
+    eccentricity: number;
+    semiMajorAxis: number;
+    longitudeOfAscendingNode: number;
+    argumentOfPeriapsis: number;
+    meanAnomalyAtEpoch: number;
 }
 
 export interface ITextures {

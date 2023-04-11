@@ -1,4 +1,4 @@
-import { Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis, Vector } from 'astronomy-engine';
+import { AstroTime, Body, HelioDistance, HelioVector, KM_PER_AU, PlanetOrbitalPeriod, RotationAxis, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
@@ -11,6 +11,7 @@ import { OrbitLine } from './OrbitLine';
 import glowFragmentShader from '../../assets/shaders/glow/glowFragment.glsl';
 import glowVertexShader from '../../assets/shaders/glow/glowVertex.glsl';
 import { IPlanet } from './interfaces/ISolarSystem';
+import { DateHelper } from '../../helper/DateHelper';
 
 
 
@@ -21,6 +22,13 @@ export class Planet extends CelestialBody {
     private _orbitLine: OrbitLine;
     private _moons: Array<Moon> = [];
     private _position: Vector3 = new Vector3(0, 0, 0);
+    private _inclination: number;
+    private _semiMajorAxis: number;
+    private _eccentricity: number;
+    private _longitudeOfAscendingNode: number;
+    private _argumentOfPeriapsis: number;
+    private _meanAnomalyAtEpoch: number;
+    private _period: number;
 
     private _lastOrbitLineUpdateTime: number;
 
@@ -37,6 +45,13 @@ export class Planet extends CelestialBody {
 
         super(mainScene,data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body[data.name]);
         this._distanceToSun = 0;
+        this._inclination = data.orbit.inclination;
+        this._semiMajorAxis = data.orbit.semiMajorAxis;
+        this._eccentricity = data.orbit.eccentricity;
+        this._longitudeOfAscendingNode = data.orbit.longitudeOfAscendingNode;
+        this._argumentOfPeriapsis = data.orbit.argumentOfPeriapsis;
+        this._meanAnomalyAtEpoch = data.orbit.meanAnomalyAtEpoch;
+        this._period = data.orbit.period;
         this._orbitalPeriod = PlanetOrbitalPeriod(Body[data.name]);
         this._lightColor = data.color as HexColorString;
         this._textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
@@ -101,17 +116,12 @@ export class Planet extends CelestialBody {
         
         if (this.isSelected)
             this._distanceToSun = Math.round(HelioDistance(this.body, this.mainScene.timeController.currentDate)* KM_PER_AU);
-        let v: Vector = HelioVector(this.body, this.mainScene.timeController.currentDate);
-        let x: number = v.x * SIZE_FACTOR;
-        let y: number = v.y * SIZE_FACTOR;
-        let z: number = v.z * SIZE_FACTOR;
-        let vector = new Vector3(x, y, z);
 
-        vector.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
+         
+        this.updateOrbit();
 
-        this._position = vector;
 
-        this.position.set(this._position.x, this._position.y, this._position.z);
+
 
         this._moons.forEach((moon: Moon) => {
             moon.updateOrbit();
@@ -130,6 +140,69 @@ export class Planet extends CelestialBody {
 
     }
 
+
+    private updateOrbit() {
+
+        const time: Date = this.mainScene.timeController.currentDate;
+
+        const w = this._argumentOfPeriapsis * Math.PI / 180;
+        const e = this._eccentricity;
+        const Ω = this._longitudeOfAscendingNode * Math.PI / 180;
+        const i = this._inclination * Math.PI / 180;
+        const a = this._semiMajorAxis;
+        const deltaTime: number = DateHelper.getDeltaDaysBetweenDates(new Date('2000-01-01T12:00:00Z'),time);
+
+        const M: number = (this._meanAnomalyAtEpoch + 360 * (deltaTime / this._period)) * Math.PI / 180;
+
+        const E = this.solveKeplersEquation(M, e);
+
+
+        const ν = 2 * Math.atan(Math.sqrt((1 + e) / (1 - e)) * Math.tan(E / 2));
+        const r = a * (1 - e * Math.cos(E));
+
+        const x = r * (Math.cos(Ω) * Math.cos(w+ν)) - (Math.sin(Ω) * Math.sin(w+ν) * Math.cos(i));
+        const y = r * (Math.sin(Ω) * Math.cos(w+ν) + (Math.cos(Ω) * Math.sin(w+ν) * Math.cos(i)));
+        const z = r * (Math.sin(w+ν) * Math.sin(i));
+
+        if (this.name == 'Jupiter')
+        console.log(w);
+      
+            
+           /*  let h = HelioVector(this.body, this.mainScene.timeController.currentDate);
+            console.log(this.name + " " + Math.abs(h.x - x) + " " + Math.abs(h.y - y) + " " + Math.abs(h.z - z)); */
+   
+        
+            
+
+        let vector = new Vector3(x* SIZE_FACTOR, y* SIZE_FACTOR, z* SIZE_FACTOR);
+
+        //vector.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
+
+        this._position = vector;
+
+        this.position.set(this._position.x, this._position.y, this._position.z);
+    }
+
+    private solveKeplersEquation(M: number, e: number, accuracy: number = 1e-8): number {
+        let E_old: number = M;
+        let E_new: number;
+        let iterationCount: number = 0;
+        let maxIterations: number = 1000;
+    
+        do {
+            E_new = E_old - (E_old - e * Math.sin(E_old) - M) / (1 - e * Math.cos(E_old));
+            iterationCount++;
+    
+            if (Math.abs(E_new - E_old) < accuracy || iterationCount > maxIterations) {
+                break;
+            }
+    
+            E_old = E_new;
+        } while (true);
+    
+        return E_new;
+    }
+    
     private updateOrbitGeometry(segments: number = 3000): Vector3[] {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
@@ -149,6 +222,7 @@ export class Planet extends CelestialBody {
         points.push(v0);
         return points;
     }
+
 
     private createOrbitLine(): OrbitLine {
         const orbitGeometry = this.updateOrbitGeometry();

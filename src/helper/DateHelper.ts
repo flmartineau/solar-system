@@ -16,4 +16,12 @@ export abstract class DateHelper {
         return (moment(newDateWithTime, 'YYYY-MM-DD HH:mm:ss').toDate());
     }
 
+    static getDeltaDaysBetweenDates(date1: Date, date2: Date): number {
+        const momentDate1 = moment(date1);
+        const momentDate2 = moment(date2);
+        const diffMilliseconds = momentDate2.diff(momentDate1, 'milliseconds');
+        return diffMilliseconds / (1000 * 60 * 60 * 24);
+    }
+
+
 }
