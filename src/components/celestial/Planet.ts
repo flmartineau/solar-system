@@ -39,7 +39,7 @@ export class Planet extends CelestialBody {
         this._orbitalPeriod = PlanetOrbitalPeriod(Body[data.name]);
         this._lightColor = data.color as HexColorString;
         this._textureFlare = this.mainScene.textureLoader.load('./assets/textures/lensflare/lensflare.png');
-        
+        this._orbitLine = new OrbitLine(this);
         this._orbitLine = this.createOrbitLine();
         this._lastOrbitLineUpdateTime = 0;
         this._pointLight = new PointLight(this._lightColor, 0, 0);
@@ -156,7 +156,6 @@ export class Planet extends CelestialBody {
 
     private createOrbitLine(): OrbitLine {
         const orbitGeometry = this.updateOrbitGeometry();
-        this._orbitLine = new OrbitLine(this);
         this._orbitLine.geometry.setFromPoints(orbitGeometry);
         return this._orbitLine;
     }

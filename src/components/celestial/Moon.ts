@@ -1,4 +1,4 @@
-import { MeshPhongMaterial, Texture, Vector3 } from 'three';
+import { Color, LineBasicMaterial, MeshPhongMaterial, Texture, Vector3 } from 'three';
 import { MainScene } from '../../scenes/MainScene';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
@@ -24,6 +24,7 @@ export class Moon extends CelestialBody {
         this._orbitalPeriod = data.orbit.period;
         
         this._planet = planet;
+        this._orbitLine = new OrbitLine(this);
         this._orbitLine = this.createOrbitLine();
         this.mainScene.scene.add(this._orbitLine);
     }
@@ -38,6 +39,11 @@ export class Moon extends CelestialBody {
 
     get distanceToPlanet(): number {
         return this._distanceToPlanet;
+    }
+
+    set isSelected(value: boolean) {
+        super.isSelected = value;
+        (this.orbitLine.material as LineBasicMaterial).color = new Color(value ? 0x0f2e82 : 0x333333);
     }
 
     private updateOrbitGeometry(segments: number = 200): Vector3[] {
@@ -67,7 +73,6 @@ export class Moon extends CelestialBody {
         .applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
         const orbitGeometry = this.updateOrbitGeometry();
-        this._orbitLine = new OrbitLine(this);
         this._orbitLine.geometry.setFromPoints(orbitGeometry);
         this._orbitLine.geometry.translate(translate.x, translate.y, translate.z);
         return this._orbitLine;
