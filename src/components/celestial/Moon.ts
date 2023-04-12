@@ -37,19 +37,28 @@ export class Moon extends CelestialBody {
         return this._orbitLine;
     }
 
+    get isSelected(): boolean {
+        return super.isSelected;
+    }
+
     get distanceToPlanet(): number {
         return this._distanceToPlanet;
     }
 
     set isSelected(value: boolean) {
         super.isSelected = value;
+        if (value) this.refreshOrbitLine();
         (this.orbitLine.material as LineBasicMaterial).color = new Color(value ? 0x0f2e82 : 0x333333);
     }
 
     private updateOrbitGeometry(segments: number = 200): Vector3[] {
         const points: Vector3[] = [];
         const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
-        let date: Date = this.mainScene.timeController.currentDate;
+        
+        let t0 = this.mainScene.timeController.currentDate.getTime() - (period / 2);
+        let date = new Date(t0);
+
+
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {

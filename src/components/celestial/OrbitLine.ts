@@ -1,4 +1,4 @@
-import { BufferGeometry, ColorRepresentation, Line, LineBasicMaterial } from "three";
+import { BufferGeometry, Line, LineBasicMaterial } from "three";
 import { CelestialBody } from "./CelestialBody";
 
 export class OrbitLine extends Line {

@@ -25,7 +25,7 @@
                 "hasRings": false,
                 "orbit": {
                     "distance": 57909227,
-                    "period": 87.9691,
+                    "period": 87.969,
                     "inclination": 7
                 },
                 "moons": []
@@ -46,7 +46,7 @@
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 108209475,
-                    "period": 224.7008,
+                    "period": 224.701,
                     "inclination": 3.39
                 },
                 "moons": []
@@ -67,7 +67,7 @@
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 149598262,
-                    "period": 365.2564,
+                    "period": 365.256,
                     "inclination": 0.00005
                 },
                 "moons": [
@@ -106,7 +106,7 @@
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 227943824,
-                    "period": 686.9796,
+                    "period": 686.980,
                     "inclination": 1.850
                 },
                 "moons": []
@@ -163,7 +163,7 @@
                 "hasRings": true,
                 "orbit": {
                     "distance": 2870658186,
-                    "period": 30688.5,
+                    "period": 30685.4,
                     "inclination": 0.772
                 },
                 "moons": []
@@ -182,7 +182,7 @@
                 "hasRings": true,
                 "orbit": {
                     "distance": 4498396441,
-                    "period": 60182,
+                    "period": 60189.0,
                     "inclination": 1.767
                 },
                 "moons": []
@@ -201,7 +201,7 @@
                 "hasRings": false,
                 "orbit": {
                     "distance": 5906440628,
-                    "period": 90465,
+                    "period": 90560.0,
                     "inclination": 17.16
                 },
                 "moons": []

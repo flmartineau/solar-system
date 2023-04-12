@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import GUI from 'lil-gui';
+import { SIZE_FACTOR } from '../utils/constants';
 
 
 export class CameraController {
@@ -15,23 +16,39 @@ export class CameraController {
   private _renderer: WebGLRenderer;
 
   private _minClippingDistance: number;
+  private _cameraNear: number;
+  private _cameraFar: number;
   private _fov: number;
 
   constructor(mainScene: MainScene) {
 
     this._minClippingDistance = 1.1;
     this._fov = 70;
+    this._cameraNear = 0.000001;
+    this._cameraFar = 80
 
     let gui: GUI = mainScene.devConsoleController.addFolder('Camera')
-      gui.add(this, '_minClippingDistance', 0, 1.1)
-      gui.add(this, '_fov', 0, 180)
-        .onChange(() => {
-          this._camera.fov = this._fov;
-          this._camera.updateProjectionMatrix();
-        });
+    gui.add(this, '_minClippingDistance', 0, 1.1)
+    gui.add(this, '_fov', 0, 180)
+      .onChange(() => {
+        this._camera.fov = this._fov;
+        this._camera.updateProjectionMatrix();
+      });
+    gui.add(this, '_cameraNear', 0, 0.1, 0.0000001)
+      .onChange(() => {
+        this._camera.near = this._cameraNear;
+        this._camera.updateProjectionMatrix();
+      });
 
-    this._camera = new PerspectiveCamera(this._fov, window.innerWidth / window.innerHeight, 0.01, 2000000);
-    this._camera.position.z = 200;
+    gui.add(this, '_cameraFar', 10, 200)
+      .onChange(() => {
+        this._camera.far = this._cameraFar;
+        this._camera.updateProjectionMatrix();
+      });
+
+    this._camera = new PerspectiveCamera(this._fov, window.innerWidth / window.innerHeight, SIZE_FACTOR * this._cameraNear,
+      SIZE_FACTOR * this._cameraFar);
+    this._camera.position.z = SIZE_FACTOR / 50;
 
     this._focusedObject = null;
     this._cameraOffset = new Vector3();

@@ -74,11 +74,6 @@ export class MainScene {
       this.animate();
 
     });
-
-  
-
-   
-
     
   }
 

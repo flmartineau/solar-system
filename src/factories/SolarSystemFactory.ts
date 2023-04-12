@@ -16,7 +16,6 @@ export class SolarSystemFactory {
     constructor(data: ISolarSystem, mainScene: MainScene) {
         this._data = data;
         this._mainScene = mainScene;
-        console.log(data.sun.planets);
         this._sun = this.buildSun(data.sun);
         this._planets = this.buildPlanets(data.sun.planets);
     }
@@ -63,7 +62,9 @@ export class SolarSystemFactory {
     }
 
     public get celestialBodies(): Array<CelestialBody> {
-        return [this._sun as CelestialBody].concat(this._planets as CelestialBody[]).concat(this.getPlanetByIndex(2).moons[0]);
+        return [this._sun as CelestialBody]
+        .concat(this._planets as CelestialBody[])
+        .concat((this._planets.length > 3) ? this.getPlanetByIndex(2).moons[0] : []);
     }
 
 
