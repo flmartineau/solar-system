@@ -1,0 +1,211 @@
+{
+    "sun": {
+        "id": 0,
+        "name": "Sun",
+        "radius": 696342,
+        "mass": 1989000e24,
+        "color": "#ffffff",
+        "textures": {
+            "base": "./assets/textures/sun.jpg"
+        },
+        "temperature": 5772,
+        "rotationPeriod": 25.05,
+        "planets": [
+            {
+                "id": 1,
+                "name": "Mercury",
+                "radius": 2439.7,
+                "mass": 3.3011e23,
+                "color": "#a29d98",
+                "textures": {
+                    "base": "./assets/textures/mercury.jpg"
+                },
+                "temperature": 440,
+                "rotationPeriod": 58.646,
+                "hasRings": false,
+                "orbit": {
+                    "distance": 57909227,
+                    "period": 87.969,
+                    "inclination": 7
+                },
+                "moons": []
+            },
+            {
+                "id": 2,
+                "name": "Venus",
+                "radius": 6051.8,
+                "mass": 4.8675e24,
+                "color": "#d1b78a",
+                "textures": {
+                    "base": "./assets/textures/venus.jpg",
+                    "cloud": "./assets/textures/venus_atmosphere.jpg"
+                },
+                "temperature": 737,
+                "rotationPeriod": -243.025,
+                "hasRings": false,
+                "hasAtmosphere": true,
+                "orbit": {
+                    "distance": 108209475,
+                    "period": 224.701,
+                    "inclination": 3.39
+                },
+                "moons": []
+            },
+            {
+                "id": 3,
+                "name": "Earth",
+                "radius": 6371,
+                "mass": 5.97237e24,
+                "color": "#4a8de4",
+                "textures": {
+                    "base": "./assets/textures/earth_daymap.jpg",
+                    "cloud": "./assets/textures/earth_clouds.jpg"
+                },
+                "temperature": 288,
+                "rotationPeriod": 0.99726968,
+                "hasRings": false,
+                "hasAtmosphere": true,
+                "orbit": {
+                    "distance": 149598262,
+                    "period": 365.256,
+                    "inclination": 0.00005
+                },
+                "moons": [
+                    {
+                        "id": "3A",
+                        "name": "Moon",
+                        "radius": 1737.4,
+                        "mass": 7.342e22,
+                        "color": "#a29d98",
+                        "textures": {
+                            "base": "./assets/textures/moon.jpg"
+                        },
+                        "temperature": 250,
+                        "rotationPeriod": 27.322,
+                        "hasRings": false,
+                        "orbit": {
+                            "distance": 384400,
+                            "period": 27.322,
+                            "inclination": 5.145
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Mars",
+                "radius": 3389.5,
+                "mass": 6.4171e23,
+                "color": "#e56a3c",
+                "textures": {
+                    "base": "./assets/textures/mars.jpg"
+                },
+                "temperature": 210,
+                "rotationPeriod": 1.025957,
+                "hasRings": false,
+                "hasAtmosphere": true,
+                "orbit": {
+                    "distance": 227943824,
+                    "period": 686.980,
+                    "inclination": 1.850
+                },
+                "moons": []
+            },
+            {
+                "id": 5,
+                "name": "Jupiter",
+                "radius": 69911,
+                "mass": 1.8982e27,
+                "color": "#b88e5e",
+                "textures": {
+                    "base": "./assets/textures/jupiter.jpg"
+                },
+                "temperature": 165,
+                "rotationPeriod": 0.41354,
+                "hasRings": true,
+                "orbit": {
+                    "distance": 778340821,
+                    "period": 4332.589,
+                    "inclination": 1.304
+                },
+                "moons": []
+            },
+            {
+                "id": 6,
+                "name": "Saturn",
+                "radius": 58232,
+                "mass": 5.6834e26,
+                "color": "#d4af37",
+                "textures": {
+                    "base": "./assets/textures/saturn.jpg"
+                },
+                "temperature": 134,
+                "rotationPeriod": 0.444,
+                "hasRings": true,
+                "orbit": {
+                    "distance": 1426666422,
+                    "period": 10759.22,
+                    "inclination": 2.485
+                },
+                "moons": []
+            },
+            {
+                "id": 7,
+                "name": "Uranus",
+                "radius": 25362,
+                "mass": 8.6810e25,
+                "color": "#89c5cc",
+                "textures": {
+                    "base": "./assets/textures/uranus.jpg"
+                },
+                "temperature": 76,
+                "rotationPeriod": -0.718,
+                "hasRings": true,
+                "orbit": {
+                    "distance": 2870658186,
+                    "period": 30685.4,
+                    "inclination": 0.772
+                },
+                "moons": []
+            },
+            {
+                "id": 8,
+                "name": "Neptune",
+                "radius": 24622,
+                "mass": 1.02413e26,
+                "color": "#254e8c",
+                "textures": {
+                    "base": "./assets/textures/neptune.jpg"
+                },
+                "temperature": 72,
+                "rotationPeriod": 0.671,
+                "hasRings": true,
+                "orbit": {
+                    "distance": 4498396441,
+                    "period": 60189.0,
+                    "inclination": 1.767
+                },
+                "moons": []
+            },
+            {
+                "id": 9,
+                "name": "Pluto",
+                "radius": 1188.3,
+                "mass": 1.303e22,
+                "color": "#d0c9bf",
+                "textures": {
+                    "base": "./assets/textures/pluto.jpg"
+                },
+                "temperature": 44,
+                "rotationPeriod": -6.38718,
+                "hasRings": false,
+                "orbit": {
+                    "distance": 5906440628,
+                    "period": 90560.0,
+                    "inclination": 17.16
+                },
+                "moons": []
+            }
+        ]
+    }
+}
