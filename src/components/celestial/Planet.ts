@@ -1,4 +1,4 @@
-import { Body, HelioDistance, HelioVector, KM_PER_AU, Vector } from 'astronomy-engine';
+import { AxisInfo, Body, HelioDistance, HelioVector, KM_PER_AU, RotationAxis, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
@@ -21,6 +21,7 @@ export class Planet extends CelestialBody {
     private _rings: Mesh | null = null;
     private _moons: Array<Moon> = [];
     private _position: Vector3 = new Vector3(0, 0, 0);
+    private _body: Body;
 
     private _lastOrbitLineUpdateTime: number;
 
@@ -37,8 +38,9 @@ export class Planet extends CelestialBody {
         const material = new MeshPhongMaterial({ map: texture });
 
 
-        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body[data.name]);
+        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
         this._data = data;
+        this._body = Body[data.name];
         this._distanceToSun = 0;
         this._orbitalPeriod = data.orbit.period;
         this._lightColor = data.color as HexColorString;
@@ -106,6 +108,10 @@ export class Planet extends CelestialBody {
         return super.isSelected;
     }
 
+    get body(): Body {
+        return this._body;
+    }
+
     public updateLighting(): void {
         this.mainScene.scene.remove(this._pointLight);
         this._pointLight.position.set(this.position.x, this.position.y, this.position.z);
@@ -118,6 +124,8 @@ export class Planet extends CelestialBody {
 
     public update(): void {
         super.update();
+        if (this.visible)
+            this.updateRotation();
 
         if (this.isSelected)
             this._distanceToSun = Math.round(HelioDistance(this.body, this.mainScene.timeController.currentDate) * KM_PER_AU);
@@ -235,9 +243,18 @@ export class Planet extends CelestialBody {
 
         const ringGeometry = new RadialRingGeometry(innerRadius, outerRadius, 180);
         const rings = new Mesh(ringGeometry, ringMaterial);
-        //rings.position.set(0, 0, 0);
         rings.rotateX(90 * Math.PI / 180);
         this._rings = rings;
         this.mainScene.scene.add(rings);
     };
+
+    public updateRotation(): void {
+        let axisInfo: AxisInfo = RotationAxis(this._body, this.mainScene.timeController.currentDate);
+        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
+    }
+
+
+    public instanceOf(className: string): boolean {
+        return className === 'Planet';
+    }
 }

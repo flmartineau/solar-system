@@ -2,7 +2,7 @@ import { MeshBasicMaterial, PointLight } from 'three';
 import { MainScene } from '../../scenes/MainScene';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
-import { Body, KM_PER_AU } from 'astronomy-engine';
+import { AxisInfo, Body, KM_PER_AU, RotationAxis } from 'astronomy-engine';
 import { Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
 import { ISun } from './interfaces/ISolarSystem';
 
@@ -16,7 +16,7 @@ export class Sun extends CelestialBody {
     constructor(data: ISun, mainScene: MainScene) {
             const texture = mainScene.textureLoader.load(data.textures.base);
             const material = new MeshBasicMaterial({ map: texture });
-            super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body.Sun);
+            super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
         
             this.setupLighting();
         }
@@ -36,6 +36,17 @@ export class Sun extends CelestialBody {
 
         public hideFlare(): void {
             this._pointLight.visible = false;
+        }
+
+        public update(): void {
+            super.update();
+            if (this.visible)
+                this.updateRotation();
+        }
+    
+        public updateRotation(): void {
+            let axisInfo: AxisInfo = RotationAxis(Body.Sun, this.mainScene.timeController.currentDate);
+            this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
         }
 
 }

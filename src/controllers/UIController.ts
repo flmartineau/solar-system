@@ -75,7 +75,7 @@ export class UIController {
 
 
       let infoNextLunarEclipse: HTMLButtonElement = document.getElementById('info-next-lunar-eclipse') as HTMLButtonElement;
-      infoNextLunarEclipse.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
+      infoNextLunarEclipse.style.display = (celestialObject.name === 'Moon') ? 'flex' : 'none';
 
       let infoNextSolarEclipse: HTMLButtonElement = document.getElementById('info-next-solar-eclipse') as HTMLButtonElement;
       infoNextSolarEclipse.style.display = (celestialObject.name === 'Earth') ? 'flex' : 'none';

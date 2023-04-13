@@ -122,7 +122,72 @@
                     "period": 4332.589,
                     "inclination": 1.304
                 },
-                "moons": []
+                "moons": [
+                    {
+                        "id": "5A",
+                        "name": "Io",
+                        "radius": 1821.6,
+                        "mass": 8.931938e22,
+                        "color": "#a29d98",
+                        "textures": {
+                            "base": "./assets/textures/io.jpg"
+                        },
+                        "temperature": 250,
+                        "rotationPeriod": 1.769137786,
+                        "orbit": {
+                            "distance": 421800,
+                            "period": 1.769137786
+                        }
+                    },
+                    {
+                        "id": "5B",
+                        "name": "Europa",
+                        "radius": 1560.8,
+                        "mass": 4.799844e22,
+                        "color": "#a29d98",
+                        "textures": {
+                            "base": "./assets/textures/europa.jpg"
+                        },
+                        "temperature": 250,
+                        "rotationPeriod": 3.551181,
+                        "orbit": {
+                            "distance": 671100,
+                            "period": 3.551181
+                        }
+                    },
+                    {
+                        "id": "5C",
+                        "name": "Ganymede",
+                        "radius": 2634.1,
+                        "mass": 1.4819e23,
+                        "color": "#a29d98",
+                        "textures": {
+                            "base": "./assets/textures/ganymede.jpg"
+                        },
+                        "temperature": 250,
+                        "rotationPeriod": 7.15455296,
+                        "orbit": {
+                            "distance": 1070400,
+                            "period": 7.15455296
+                        }
+                    },
+                    {
+                        "id": "5D",
+                        "name": "Callisto",
+                        "radius": 2410.3,
+                        "mass": 1.075938e23,
+                        "color": "#a29d98",
+                        "textures": {
+                            "base": "./assets/textures/callisto.jpg"
+                        },
+                        "temperature": 250,
+                        "rotationPeriod": 16.6890184,
+                        "orbit": {
+                            "distance": 1882700,
+                            "period": 16.6890184
+                        }
+                    }
+                ]
             },
             {
                 "id": 6,

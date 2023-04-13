@@ -49,13 +49,13 @@ export class Label extends Sprite {
     public update(camera: PerspectiveCamera): void {
         const distanceToCamera: number = camera.position.distanceTo(this.position);
 
-        if (this._celestialBody.name == 'Moon') {
+        if (this.celestialBody.instanceOf('Moon')) {
             const moonsVisibility: boolean = this.mainScene.uiController.moonsVisibility;
             this.visible = (distanceToCamera < 300) && (this._celestialBody as Moon).planet.label.visible && moonsVisibility;
         }
 
 
-        if (this.visible || this._celestialBody.name == 'Moon' ) {
+        if (this.visible || this.celestialBody.instanceOf('Moon')) {
             this.scale.set(this._width * distanceToCamera, this._height * distanceToCamera, 1);
             this.position.copy(this._celestialBody.position.clone());
             this.position.y = this._celestialBody.position.y + (this._celestialBody.radius * 1.2);

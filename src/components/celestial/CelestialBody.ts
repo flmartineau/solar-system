@@ -1,8 +1,6 @@
 import { Mesh, SphereGeometry, Material } from 'three';
 import { Label } from './Label';
 import { MainScene } from '../../scenes/MainScene';
-import { AxisInfo, RotationAxis, Body } from 'astronomy-engine';
-
 
 export class CelestialBody extends Mesh {
     public name: string;
@@ -12,19 +10,17 @@ export class CelestialBody extends Mesh {
     private _temperature: number;
     private _radius: number;
     private _label: Label;
-    private _body: Body;
 
     private _isSelected: boolean = false;
 
 
     constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
-        mass: number, temperature: number, body: Body) {
+        mass: number, temperature: number) {
 
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
 
         this._mainScene = mainScene;
-        this._body = body;
         this.name = name;
         this._mass = mass;
         this._temperature = temperature;
@@ -54,10 +50,6 @@ export class CelestialBody extends Mesh {
         return this._mass;
     }
 
-   get body(): Body {
-        return this._body;
-    }
-
     get isSelected(): boolean {
         return this._isSelected;
     }
@@ -71,18 +63,13 @@ export class CelestialBody extends Mesh {
         this.mainScene.scene.add(this._label);
     }
 
-    public update(): void {
-        if (this.visible)
-            this.updateRotation();
-    }
+    public update(): void {}
 
     public updateLabel(): void {
         this._label.update(this.mainScene.cameraController.camera);
     }
 
-
-    public updateRotation(): void {
-        let axisInfo: AxisInfo = RotationAxis(this._body, this._mainScene.timeController.currentDate);
-        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
+    public instanceOf(className: string): boolean {
+        return className === 'CelestialBody';
     }
 }

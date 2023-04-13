@@ -12,10 +12,12 @@ export class SolarSystemFactory {
 
     private _sun: Sun;
     private _planets: Array<Planet>;
+    private _moons: Array<Moon>;
 
     constructor(data: ISolarSystem, mainScene: MainScene) {
         this._data = data;
         this._mainScene = mainScene;
+        this._moons = new Array<Moon>();
         this._sun = this.buildSun(data.sun);
         this._planets = this.buildPlanets(data.sun.planets);
     }
@@ -42,6 +44,7 @@ export class SolarSystemFactory {
     private buildMoons(planet: Planet, data: any): void {
         data.forEach((m: IMoon) => {
             let moon = new Moon(m, this._mainScene, planet);
+            this._moons.push(moon);
             planet.addMoon(moon);
         });
     }
@@ -65,7 +68,7 @@ export class SolarSystemFactory {
     public get celestialBodies(): Array<CelestialBody> {
         return [this._sun as CelestialBody]
         .concat(this._planets as CelestialBody[])
-        .concat((this._planets.length > 3) ? this.getPlanetByIndex(2).moons[0] : []);
+        .concat(this._moons as CelestialBody[]);
     }
 
 

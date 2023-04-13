@@ -2,7 +2,7 @@ import { Color, LineBasicMaterial, MeshPhongMaterial, Texture, Vector3 } from 't
 import { MainScene } from '../../scenes/MainScene';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { CelestialBody } from './CelestialBody';
-import { Vector, Body, GeoVector, HelioVector, KM_PER_AU } from 'astronomy-engine';
+import { Vector, Body, GeoVector, HelioVector, KM_PER_AU, AxisInfo, RotationAxis, JupiterMoons, JupiterMoonsInfo, StateVector, AstroTime } from 'astronomy-engine';
 import { Planet } from './Planet';
 import { OrbitLine } from './OrbitLine';
 import { IMoon } from './interfaces/ISolarSystem';
@@ -19,7 +19,7 @@ export class Moon extends CelestialBody {
         const texture: Texture = mainScene.textureLoader.load(data.textures.base);
         const material = new MeshPhongMaterial({ map: texture });
         
-        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature, Body[data.name]);
+        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
         this._distanceToPlanet = 0;
         this._orbitalPeriod = data.orbit.period;
         
@@ -62,10 +62,10 @@ export class Moon extends CelestialBody {
         let v0 = new Vector3(0, 0, 0);
 
         for (let i = 0; i < segments; i++) {
-            let geoVector: Vector = GeoVector(this.body, date, true);
-            let x: number = geoVector.x * SIZE_FACTOR;
-            let y: number = geoVector.y * SIZE_FACTOR;
-            let z: number = geoVector.z * SIZE_FACTOR;
+            let planetVector: Vector3 = this.getPlanetVector(date);
+            let x: number = planetVector.x * SIZE_FACTOR;
+            let y: number = planetVector.y * SIZE_FACTOR;
+            let z: number = planetVector.z * SIZE_FACTOR;
             let v3 =  new Vector3(x, y, z);
             v3.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
             points.push(v3);
@@ -106,24 +106,66 @@ export class Moon extends CelestialBody {
 
 
     public updateOrbit(): void {
-
         let helioVector: Vector = HelioVector(this._planet.body, this.mainScene.timeController.currentDate);
-        let geoVector: Vector = GeoVector(this.body, this.mainScene.timeController.currentDate, true);
-
+        let planetVector: Vector3 = this.getPlanetVector(this.mainScene.timeController.currentDate);
         if (this.isSelected) {
             this._distanceToPlanet = Math.round(
-                Math.sqrt(Math.pow(geoVector.x, 2) + Math.pow(geoVector.y, 2) + Math.pow(geoVector.z, 2))*KM_PER_AU);
+                Math.sqrt(Math.pow(planetVector.x, 2) + Math.pow(planetVector.y, 2) + Math.pow(planetVector.z, 2))*KM_PER_AU);
         }
 
-        let x: number = (helioVector.x + geoVector.x) * SIZE_FACTOR;
-        let y: number = (helioVector.y + geoVector.y) * SIZE_FACTOR;
-        let z: number = (helioVector.z + geoVector.z) * SIZE_FACTOR;
+        let x: number = (helioVector.x + planetVector.x) * SIZE_FACTOR;
+        let y: number = (helioVector.y + planetVector.y) * SIZE_FACTOR;
+        let z: number = (helioVector.z + planetVector.z) * SIZE_FACTOR;
 
         let vector = new Vector3(x, y, z);
 
         vector.applyAxisAngle(new Vector3(1, 0, 0), -110 * Math.PI / 180);
 
         this.position.set(vector.x, vector.y, vector.z);
+    }
+
+    private getPlanetVector(date: Date): Vector3 {
+        switch (this.planet.name) {
+            case 'Earth':
+                const geoVector: Vector = GeoVector(Body.Moon, date, true);
+                return new Vector3(geoVector.x, geoVector.y, geoVector.z);
+            case 'Jupiter':
+                const stateVector: StateVector = this.getJupiterMoonByName(JupiterMoons(date), this.name);
+                return new Vector3(stateVector.x, stateVector.y, stateVector.z);
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
+
+    private getJupiterMoonByName(jupiterMoons: JupiterMoonsInfo, name: string): StateVector {
+        switch (name.toLowerCase()) {
+            case 'io':
+                return jupiterMoons.io;
+            case 'europa':
+                return jupiterMoons.europa;
+            case 'ganymede':
+                return jupiterMoons.ganymede;
+            case 'callisto':
+                return jupiterMoons.callisto;
+            default:
+                return new StateVector(0, 0, 0, 0, 0, 0, new AstroTime(0));
+        }
+    }
+
+
+    public update(): void {
+        super.update();
+        if (this.visible)
+            this.updateRotation();
+    }
+
+    public updateRotation(): void {
+        let axisInfo: AxisInfo = RotationAxis(Body.Moon, this.mainScene.timeController.currentDate);
+        this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
+    }
+
+    public instanceOf(className: string): boolean {
+        return className === 'Moon';
     }
 
 }

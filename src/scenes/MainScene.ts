@@ -152,7 +152,7 @@ export class MainScene {
   }
   
   get moons(): Moon[] {
-    return this.celestialObjects.filter((object: CelestialBody) => object.name == 'Moon') as Moon[];
+    return this.celestialObjects.filter((object: CelestialBody) => object instanceof Moon) as Moon[];
   }
 
   get labels(): Array<Label> {
