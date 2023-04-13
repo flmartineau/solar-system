@@ -1,3 +1,4 @@
+import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { Moon } from '../components/celestial/Moon';
 import { Planet } from '../components/celestial/Planet';
@@ -20,7 +21,11 @@ export class UIController {
     if (!this._celestialObjectList) return;
     document.getElementById('right-sidebar')?.appendChild(this._celestialObjectList);
 
-    this._mainScene.celestialObjects.forEach((celestialObject) => {
+    this._mainScene.celestialObjects.forEach((celestialObject: CelestialBody) => {
+
+      if (!this.moonsVisibility && celestialObject instanceof Moon) 
+        return;
+
       const listItem = document.createElement('li');
       listItem.textContent = celestialObject.name;
       listItem.addEventListener('click', () => {
@@ -31,8 +36,19 @@ export class UIController {
     });
   }
 
+  public updateCelestialObjectList() {
+    if (!this._celestialObjectList) return;
+    this._celestialObjectList.innerHTML = '';
+    this.createCelestialObjectList();
+  }
+
   get moonsVisibility(): boolean {
     return this._moonsVisibility;
+  }
+
+  set moonsVisibility(moonsVisibility: boolean) {
+    this._moonsVisibility = moonsVisibility;
+    this.updateCelestialObjectList();
   }
 
   get infoElement(): HTMLElement {
@@ -138,7 +154,7 @@ export class UIController {
 
 
   public toggleMoons(): void {
-    this._moonsVisibility = !this._moonsVisibility;
+    this.moonsVisibility = !this.moonsVisibility;
 
     this._mainScene.moonsVisibility = this._moonsVisibility;
 

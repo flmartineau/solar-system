@@ -53,7 +53,7 @@ export class Moon extends CelestialBody {
 
     private updateOrbitGeometry(segments: number = 200): Vector3[] {
         const points: Vector3[] = [];
-        const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //millisecondes
+        const period = this._orbitalPeriod * 24 * 60 * 60 * 1000; //milliseconds
         
         let t0 = this.mainScene.timeController.currentDate.getTime() - (period / 2);
         let date = new Date(t0);

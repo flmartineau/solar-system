@@ -141,11 +141,14 @@ export class Planet extends CelestialBody {
 
         this.position.set(this._position.x, this._position.y, this._position.z);
 
-        this._moons.forEach((moon: Moon) => {
-            moon.updateOrbit();
-            moon.refreshOrbitLine();
-        });
 
+        if (this.mainScene.moonsVisibility) {
+            this._moons.forEach((moon: Moon) => {
+                moon.updateOrbit();
+                moon.refreshOrbitLine();
+            });
+        }
+        
         this.updateLighting();
 
         this.lastOrbitLineUpdateTime = this.lastOrbitLineUpdateTime + this.mainScene.timeController.elapsedTime;

@@ -135,6 +135,12 @@ export class MainScene {
       moon.label.visible = visible;
       moon.visible = visible;
     });
+
+
+    if (!visible && this.selectedObject instanceof Moon)
+      this.selectObject((this.selectedObject as Moon).planet);
+
+
   }
 
   get celestialObjects(): CelestialBody[] {
