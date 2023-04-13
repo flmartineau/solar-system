@@ -22,7 +22,6 @@
                 },
                 "temperature": 440,
                 "rotationPeriod": 58.646,
-                "hasRings": false,
                 "orbit": {
                     "distance": 57909227,
                     "period": 87.969,
@@ -42,7 +41,6 @@
                 },
                 "temperature": 737,
                 "rotationPeriod": -243.025,
-                "hasRings": false,
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 108209475,
@@ -63,7 +61,6 @@
                 },
                 "temperature": 288,
                 "rotationPeriod": 0.99726968,
-                "hasRings": false,
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 149598262,
@@ -82,7 +79,6 @@
                         },
                         "temperature": 250,
                         "rotationPeriod": 27.322,
-                        "hasRings": false,
                         "orbit": {
                             "distance": 384400,
                             "period": 27.322,
@@ -102,7 +98,6 @@
                 },
                 "temperature": 210,
                 "rotationPeriod": 1.025957,
-                "hasRings": false,
                 "hasAtmosphere": true,
                 "orbit": {
                     "distance": 227943824,
@@ -122,7 +117,6 @@
                 },
                 "temperature": 165,
                 "rotationPeriod": 0.41354,
-                "hasRings": true,
                 "orbit": {
                     "distance": 778340821,
                     "period": 4332.589,
@@ -137,11 +131,15 @@
                 "mass": 5.6834e26,
                 "color": "#d4af37",
                 "textures": {
-                    "base": "./assets/textures/saturn.jpg"
+                    "base": "./assets/textures/saturn.jpg",
+                    "rings": "./assets/textures/saturn_ring_alpha.png"
                 },
                 "temperature": 134,
                 "rotationPeriod": 0.444,
-                "hasRings": true,
+                "rings": {
+                    "innerRadius": 67300,
+                    "outerRadius": 140300
+                },
                 "orbit": {
                     "distance": 1426666422,
                     "period": 10759.22,
@@ -160,7 +158,6 @@
                 },
                 "temperature": 76,
                 "rotationPeriod": -0.718,
-                "hasRings": true,
                 "orbit": {
                     "distance": 2870658186,
                     "period": 30685.4,
@@ -179,7 +176,6 @@
                 },
                 "temperature": 72,
                 "rotationPeriod": 0.671,
-                "hasRings": true,
                 "orbit": {
                     "distance": 4498396441,
                     "period": 60189.0,
@@ -198,7 +194,6 @@
                 },
                 "temperature": 44,
                 "rotationPeriod": -6.38718,
-                "hasRings": false,
                 "orbit": {
                     "distance": 5906440628,
                     "period": 90560.0,
