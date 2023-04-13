@@ -87,7 +87,6 @@ export class TimeController {
     this._currentDate = new Date(this._currentDate.getTime() + this.elapsedTime);
 
     this._mainScene.celestialObjects.forEach((celestialBody: CelestialBody) => {
-      if (celestialBody.instanceOf('Moon') && !this._mainScene.moonsVisibility) return;
       celestialBody.update();
       celestialBody.updateLabel();
       let distanceToCamera: number = this._mainScene.cameraController.distanceToObject(celestialBody);

@@ -7,8 +7,7 @@
 - add settings menu (UI size, metric system, display settings...)
 - add search
 - add loading screen
-- improved graphics
-- add rings
+- improved atmosphere graphics
 - global events menu
 - add kuiper belt
 - add option for rotating the camera with objects
