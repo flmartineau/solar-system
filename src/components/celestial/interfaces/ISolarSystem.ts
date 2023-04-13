@@ -2,7 +2,6 @@ export interface ISolarSystem {
     sun: ISun
 }
 
-
 export interface ISun {
     id: number;
     name: string;
@@ -24,8 +23,8 @@ export interface IPlanet {
     textures: ITextures;
     temperature: number;
     rotationPeriod: number;
-    hasRings: boolean;
     hasAtmosphere?: boolean;
+    rings: IRings;
     orbit: IOrbit;
     moons: Array<IMoon>;
 }
@@ -39,7 +38,6 @@ export interface IMoon {
     textures: ITextures;
     temperature: number;
     rotationPeriod: number;
-    hasRings: boolean;
     orbit: IOrbit;
 }
 
@@ -49,8 +47,14 @@ export interface IOrbit {
     inclination: number;
 }
 
+export interface IRings {
+    innerRadius: number;
+    outerRadius: number;
+}
+
 export interface ITextures {
     base: string;
-    cloud: string;
+    cloud?: string;
     night?: string;
+    rings: string;
 }

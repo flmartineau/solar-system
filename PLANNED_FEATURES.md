@@ -10,6 +10,5 @@
 - improved graphics
 - add rings
 - global events menu
-- add JSON for planet constants and make calculations with no library
 - add kuiper belt
 - add option for rotating the camera with objects

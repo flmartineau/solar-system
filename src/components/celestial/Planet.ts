@@ -2,13 +2,14 @@ import { Body, HelioDistance, HelioVector, KM_PER_AU, Vector } from 'astronomy-e
 import { CelestialBody } from './CelestialBody';
 import { SIZE_FACTOR } from '../../utils/constants';
 import { MainScene } from '../../scenes/MainScene';
-import { AdditiveBlending, BackSide, CatmullRomCurve3, Color, ColorRepresentation, FrontSide, HexColorString, LineBasicMaterial, Mesh, MeshPhongMaterial, PointLight, ShaderMaterial, SphereGeometry, Texture, TubeGeometry, Vector3 } from 'three';
+import { AdditiveBlending, BackSide, CatmullRomCurve3, Color, ColorRepresentation, DoubleSide, FrontSide, HexColorString, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Object3D, PointLight, RingGeometry, ShaderMaterial, SphereGeometry, Texture, TubeGeometry, Vector3 } from 'three';
 import { Moon } from './Moon';
 import { Lensflare, LensflareElement } from "three/examples/jsm/objects/Lensflare";
 import { OrbitLine } from './OrbitLine';
 import glowFragmentShader from '../../assets/shaders/glow/glowFragment.glsl';
 import glowVertexShader from '../../assets/shaders/glow/glowVertex.glsl';
 import { IPlanet } from './interfaces/ISolarSystem';
+import { RadialRingGeometry } from '../../utils/RadialRingGeometry';
 
 export class Planet extends CelestialBody {
 
@@ -17,6 +18,7 @@ export class Planet extends CelestialBody {
     private _distanceToSun: number;
     private _orbitalPeriod: number;
     private _orbitLine: OrbitLine;
+    private _rings: Mesh | null = null;
     private _moons: Array<Moon> = [];
     private _position: Vector3 = new Vector3(0, 0, 0);
 
@@ -61,6 +63,14 @@ export class Planet extends CelestialBody {
             this.addGlow();
         }
 
+        if (data.textures.rings) {
+            this.addRings();
+        }
+
+    }
+
+    get data(): IPlanet {
+        return this._data;
     }
 
     get distanceToSun(): number {
@@ -137,6 +147,10 @@ export class Planet extends CelestialBody {
             this.lastOrbitLineUpdateTime = 0;
         }
 
+        if (this._rings) {
+            this._rings.position.copy(this.position);
+          }
+
     }
 
     private updateOrbitGeometry(segments: number = this.NB_OF_ORBIT_LINE_POINTS): Vector3[] {
@@ -204,4 +218,26 @@ export class Planet extends CelestialBody {
         venusGlow.scale.multiplyScalar(1.02);
         this.add(venusGlow);
     }
+
+    private addRings(): void {
+        const innerRadius: number = (this._data.rings.innerRadius / KM_PER_AU) * SIZE_FACTOR;
+        const outerRadius: number = (this._data.rings.outerRadius / KM_PER_AU) * SIZE_FACTOR;
+
+
+        const ringTexture = this.mainScene.textureLoader.load(this.data.textures.rings);
+        const ringMaterial = new MeshBasicMaterial({
+            map: ringTexture,
+            alphaMap: ringTexture,
+            side: DoubleSide,
+            transparent: true,
+            opacity: 0.99
+          });
+
+        const ringGeometry = new RadialRingGeometry(innerRadius, outerRadius, 180);
+        const rings = new Mesh(ringGeometry, ringMaterial);
+        //rings.position.set(0, 0, 0);
+        rings.rotateX(90 * Math.PI / 180);
+        this._rings = rings;
+        this.mainScene.scene.add(rings);
+    };
 }

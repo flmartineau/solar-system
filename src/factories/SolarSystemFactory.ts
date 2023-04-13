@@ -28,6 +28,7 @@ export class SolarSystemFactory {
         let planets: Array<Planet> = new Array<Planet>();
 
         data.forEach((p: IPlanet) => {
+            if (p.name === 'Pluto') p.radius*= 50; //Temporary fix to avoid Pluto orbit lines jiggle
             let planet = new Planet(p, this._mainScene);
             planets.push(planet);
             if (p.moons.length > 0) {
