@@ -2,6 +2,10 @@ import { Clock } from 'three';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { MainScene } from '../scenes/MainScene';
 
+/**
+ * TimeController manages the passage of time in the simulation, 
+ * allowing for the control of playback speed and the updating of celestial objects.
+ */
 export class TimeController {
   private _currentDate: Date;
   private _simulationSpeed: number;
@@ -11,6 +15,10 @@ export class TimeController {
 
   private _mainScene: MainScene;
 
+  /**
+   * Create a new TimeController.
+   * @param mainScene - The main scene to which the TimeController is attached.
+   */
   constructor(mainScene: MainScene) {
     this._mainScene = mainScene;
     this._currentDate = new Date();
@@ -60,13 +68,19 @@ export class TimeController {
   }
 
 
+  /**
+   * Toggle the playback state of the simulation between play and pause.
+   */
   public togglePlayPause(): void {
     this._isPlaying = !this._isPlaying;
-    this._simulationSpeed = 1;
+    this._simulationSpeed = this._isPlaying ? 1 : 0;
     this._mainScene.uiController.updateSpeedDisplay();
     this._mainScene.uiController.togglePlayPauseButton();
   }
 
+  /**
+   * Update the time and celestial objects in the simulation.
+   */
   public update(): void {
     if (!this._isPlaying) {
       this._mainScene.celestialObjects.forEach((celestialBody: CelestialBody) => {
@@ -75,10 +89,8 @@ export class TimeController {
         if (celestialBody.instanceOf('Moon')) {
           celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
         } else {
-          celestialBody.visible = (distanceToCamera < 3000);
+          celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.isRealSize ? 1 : celestialBody.bigSizeFactor)));
         }
-
-
       });
       return;
     }
@@ -93,7 +105,7 @@ export class TimeController {
       if (celestialBody.instanceOf('Moon')) {
         celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
       } else {
-        celestialBody.visible = (distanceToCamera < 3000);
+        celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.isRealSize ? 1 : celestialBody.bigSizeFactor)));
       }
     });
 

@@ -5,25 +5,36 @@ import { Planet } from '../components/celestial/Planet';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 
+/**
+ * User interface controller for the solar system application.
+ */
 export class UIController {
   private _mainScene: MainScene;
   private _celestialObjectList: HTMLElement | null;
 
   private _labelsVisibility: boolean = true;
   private _moonsVisibility: boolean = true;
+  private _realSize: boolean = true;
 
+  /**
+   * Create a UIController.
+   * @param {MainScene} mainScene - The main scene object.
+   */
   constructor(mainScene: MainScene) {
     this._mainScene = mainScene;
     this._celestialObjectList = document.getElementById('celestial-body-list');
   }
 
+  /**
+   * Create the celestial object list UI element.
+   */
   public createCelestialObjectList() {
     if (!this._celestialObjectList) return;
     document.getElementById('right-sidebar')?.appendChild(this._celestialObjectList);
 
     this._mainScene.celestialObjects.forEach((celestialObject: CelestialBody) => {
 
-      if (!this.moonsVisibility && celestialObject instanceof Moon) 
+      if (!this.moonsVisibility && celestialObject instanceof Moon)
         return;
 
       const listItem = document.createElement('li');
@@ -36,19 +47,37 @@ export class UIController {
     });
   }
 
+  /**
+   * Update the celestial object list UI element.
+   */
   public updateCelestialObjectList() {
     if (!this._celestialObjectList) return;
     this._celestialObjectList.innerHTML = '';
     this.createCelestialObjectList();
   }
 
+  /**
+   * @returns {boolean} The current moons visibility state.
+   */
   get moonsVisibility(): boolean {
     return this._moonsVisibility;
   }
 
+  /**
+   * Set the moons visibility state.
+   * @param {boolean} moonsVisibility - The new moons visibility state.
+   */
   set moonsVisibility(moonsVisibility: boolean) {
     this._moonsVisibility = moonsVisibility;
     this.updateCelestialObjectList();
+  }
+
+  get isRealSize(): boolean {
+    return this._realSize;
+  }
+
+  set isRealSize(realSize: boolean) {
+    this._realSize = realSize;
   }
 
   get infoElement(): HTMLElement {
@@ -63,6 +92,10 @@ export class UIController {
     return document.getElementById('current-time') as HTMLInputElement;
   }
 
+  /**
+   * Show information about a celestial object.
+   * @param {any} celestialObject - The celestial object to show information about.
+  */
   public showInfo(celestialObject: any): void {
 
     if (this.infoElement) {
@@ -101,6 +134,9 @@ export class UIController {
 
   }
 
+  /**
+   * Hide the information element.
+   */
   public hideInfo(): void {
     if (this._mainScene.selectedObject !== null)
       return;
@@ -110,6 +146,9 @@ export class UIController {
     }
   }
 
+  /**
+   * Toggle the play/pause button in the UI.
+   */
   public togglePlayPauseButton(): void {
     const playPauseButton = document.getElementById('play-pause-icon') as HTMLImageElement;
     if (playPauseButton) {
@@ -117,7 +156,9 @@ export class UIController {
     }
   }
 
-
+  /**
+   * Toggle the visibility of orbit lines in the scene.
+   */
   public toggleOrbitLines(): void {
     let orbitLinesVisible: boolean = false;
     this._mainScene.planets.forEach((planet: Planet) => {
@@ -153,8 +194,15 @@ export class UIController {
   }
 
 
-  public toggleMoons(): void {
+  public toggleMoons(value?: boolean): void {
+
+    if (value == undefined && !this._realSize) //diable moons when real size is off
+      return;
+
     this.moonsVisibility = !this.moonsVisibility;
+    if (value !== undefined) {
+      this.moonsVisibility = value;
+    }
 
     this._mainScene.moonsVisibility = this._moonsVisibility;
 
@@ -162,6 +210,26 @@ export class UIController {
     if (toggleMoonsIcon) {
       toggleMoonsIcon.src = this._moonsVisibility ? './assets/icons/moons_on.png' : 'assets/icons/moons_off.png';
     }
+    this._mainScene.audioController.playClick(2);
+  }
+
+  public toggleRealSize(): void {
+    this.toggleMoons(!this._realSize);
+    this._realSize = !this._realSize;
+
+    const toggleRealSizeIcon = document.getElementById('toggleSize') as HTMLImageElement;
+    if (toggleRealSizeIcon) {
+      toggleRealSizeIcon.src = this._realSize ? './assets/icons/big_size.png' : 'assets/icons/real_size.png';
+    }
+
+    this._mainScene.celestialObjects.forEach((celestialObject: CelestialBody) => {
+      celestialObject.setBigSize(!this._realSize);
+    });
+
+    if (this._mainScene.selectedObject) {
+      this._mainScene.cameraController.centerCameraOnObject(this._mainScene.selectedObject);
+    }
+    
     this._mainScene.audioController.playClick(2);
   }
 

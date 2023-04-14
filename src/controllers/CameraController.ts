@@ -1,4 +1,4 @@
-import { PerspectiveCamera, Vector3, WebGLRenderer, Raycaster, Vector2 } from 'three';
+import { PerspectiveCamera, Vector3, WebGLRenderer, Raycaster, Vector2, Quaternion } from 'three';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
@@ -62,6 +62,10 @@ export class CameraController {
 
   get camera(): PerspectiveCamera {
     return this._camera;
+  }
+
+  get controls(): OrbitControls {
+    return this._controls;
   }
 
   set focusedObject(object: CelestialBody | null) {

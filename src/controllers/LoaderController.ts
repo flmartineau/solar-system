@@ -1,5 +1,4 @@
 import { CubeTextureLoader, LoadingManager, TextureLoader } from "three";
-import { ISolarSystem } from "../components/celestial/interfaces/ISolarSystem";
 
 export class LoaderController {
 

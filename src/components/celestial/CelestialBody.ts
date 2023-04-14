@@ -14,7 +14,7 @@ export class CelestialBody extends Mesh {
     private _isSelected: boolean = false;
 
 
-    constructor(mainScene: MainScene, name: string, radius: number, material: Material, 
+    constructor(mainScene: MainScene, name: string, radius: number, material: Material,
         mass: number, temperature: number) {
 
         const geometry = new SphereGeometry(radius, 128, 128);
@@ -42,6 +42,10 @@ export class CelestialBody extends Mesh {
         return this._radius;
     }
 
+    set radius(value: number) {
+        this._radius = value;
+    }
+
     get temperature(): number {
         return this._temperature;
     }
@@ -58,12 +62,22 @@ export class CelestialBody extends Mesh {
         this._isSelected = value;
     }
 
-    public addToMainScene(): void { 
+    get bigSizeFactor(): number {
+        return this.instanceOf('Planet') ? 1000 : 20;
+    }
+
+    public setBigSize(value: boolean): void {
+        const scalingFactor: number = value ? this.bigSizeFactor : 1 / this.bigSizeFactor;
+        this.radius = this.radius * scalingFactor;
+        this.geometry.scale(scalingFactor, scalingFactor, scalingFactor);
+    }
+
+    public addToMainScene(): void {
         this.mainScene.scene.add(this);
         this.mainScene.scene.add(this._label);
     }
 
-    public update(): void {}
+    public update(): void { }
 
     public updateLabel(): void {
         this._label.update(this.mainScene.cameraController.camera);

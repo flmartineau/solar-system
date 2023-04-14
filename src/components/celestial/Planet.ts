@@ -19,6 +19,8 @@ export class Planet extends CelestialBody {
     private _orbitalPeriod: number;
     private _orbitLine: OrbitLine;
     private _rings: Mesh | null = null;
+    private _glow: Mesh<SphereGeometry, ShaderMaterial> | null = null;
+    private _clouds: Mesh<SphereGeometry, MeshPhongMaterial> | null = null;
     private _moons: Array<Moon> = [];
     private _position: Vector3 = new Vector3(0, 0, 0);
     private _body: Body;
@@ -37,8 +39,11 @@ export class Planet extends CelestialBody {
         const texture: Texture = mainScene.textureLoader.load(data.textures.base);
         const material = new MeshPhongMaterial({ map: texture });
 
+        const radius: number = (data.radius / KM_PER_AU) * SIZE_FACTOR * 
+            ((mainScene.uiController.isRealSize) ? 1 : 1000);
 
-        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
+
+        super(mainScene, data.name, radius, material, data.mass, data.temperature);
         this._data = data;
         this._body = Body[data.name];
         this._distanceToSun = 0;
@@ -205,7 +210,8 @@ export class Planet extends CelestialBody {
         const atmosphere = new MeshPhongMaterial({
             side: FrontSide, map: cloudTexture, transparent: true, alphaMap: cloudTexture
         });
-        this.add(new Mesh(geometry, atmosphere));
+        this._clouds = new Mesh(geometry, atmosphere);
+        this.add(this._clouds);
     }
 
 
@@ -224,9 +230,10 @@ export class Planet extends CelestialBody {
             transparent: true
         });
 
-        let venusGlow = new Mesh(new SphereGeometry(this.radius, 128, 128), glowMaterial);
-        venusGlow.scale.multiplyScalar(1.02);
-        this.add(venusGlow);
+        let planetGlow = new Mesh(new SphereGeometry(this.radius, 128, 128), glowMaterial);
+        planetGlow.scale.multiplyScalar(1.02);
+        this._glow = planetGlow;
+        this.add(planetGlow);
     }
 
     private addRings(): void {
@@ -254,6 +261,23 @@ export class Planet extends CelestialBody {
         let axisInfo: AxisInfo = RotationAxis(this._body, this.mainScene.timeController.currentDate);
         this.rotation.y = (axisInfo.spin % 360) * (Math.PI / 180);
     }
+
+    public setBigSize(value: boolean): void {
+        super.setBigSize(value);
+    
+        const scalingFactor = value ? this.bigSizeFactor : 1 / this.bigSizeFactor;
+    
+        if (this._rings) {
+            this._rings.geometry.scale(scalingFactor, scalingFactor, scalingFactor);
+        }
+        if (this._glow) {
+            this._glow.scale.multiplyScalar(scalingFactor);
+        }
+        if (this._clouds) {
+            this._clouds.scale.multiplyScalar(scalingFactor);
+        }
+    }
+    
 
 
     public instanceOf(className: string): boolean {

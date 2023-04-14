@@ -14,7 +14,9 @@ import { Moon } from '../components/celestial/Moon';
 import { SolarSystemFactory } from '../factories/SolarSystemFactory';
 import { LoaderController } from '../controllers/LoaderController';
 
-
+/**
+ * MainScene represents the main simulation environment, which includes all celestial objects, controllers, and UI elements.
+ */
 export class MainScene {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
@@ -34,6 +36,10 @@ export class MainScene {
   private _moonsVisibility: boolean;
 
 
+   /**
+   * Create a new MainScene.
+   * @param container - The HTML container for the scene.
+   */
   constructor(container: HTMLElement) {
     this._scene = new Scene();
     this._renderer = new WebGLRenderer({
@@ -80,6 +86,9 @@ export class MainScene {
     
   }
 
+  /**
+   * Load the data for the simulation.
+   */
   private async loadData() {
     let dataRequest = await fetch('./data/solarsystem.json');
     let data = await dataRequest.json();
@@ -184,6 +193,10 @@ export class MainScene {
     return moonOrbitLines.concat(planetOrbitLines);
   }
 
+  /**
+   * Select an object in the scene.
+   * @param object - The celestial object to select.
+   */
   selectObject(object: CelestialBody): void {
 
     if (object.name == '')
@@ -199,9 +212,11 @@ export class MainScene {
       this._selectedObject.isSelected = false;
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
-    this.audioController.playClick(1);
   }
 
+  /**
+   * Animate the scene and handle updates.
+   */
   private animate(): void {
 
     this._renderer.setAnimationLoop(() => {

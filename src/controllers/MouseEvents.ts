@@ -29,6 +29,7 @@ export class MouseEvents {
     const toggleOrbitsButton = document.getElementById('toggleOrbits');
     const toggleLabelsButton = document.getElementById('toggleLabels');
     const toggleMoonsButton = document.getElementById('toggleMoons');
+    const toggleSizeButton = document.getElementById('toggleSize');
 
     if (toggleOrbitsButton) {
       toggleOrbitsButton.addEventListener('click', () => this._uiController.toggleOrbitLines());
@@ -41,6 +42,12 @@ export class MouseEvents {
     if (toggleMoonsButton) {
       toggleMoonsButton.addEventListener('click', () => this._uiController.toggleMoons());
     }
+
+    if (toggleSizeButton) {
+      toggleSizeButton.addEventListener('click', () => this._uiController.toggleRealSize());
+    }
+
+
 
     this.addMusicEventListeners();
   }
@@ -110,10 +117,12 @@ export class MouseEvents {
     if (intersectsObjects.length > 0) {
       const object = intersectsObjects[0].object;
       this._mainScene.selectObject(object as unknown as CelestialBody);
+      this._mainScene.audioController.playClick(1);
     }
     if (intersectsLabels.length > 0) {
       const object = intersectsLabels[0].object;
       this._mainScene.selectObject((object as unknown as Label).celestialBody);
+      this._mainScene.audioController.playClick(1);
     }
   }
 
