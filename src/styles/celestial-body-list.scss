@@ -1,9 +1,52 @@
-#celestial-body-list {
+#right-sidebar {
+
+  top: 40px;
+  right: 10px;
+  position: absolute;
+  display: flex;
+
+  h3 {
+    color: white;
+  }
+
+  #moon-menu {
+    position: relative;
+    right: 80px;
+    top: 60px;
+
+    ul {
+      list-style-type: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      list-style-type: none !important;
+      position: absolute !important;
+      width: 75px;
+    
+      li {
+        cursor: pointer;
+        padding: 5px;
+        font-size: 14px;
+        color: white;
+        text-align: left;
+        user-select: none;
+      }
+    
+      li:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      li.selected {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+
+  }
+
+  #celestial-body-list {
     list-style-type: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    top: 90px !important;
-    right: 10px !important;
     list-style-type: none !important;
     position: absolute !important;
   
@@ -19,4 +62,12 @@
     li:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
+
+    li.selected {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
   }
+
+}
+
+

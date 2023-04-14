@@ -36,10 +36,10 @@ export class MainScene {
   private _moonsVisibility: boolean;
 
 
-   /**
-   * Create a new MainScene.
-   * @param container - The HTML container for the scene.
-   */
+  /**
+  * Create a new MainScene.
+  * @param container - The HTML container for the scene.
+  */
   constructor(container: HTMLElement) {
     this._scene = new Scene();
     this._renderer = new WebGLRenderer({
@@ -48,7 +48,7 @@ export class MainScene {
     });
 
 
-    
+
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     this._renderer.sortObjects = true;
     this._renderer.autoClear = true;
@@ -71,7 +71,7 @@ export class MainScene {
     ]);
     this._skybox.encoding = sRGBEncoding;
     this._scene.background = this._skybox;
-    
+
     this._timeController = new TimeController(this);
 
     this._mouseEvents = new MouseEvents(this);
@@ -83,7 +83,7 @@ export class MainScene {
       this._loaderController.hideLoadingScreen();
       this.animate();
     });
-    
+
   }
 
   /**
@@ -160,7 +160,7 @@ export class MainScene {
 
   get celestialObjects(): CelestialBody[] {
     if (!this.solarSystemFactory)
-     return [];
+      return [];
     return this.solarSystemFactory?.celestialBodies;
   }
 
@@ -171,7 +171,7 @@ export class MainScene {
   get planets(): Planet[] {
     return this.celestialObjects.filter((object: CelestialBody) => object instanceof Planet) as Planet[];
   }
-  
+
   get moons(): Moon[] {
     return this.celestialObjects.filter((object: CelestialBody) => object instanceof Moon) as Moon[];
   }
@@ -202,7 +202,7 @@ export class MainScene {
     if (object.name == '')
       return;
 
-      object.isSelected = true;
+    object.isSelected = true;
 
     if (this._selectedObject === object) {
       this._cameraController.zoomToObject(this._selectedObject);
@@ -212,6 +212,7 @@ export class MainScene {
       this._selectedObject.isSelected = false;
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
+    this.uiController.updateCelestialObjectList();
   }
 
   /**

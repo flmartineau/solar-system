@@ -265,7 +265,7 @@ export class Planet extends CelestialBody {
     public setBigSize(value: boolean): void {
         super.setBigSize(value);
     
-        const scalingFactor = value ? this.bigSizeFactor : 1 / this.bigSizeFactor;
+        const scalingFactor: number = value ? this.bigSizeFactor : 1 / this.bigSizeFactor;
     
         if (this._rings) {
             this._rings.geometry.scale(scalingFactor, scalingFactor, scalingFactor);

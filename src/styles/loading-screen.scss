@@ -12,15 +12,22 @@
 
     #loading-screen-content {
 
-        margin-top: 10%;
+        margin-top: 12%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         #loading-screen-header {
-            font-size: 40px;
+            font-size: 30px;
             color: white;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            #loading-screen-header-title {
+                width: 50%;
+            }
 
             #loading-screen-header-text {
                 margin-bottom: 0;
@@ -28,7 +35,7 @@
         }
 
         #loading-bar {
-            width: 100%;
+            width: 40%;
             height: 10px;
             background-color: #444;
             position: relative;
