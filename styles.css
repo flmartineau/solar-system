@@ -157,6 +157,13 @@
   height: 32px;
   user-select: none;
 }
+#sidebar #toggleSize {
+  margin-top: 10px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  user-select: none;
+}
 #sidebar #music-icon {
   cursor: pointer;
   width: 40px;
