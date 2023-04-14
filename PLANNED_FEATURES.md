@@ -6,7 +6,6 @@
 - add scale grid
 - add settings menu (UI size, metric system, display settings...)
 - add search
-- add loading screen
 - improved atmosphere graphics
 - global events menu
 - add kuiper belt

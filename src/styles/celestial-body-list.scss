@@ -1,0 +1,22 @@
+#celestial-body-list {
+    list-style-type: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    top: 90px !important;
+    right: 10px !important;
+    list-style-type: none !important;
+    position: absolute !important;
+  
+    li {
+      cursor: pointer;
+      padding: 5px;
+      font-size: 14px;
+      color: white;
+      text-align: left;
+      user-select: none;
+    }
+  
+    li:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }

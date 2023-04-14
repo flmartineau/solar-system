@@ -10,27 +10,23 @@
 
 <body>
   <audio id="background-music" autoplay loop muted></audio>
+  <div id="loading-screen">
+    <div id="loading-screen-content">
+      <div id="loading-screen-header">
+        <h1 id="loading-screen-header-title">Solar System</h1>
+        <p id="loading-screen-header-text">LOADING...</p>
+      </div>
+      <div id="loading-bar">
+        <div id="loading-bar-inner"></div>
+      </div>
+    </div>
+  </div>
+
   <div id="game-container"></div>
   <div id="info-container"></div>
   <div id="current-date-container"></div>
   <div id="control-panel-container"></div>
-  <div id="sidebar">
-    <div class="sidebar-item">
-      <img src="./assets/icons/orbit_lines_on.png" alt="Toggle Orbit Lines" id="toggleOrbits">
-      <p class="sidebar-text">ORBIT LINES</p>
-    </div>
-    <div class="sidebar-item">
-      <img src="./assets/icons/planet_labels_on.png" alt="Toggle Labels" id="toggleLabels">
-      <p class="sidebar-text">LABELS</p>
-    </div>
-    <div class="sidebar-item">
-      <img src="./assets/icons/moons_on.png" alt="Toggle Moons" id="toggleMoons">
-      <p class="sidebar-text">MOONS</p>
-    </div>
-    <div class="sidebar-item">
-      <img id="music-icon" src="./assets/icons/speaker-max.png" alt="Music">
-    </div>
-  </div>
+  <div id="sidebar-container"></div>
   <div id="right-sidebar">
     <ul id="celestial-body-list"></ul>
   </div>

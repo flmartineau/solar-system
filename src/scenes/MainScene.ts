@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, CubeTexture, CubeTextureLoader, sRGBEncoding, TextureLoader, Line } from 'three';
+import { Scene, WebGLRenderer, CubeTexture, sRGBEncoding, TextureLoader, Line } from 'three';
 
 import { Planet } from '../components/celestial/Planet';
 import { CameraController } from '../controllers/CameraController';
@@ -12,12 +12,12 @@ import { AudioController } from '../controllers/AudioController';
 import { DevConsoleController } from '../controllers/DevConsoleController';
 import { Moon } from '../components/celestial/Moon';
 import { SolarSystemFactory } from '../factories/SolarSystemFactory';
+import { LoaderController } from '../controllers/LoaderController';
 
 
 export class MainScene {
   private _scene: Scene;
   private _renderer: WebGLRenderer;
-  private _textureLoader: TextureLoader;
   private _timeController: TimeController;
   private _cameraController: CameraController;
   private _uiController: UIController;
@@ -25,6 +25,7 @@ export class MainScene {
   private _devConsoleController: DevConsoleController;
   private _solarSystemFactory?: SolarSystemFactory;
   private _mouseEvents: MouseEvents;
+  private _loaderController: LoaderController;
 
   private _skybox: CubeTexture;
 
@@ -32,17 +33,21 @@ export class MainScene {
 
   private _moonsVisibility: boolean;
 
+
   constructor(container: HTMLElement) {
     this._scene = new Scene();
     this._renderer = new WebGLRenderer({
       antialias: true,
       logarithmicDepthBuffer: true
     });
-    this._textureLoader = new TextureLoader();
+
+
+    
     this._renderer.setSize(window.innerWidth, window.innerHeight);
     this._renderer.sortObjects = true;
     this._renderer.autoClear = true;
 
+    this._loaderController = new LoaderController();
     this._devConsoleController = new DevConsoleController();
     this._cameraController = new CameraController(this);
     this._uiController = new UIController(this);
@@ -53,8 +58,7 @@ export class MainScene {
     container.appendChild(this._renderer.domElement);
 
     // Load the _skybox textures
-    const loader = new CubeTextureLoader();
-    this._skybox = loader.load([
+    this._skybox = this.loaderController.cubeTextureLoader.load([
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg',
       './assets/textures/stars_2.jpg', './assets/textures/stars_2.jpg'
@@ -70,9 +74,8 @@ export class MainScene {
 
     this.loadData().then(() => {
       this._uiController.createCelestialObjectList();
-
+      this._loaderController.hideLoadingScreen();
       this.animate();
-
     });
     
   }
@@ -83,7 +86,6 @@ export class MainScene {
     this._solarSystemFactory = new SolarSystemFactory(data, this);
   }
 
-
   get scene(): Scene {
     return this._scene;
   }
@@ -93,7 +95,7 @@ export class MainScene {
   }
 
   get textureLoader(): TextureLoader {
-    return this._textureLoader;
+    return this.loaderController.textureLoader;
   }
 
   get timeController(): TimeController {
@@ -110,6 +112,10 @@ export class MainScene {
 
   get audioController(): AudioController {
     return this._audioController;
+  }
+
+  get loaderController(): LoaderController {
+    return this._loaderController;
   }
 
   get devConsoleController(): DevConsoleController {

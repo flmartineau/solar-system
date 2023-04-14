@@ -68,7 +68,6 @@ export class Planet extends CelestialBody {
         if (data.textures.rings) {
             this.addRings();
         }
-
     }
 
     get data(): IPlanet {

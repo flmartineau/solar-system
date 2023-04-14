@@ -5,7 +5,6 @@ import { TimeController } from './TimeController';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { DateHelper } from '../helper/DateHelper';
-import { Moon } from '../components/celestial/Moon';
 import { NextGlobalSolarEclipse, NextLunarEclipse } from 'astronomy-engine';
 
 export class MouseEvents {
@@ -24,7 +23,9 @@ export class MouseEvents {
     window.addEventListener('keydown', (event) => this.onKeyDown(event), false);
     window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
     window.addEventListener('resize', () => this.onWindowResize(), false);
+  }
 
+  public addSidebarEventListeners(): void {
     const toggleOrbitsButton = document.getElementById('toggleOrbits');
     const toggleLabelsButton = document.getElementById('toggleLabels');
     const toggleMoonsButton = document.getElementById('toggleMoons');

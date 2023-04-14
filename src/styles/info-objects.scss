@@ -1,0 +1,33 @@
+#info {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(31, 28, 28, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    user-select: none;
+  
+  
+    .info-element {
+      display: flex;
+    }
+  
+    #info-next-solar-eclipse {
+      justify-content: center;
+  
+      #info-next-solar-eclipse-button {
+        margin-top: 8px;
+      }
+    }
+  
+  
+    #info-next-lunar-eclipse {
+      justify-content: center;
+  
+      #info-next-lunar-eclipse-button {
+        margin-top: 8px;
+      }
+    }
+  }

@@ -1,0 +1,53 @@
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 100%;
+    background-color: rgba(31, 28, 28, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    user-select: none;
+  
+  
+    .sidebar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+  
+      .sidebar-text {
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 8px;
+        text-align: center;
+        margin-top: 5px;
+        color: white;
+        user-select: none;
+      }
+    }
+  
+    #toggleMoons,
+    #toggleOrbits,
+    #toggleLabels {
+      margin-top: 10px;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      user-select: none;
+    }
+  
+  
+    #music-icon {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      bottom: 40px;
+      position: fixed;
+      filter: invert(100%);
+    }
+  
+  }

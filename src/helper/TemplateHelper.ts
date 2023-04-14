@@ -6,6 +6,7 @@ export abstract class TemplateHelper {
     this.setTemplate('info-container', 'info.html', () => mouseEvents.addInfoEventListeners());
     this.setTemplate('current-date-container', 'current-date.html', () => mouseEvents.addDateEventListeners());
     this.setTemplate('control-panel-container', 'control-panel.html', () => mouseEvents.addControlEventListeners());
+    this.setTemplate('sidebar-container', 'sidebar.html', () => mouseEvents.addSidebarEventListeners());
   }
 
 private static async setTemplate(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
