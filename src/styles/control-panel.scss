@@ -1,13 +1,17 @@
+@import "constants";
+
+
 #control-panel {
     position: fixed;
-    bottom: 0;
+    bottom: 16px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
-    background-color: rgba(31, 28, 28, 0.5);
+    background-color: $main-blue;
+    border-radius: 16px;
     z-index: 100;
     width: 25%;
     justify-content: space-between;
@@ -30,6 +34,15 @@
       #sim-speed-slider {
         width: 60%;
       }
+
+      
+
+/* input[type='range'] {
+  -webkit-appearance: none !important;
+  background:rgb(255, 255, 255);
+  height:7px;
+} */
+
     
     
       #simulation-speed {

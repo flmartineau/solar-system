@@ -1,33 +1,59 @@
+@import "constants";
+
 #info {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: rgba(31, 28, 28, 0.5);
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 280px;
+  background-color: $main-blue;
+  
+  border-radius: 16px;
+  color: white;
+  user-select: none;
+
+  #info-header {
+    background-color: #000;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-position-y: top;
+    background-size: 150%;
+    border-radius: 16px;
+    height: 64px;
+    opacity: 0.7;
+  }
+
+  #info-content {
     padding: 10px;
-    border-radius: 5px;
-    color: white;
-    user-select: none;
-  
-  
-    .info-element {
-      display: flex;
-    }
-  
-    #info-next-solar-eclipse {
-      justify-content: center;
-  
-      #info-next-solar-eclipse-button {
-        margin-top: 8px;
-      }
-    }
-  
-  
-    #info-next-lunar-eclipse {
-      justify-content: center;
-  
-      #info-next-lunar-eclipse-button {
-        margin-top: 8px;
-      }
+  }
+
+
+  #info-name {
+    font-weight: bold;
+    justify-content: center;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px #000;
+  }
+
+
+  .info-element {
+    display: flex;
+  }
+
+  #info-next-solar-eclipse {
+    justify-content: center;
+
+    #info-next-solar-eclipse-button {
+      margin-top: 8px;
     }
   }
+
+
+  #info-next-lunar-eclipse {
+    justify-content: center;
+
+    #info-next-lunar-eclipse-button {
+      margin-top: 8px;
+    }
+  }
+}

@@ -52,4 +52,5 @@ The `dist` folder will be generated with the production-ready files. You can dep
 
 ## Credit
 
-Background music by IvyMusic (https://pixabay.com/music/ambient-space-atmospheric-background-124841)
+Background music by IvyMusic (https://pixabay.com/music/ambient-space-atmospheric-background-124841).
+Planets images from NASA (https://solarsystem.nasa.gov).

@@ -1,15 +1,18 @@
+@import "constants";
+
 #sidebar {
     position: fixed;
     left: 0;
-    top: 0;
+    top: 20%;
     width: 80px;
-    height: 100%;
-    background-color: rgba(31, 28, 28, 0.5);
+    height: 50%;
+    background-color: $main-blue;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
     user-select: none;
+    border-radius: 16px;
   
   
     .sidebar-item {
@@ -28,6 +31,11 @@
         color: white;
         user-select: none;
       }
+    }
+
+    .sidebar-music {
+      position: absolute;
+      bottom: 20px;
     }
   
     #toggleMoons,
@@ -53,8 +61,6 @@
       cursor: pointer;
       width: 40px;
       height: 40px;
-      bottom: 40px;
-      position: fixed;
       filter: invert(100%);
     }
   

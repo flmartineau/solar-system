@@ -156,7 +156,7 @@ export class UIController {
 
     if (this.infoElement) {
 
-      let infoName: HTMLElement = document.getElementById('info-name-value') as HTMLElement;
+      let infoName: HTMLElement = document.getElementById('info-name') as HTMLElement;
       infoName.innerHTML = celestialObject.name;
 
       let infoMass: HTMLElement = document.getElementById('info-mass-value') as HTMLElement;
@@ -186,6 +186,12 @@ export class UIController {
       infoNextSolarEclipse.style.display = (celestialObject.name === 'Earth') ? 'flex' : 'none';
 
       this.infoElement.style.display = 'block';
+
+      let infoHeader: HTMLElement = document.getElementById('info-header') as HTMLElement;
+
+      infoHeader.setAttribute('style', `background-image: url('./assets/images/bodies/${celestialObject.name.toLowerCase()}.png');`);
+
+
     }
 
   }
