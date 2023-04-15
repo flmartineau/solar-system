@@ -1,3 +1,5 @@
+@import "constants";
+
 #right-sidebar {
 
   top: 40px;
@@ -9,10 +11,28 @@
     color: white;
   }
 
+  li {
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    color: white;
+    text-align: left;
+    user-select: none;
+  }
+
+  li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  li.selected {
+    background-color: #5D5C78;
+  }
+}
+
   #moon-menu {
     position: relative;
-    right: 80px;
-    top: 60px;
+    right: 75px;
+    top: 67px;
 
     ul {
       list-style-type: none !important;
@@ -21,53 +41,24 @@
       list-style-type: none !important;
       position: absolute !important;
       width: 75px;
-    
-      li {
-        cursor: pointer;
-        padding: 5px;
-        font-size: 14px;
-        color: white;
-        text-align: left;
-        user-select: none;
-      }
-    
-      li:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-
-      li.selected {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-    }
-
-
-  }
-
-  #celestial-body-list {
-    list-style-type: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    list-style-type: none !important;
-    position: absolute !important;
-  
-    li {
-      cursor: pointer;
-      padding: 5px;
-      font-size: 14px;
-      color: white;
-      text-align: left;
-      user-select: none;
-    }
-  
-    li:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    li.selected {
-      background-color: rgba(255, 255, 255, 0.2);
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+      background-color: $main-blue;
     }
   }
 
-}
+  #planet-menu {
+    padding: 8px;
+    background-color: $main-blue;
+    border-radius: 16px;
+    #celestial-body-list {
+      list-style-type: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      list-style-type: none !important;
+  }
+  }
+
+
 
 

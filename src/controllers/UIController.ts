@@ -258,7 +258,7 @@ export class UIController {
 
   public toggleMoons(value?: boolean): void {
 
-    if (value == undefined && !this._realSize) //diable moons when real size is off
+    if (value == undefined && !this._realSize) //disable moons when real size is off
       return;
 
     this.moonsVisibility = !this.moonsVisibility;
