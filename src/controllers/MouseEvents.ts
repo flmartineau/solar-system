@@ -25,11 +25,15 @@ export class MouseEvents {
     window.addEventListener('resize', () => this.onWindowResize(), false);
   }
 
+  /**
+   * Handles the click events for the sidebar buttons.
+   */
   public addSidebarEventListeners(): void {
     const toggleOrbitsButton = document.getElementById('toggleOrbits');
     const toggleLabelsButton = document.getElementById('toggleLabels');
     const toggleMoonsButton = document.getElementById('toggleMoons');
     const toggleSizeButton = document.getElementById('toggleSize');
+    const openSettingsButton = document.getElementById('openSettings');
 
     if (toggleOrbitsButton) {
       toggleOrbitsButton.addEventListener('click', () => this._uiController.toggleOrbitLines());
@@ -47,11 +51,16 @@ export class MouseEvents {
       toggleSizeButton.addEventListener('click', () => this._uiController.toggleRealSize());
     }
 
-
+    if (openSettingsButton) {
+      openSettingsButton.addEventListener('click', () => this._uiController.openSettings());
+    }
 
     this.addMusicEventListeners();
   }
 
+  /**
+   * Handles the click events for the date inputs.
+   */
   public addDateEventListeners(): void {
     document.getElementById('current-date')?.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
@@ -61,8 +70,7 @@ export class MouseEvents {
           let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
           let newDateDate: Date = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD');
           this._timeController.currentDate = DateHelper.setTimeToDate(currentTime, newDateDate);
-          const currentDateIcon: HTMLElement | null = document.getElementById('current-date-icon');
-          currentDateIcon?.classList.remove('active');
+          this.updateCurrentDateButton(false);
         }
       }
     });
@@ -79,39 +87,66 @@ export class MouseEvents {
 
   }
 
+  /**
+   * Handles the click events for the info panel.
+   */
   public addInfoEventListeners(): void {
     document.getElementById('info-next-lunar-eclipse-button')?.addEventListener('click', () => {
       this._mainScene.timeController.currentDate = NextLunarEclipse(this._mainScene.timeController.currentDate).peak.date;
+      this.updateCurrentDateButton(false);
     });
 
     document.getElementById('info-next-solar-eclipse-button')?.addEventListener('click', () => {
       this._mainScene.timeController.currentDate = NextGlobalSolarEclipse(this._mainScene.timeController.currentDate).peak.date;
+      this.updateCurrentDateButton(false);
     });
   }
 
+  /**
+   * Updates the current date button active state.
+   * @param active True if the button should be active, false otherwise. 
+   */
+  private updateCurrentDateButton(active: boolean): void {
+    const currentDateIcon: HTMLElement | null = document.getElementById('current-date-icon');
+    if (active) {
+      currentDateIcon?.classList.add('active');
+    } else {
+      currentDateIcon?.classList.remove('active');
+    }
+  }
+
+  /**
+   * Handles the click events for the control panel.
+   */
   public addControlEventListeners(): void {
     const currentDateIcon: HTMLElement | null = document.getElementById('current-date-icon');
-
-
-    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { 
-      this._timeController.simulationSpeed = (<HTMLInputElement>e.target).valueAsNumber; 
-      currentDateIcon?.classList.remove('active');
+    document.getElementById('sim-speed-slider')?.addEventListener('input', (e: Event) => {
+      this._timeController.simulationSpeed = (<HTMLInputElement>e.target).valueAsNumber;
+      this.updateCurrentDateButton(false);
     });
     currentDateIcon?.addEventListener('click', () => {
-        currentDateIcon.classList.add('active');
-        this._timeController.currentDate = new Date(); 
-        this._mainScene.audioController.playClick(3);
+      this.updateCurrentDateButton(true);
+      this._timeController.currentDate = new Date();
+      this._mainScene.audioController.playClick(3);
     });
     document.getElementById('play-pause-icon')?.addEventListener('click', () => {
       this._mainScene.audioController.playClick(3);
       this._timeController.togglePlayPause();
+      this.updateCurrentDateButton(false);
     });
   }
 
+  /**
+   * Handles the click events for the music icon.
+   */
   public addMusicEventListeners(): void {
     document.getElementById('music-icon')?.addEventListener('click', () => this._mainScene.uiController.toggleMusicVolume());
   }
 
+  /**
+   * Handles the click events.
+   * @param event The click event.
+   */
   private onClick(event: MouseEvent): void {
 
     this._mainScene.cameraController.setFromCamera(event, this._raycaster);
@@ -135,13 +170,21 @@ export class MouseEvents {
     }
   }
 
+  /**
+   * Handles the keydown events.
+   * @param event The keydown event.
+   */
   private onKeyDown(event: KeyboardEvent): void {
     if (event.key === '²') {
       this._mainScene.devConsoleController.toggleDevConsole();
     }
-  
+
   }
 
+  /**
+   * Handles the mousemove events.
+   * @param event The mousemove event.
+   */
   private onMouseMove(event: MouseEvent): void {
     this._mainScene.cameraController.setFromCamera(event, this._raycaster);
 
@@ -162,6 +205,9 @@ export class MouseEvents {
     }
   }
 
+  /**
+   * Handles the window resize.
+   */
   private onWindowResize(): void {
     this._mainScene.cameraController.updateOnResize();
     this._mainScene.renderer.setSize(window.innerWidth, window.innerHeight);

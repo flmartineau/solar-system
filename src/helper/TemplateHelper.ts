@@ -9,7 +9,7 @@ export abstract class TemplateHelper {
     this.setTemplate('sidebar-container', 'sidebar.html', () => mouseEvents.addSidebarEventListeners());
   }
 
-private static async setTemplate(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
+public static async setTemplate(containerId: string, contentUrl: string, callback?: () => void): Promise<void> {
     const response: Response = await fetch(contentUrl);
     const content: string = await response.text();
   

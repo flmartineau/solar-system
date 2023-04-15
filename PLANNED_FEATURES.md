@@ -4,7 +4,6 @@
 - add correct rotation axis
 - display lagrange points
 - add scale grid
-- add settings menu (UI size, metric system, display settings...)
 - add search
 - improved atmosphere graphics
 - global events menu

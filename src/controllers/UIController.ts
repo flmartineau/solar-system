@@ -1,3 +1,5 @@
+import { KM_PER_AU } from 'astronomy-engine';
+import { SettingsModal } from '../components/SettingsModal';
 import { CelestialBody } from '../components/celestial/CelestialBody';
 import { Label } from '../components/celestial/Label';
 import { Moon } from '../components/celestial/Moon';
@@ -10,6 +12,7 @@ import { MainScene } from '../scenes/MainScene';
  */
 export class UIController {
   private _mainScene: MainScene;
+  private _settingsModal: SettingsModal;
   private _celestialObjectList: HTMLElement | null;
   private _moonMenu: HTMLElement | null;
 
@@ -23,8 +26,13 @@ export class UIController {
    */
   constructor(mainScene: MainScene) {
     this._mainScene = mainScene;
+    this._settingsModal = new SettingsModal();
     this._celestialObjectList = document.getElementById('celestial-body-list');
     this._moonMenu = document.getElementById('moon-menu');
+  }
+
+  get settingsModal(): SettingsModal {
+    return this._settingsModal;
   }
 
   /**
@@ -163,14 +171,30 @@ export class UIController {
       infoMass.innerHTML = `${celestialObject.mass} kg`;
 
       let infoTemperature: HTMLElement = document.getElementById('info-temperature-value') as HTMLElement;
-      infoTemperature.innerHTML = `${celestialObject.temperature} K`;
+      switch (this.settingsModal.getTemperatureUnit()) {
+        case 'celsius':
+          infoTemperature.innerHTML = `${Math.round((celestialObject.temperature - 273.15) * 100)/100} °C`;
+          break;
+        case 'fahrenheit':
+          infoTemperature.innerHTML = `${Math.round(((celestialObject.temperature - 273.15) * 9/5 + 32) * 100)/100} °F`;
+          break;
+        default:
+          infoTemperature.innerHTML = `${celestialObject.temperature} K`;
+          break;
+      }
 
       let infoDistanceFromSun: HTMLElement = document.getElementById('info-distance-sun-value') as HTMLElement;
-      infoDistanceFromSun.innerHTML = `${celestialObject.distanceToSun} km`;
+      infoDistanceFromSun.innerHTML = 
+        this.settingsModal.getDistanceUnit() == 'metric' ? 
+        `${celestialObject.distanceToSun} km` :
+        `${Math.round((celestialObject.distanceToSun / KM_PER_AU) * 1000)/1000} AU`;
       document.getElementById('info-distance-sun')!.style.display = (celestialObject instanceof Planet) ? 'flex' : 'none';
 
       let infoDistanceFromPlanet: HTMLElement = document.getElementById('info-distance-planet-value') as HTMLElement;
-      infoDistanceFromPlanet.innerHTML = `${celestialObject.distanceToPlanet} km`;
+      infoDistanceFromPlanet.innerHTML =  this.settingsModal.getDistanceUnit() == 'metric' ? 
+      `${celestialObject.distanceToPlanet} km` :
+      `${Math.round((celestialObject.distanceToPlanet / KM_PER_AU) * 1000)/1000} AU`;
+    document.getElementById('info-distance-sun')!.style.display = (celestialObject instanceof Planet) ? 'flex' : 'none';
       document.getElementById('info-distance-planet')!.style.display = (celestialObject instanceof Moon) ? 'flex' : 'none';
 
 
@@ -293,6 +317,14 @@ export class UIController {
     }
     
     this._mainScene.audioController.playClick(2);
+  }
+
+  public openSettings(): void {
+      this._settingsModal.show();
+  }
+
+  public closeSettings(): void {
+    this._settingsModal.hide();
   }
 
 
