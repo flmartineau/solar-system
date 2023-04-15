@@ -1,9 +1,10 @@
 <div id="control-panel">
-    <div class="play-pause">
-        <img src="../assets/icons/pause_button.png" alt="Play/Pause" id="play-pause-icon">
+    <div class="to-current">
+        <button class="active" alt="To Current Date" id="current-date-icon"><span class="dot"></span>LIVE</button>
     </div>
     <div class="speed-controls">
-        <input id="sim-speed-slider" type="range" list="tickmarks" min="-31536000" max="31536000" value="1">
+        <span id="simulation-speed"></span>
+        <input id="sim-speed-slider" class="sim-speed-slider" type="range" list="tickmarks" min="-31536000" max="31536000" value="1">
         <datalist id="tickmarks">
             <option value="-31536000"></option>
             <option value="-2592000"></option>
@@ -18,11 +19,9 @@
             <option value="86400"></option>
             <option value="2592000"></option>
             <option value="31536000"></option>
-        </datalist>
-        <span id="simulation-speed">x1</span>
+        </datalist>        
     </div>
-    <div class="to-current">
-        <img src="../assets/icons/current_date.png" alt="To Current Date" id="current-date-icon">
+    <div class="play-pause">
+        <img src="../assets/icons/pause_button.png" alt="Play/Pause" id="play-pause-icon">
     </div>
-
 </div>

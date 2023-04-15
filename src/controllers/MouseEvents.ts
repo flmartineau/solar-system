@@ -61,6 +61,8 @@ export class MouseEvents {
           let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
           let newDateDate: Date = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD');
           this._timeController.currentDate = DateHelper.setTimeToDate(currentTime, newDateDate);
+          const currentDateIcon: HTMLElement | null = document.getElementById('current-date-icon');
+          currentDateIcon?.classList.remove('active');
         }
       }
     });
@@ -88,8 +90,15 @@ export class MouseEvents {
   }
 
   public addControlEventListeners(): void {
-    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { this._timeController.simulationSpeed = (<HTMLInputElement>e.target).valueAsNumber; });
-    document.getElementById('current-date-icon')?.addEventListener('click', () => {
+    const currentDateIcon: HTMLElement | null = document.getElementById('current-date-icon');
+
+
+    document.getElementById('sim-speed-slider')?.addEventListener('input', (e) => { 
+      this._timeController.simulationSpeed = (<HTMLInputElement>e.target).valueAsNumber; 
+      currentDateIcon?.classList.remove('active');
+    });
+    currentDateIcon?.addEventListener('click', () => {
+        currentDateIcon.classList.add('active');
         this._timeController.currentDate = new Date(); 
         this._mainScene.audioController.playClick(3);
     });

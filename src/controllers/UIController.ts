@@ -352,15 +352,15 @@ export class UIController {
 
   private getSpeedString(speed: number): string {
     if (Math.abs(speed) < 60) {
-      return speed + ' sec/sec';
+      return speed + ' SEC/S';
     } else if (Math.abs(speed) < 3600) {
-      return (speed / 60).toFixed(2) + ' min/sec';
+      return (speed / 60).toFixed(2) + ' MINS/S';
     } else if (Math.abs(speed) < 86400) {
-      return (speed / 3600).toFixed(2) + ' h/sec';
+      return (speed / 3600).toFixed(2) + ' HRS/S';
     } else if (Math.abs(speed) < 31536000) {
-      return (speed / 86400).toFixed(2) + ' d/sec';
+      return (speed / 86400).toFixed(2) + ' DAY/S';
     } else if (Math.abs(speed) < 3153600000) {
-      return (speed / 31536000).toFixed(2) + ' y/sec';
+      return (speed / 31536000).toFixed(2) + ' YRS/S';
     } else {
       return '0 sec/sec';
     }
