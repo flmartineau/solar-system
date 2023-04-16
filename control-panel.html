@@ -4,22 +4,25 @@
     </div>
     <div class="speed-controls">
         <span id="simulation-speed"></span>
-        <input id="sim-speed-slider" class="sim-speed-slider" type="range" list="tickmarks" min="-31536000" max="31536000" value="1">
-        <datalist id="tickmarks">
-            <option value="-31536000"></option>
-            <option value="-2592000"></option>
-            <option value="-86400"></option>
-            <option value="-3600"></option>
-            <option value="-60"></option>
-            <option value="-1"></option>
-            <option value="0"></option>
-            <option value="1"></option>
-            <option value="60"></option>
-            <option value="3600"></option>
-            <option value="86400"></option>
-            <option value="2592000"></option>
-            <option value="31536000"></option>
-        </datalist>        
+        <div class="slider-wrapper">
+            <input id="sim-speed-slider" class="sim-speed-slider" type="range" list="tickmarks" min="-31536000" max="31536000" value="1">
+            <datalist id="tickmarks">
+                <option value="-31536000"></option>
+                <option value="-2592000"></option>
+                <option value="-86400"></option>
+                <option value="-3600"></option>
+                <option value="-60"></option>
+                <option value="-1"></option>
+                <option value="0"></option>
+                <option value="1"></option>
+                <option value="60"></option>
+                <option value="3600"></option>
+                <option value="86400"></option>
+                <option value="2592000"></option>
+                <option value="31536000"></option>
+            </datalist>        
+        </div>
+        
     </div>
     <div class="play-pause">
         <img src="assets/ee82f6cd92e5e973ddec.png" alt="Play/Pause" id="play-pause-icon">
