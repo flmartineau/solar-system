@@ -9,3 +9,5 @@
 - global events menu
 - add kuiper belt
 - add option for rotating the camera with objects
+- add realistic shadows
+- add responsive design for mobile

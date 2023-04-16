@@ -1,6 +1,7 @@
 import { Mesh, SphereGeometry, Material } from 'three';
 import { Label } from './Label';
 import { MainScene } from '../../scenes/MainScene';
+import { IMoon, IPlanet, ISun } from './interfaces/ISolarSystem';
 
 export class CelestialBody extends Mesh {
     public name: string;
@@ -9,22 +10,23 @@ export class CelestialBody extends Mesh {
     private _mass: number;
     private _temperature: number;
     private _radius: number;
+    private _rotationPeriod: number;
     private _label: Label;
 
     private _isSelected: boolean = false;
 
 
-    constructor(mainScene: MainScene, name: string, radius: number, material: Material,
-        mass: number, temperature: number) {
+    constructor(mainScene: MainScene, data: IPlanet | ISun | IMoon, radius: number, material: Material) {
 
         const geometry = new SphereGeometry(radius, 128, 128);
         super(geometry, material);
 
         this._mainScene = mainScene;
-        this.name = name;
-        this._mass = mass;
-        this._temperature = temperature;
+        this.name = data.name;
+        this._mass = data.mass;
+        this._temperature = data.temperature;
         this._radius = radius;
+        this._rotationPeriod = data.rotationPeriod;
         this._label = new Label(mainScene, this);
 
         this.addToMainScene();
@@ -52,6 +54,10 @@ export class CelestialBody extends Mesh {
 
     get mass(): number {
         return this._mass;
+    }
+
+    get rotationPeriod(): number {
+        return this._rotationPeriod;
     }
 
     get isSelected(): boolean {

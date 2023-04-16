@@ -62,29 +62,15 @@ export class MouseEvents {
    * Handles the click events for the date inputs.
    */
   public addDateEventListeners(): void {
-    document.getElementById('current-date')?.addEventListener('keypress', (e) => {
+    document.getElementById('current-date-time-picker')?.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        let newDate: string = (<HTMLInputElement>document.getElementById('current-date')).value;
+        let newDate: Date | null = new Date((<HTMLInputElement>document.getElementById('current-date-time-picker')).value);
         if (newDate) {
-          let currentDate: Date = this._timeController.currentDate;
-          let currentTime: string = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
-          let newDateDate: Date = DateHelper.getDateFromString(newDate, 'YYYY-MM-DD');
-          this._timeController.currentDate = DateHelper.setTimeToDate(currentTime, newDateDate);
+          this._timeController.currentDate = newDate;
           this.updateCurrentDateButton(false);
         }
       }
     });
-
-    document.getElementById('current-time')?.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        let newTime: string = (<HTMLInputElement>document.getElementById('current-time')).value;
-        if (newTime) {
-          let currentDate: Date = this._timeController.currentDate;
-          this._timeController.currentDate = DateHelper.setTimeToDate(newTime, currentDate);
-        }
-      }
-    });
-
   }
 
   /**

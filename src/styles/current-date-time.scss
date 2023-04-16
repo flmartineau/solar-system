@@ -1,40 +1,29 @@
 #current-date-time {
-    position: fixed;
-    display: flex;
-    top: 0;
-    width: 100%;
-    justify-content: center;
-    margin-top: 28px;
-  
-    #current-time {
-      font-size: 40px;
+  position: fixed;
+  display: flex;
+  top: 0;
+  width: 100%;
+  justify-content: center;
+  margin-top: 28px;
+
+  #current-date-time-picker {
+    font-size: 40px;
       color: white;
       border: none;
-      background-color: black;
-    }
-  
-  
-    #date-container {
-      position: relative;
-      display: inline-block;
-  
-      #current-date {
-        font-size: 40px;
-        color: white;
-        border: none;
-        background-color: black;
-      }
-    }
-  
-    #date-container::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 32px;
-      background-color: black;
-      z-index: 1;
-    }
+      background-color: transparent;
+      text-shadow: 2px 2px 4px #000000;
   }
+
+
+  #date-container::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 32px;
+    background-color: black;
+    z-index: 1;
+  }
+}

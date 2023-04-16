@@ -109,8 +109,7 @@ export class TimeController {
       }
     });
 
-    this._mainScene.uiController.updateDateDisplay();
-    this._mainScene.uiController.updateTimeDisplay();
+    this._mainScene.uiController.updateDateTimeDisplay();
     this._mainScene.uiController.updateSpeedDisplay();
 
     this._clock.elapsedTime = 0;

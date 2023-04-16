@@ -43,7 +43,7 @@ export class Planet extends CelestialBody {
             ((mainScene.uiController.isRealSize) ? 1 : 1000);
 
 
-        super(mainScene, data.name, radius, material, data.mass, data.temperature);
+        super(mainScene, data, radius, material);
         this._data = data;
         this._body = Body[data.name];
         this._distanceToSun = 0;
@@ -252,6 +252,8 @@ export class Planet extends CelestialBody {
 
         const ringGeometry = new RadialRingGeometry(innerRadius, outerRadius, 180);
         const rings = new Mesh(ringGeometry, ringMaterial);
+        rings.receiveShadow = true;
+        rings.castShadow = true;
         rings.rotateX(90 * Math.PI / 180);
         this._rings = rings;
         this.mainScene.scene.add(rings);

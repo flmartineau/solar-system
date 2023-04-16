@@ -16,7 +16,7 @@ export class Sun extends CelestialBody {
     constructor(data: ISun, mainScene: MainScene) {
             const texture = mainScene.textureLoader.load(data.textures.base);
             const material = new MeshBasicMaterial({ map: texture });
-            super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
+            super(mainScene, data, (data.radius / KM_PER_AU) * SIZE_FACTOR, material);
         
             this.setupLighting();
         }

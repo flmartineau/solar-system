@@ -19,7 +19,7 @@ export class Moon extends CelestialBody {
         const texture: Texture = mainScene.textureLoader.load(data.textures.base);
         const material = new MeshPhongMaterial({ map: texture });
         
-        super(mainScene, data.name, (data.radius / KM_PER_AU) * SIZE_FACTOR, material, data.mass, data.temperature);
+        super(mainScene, data, (data.radius / KM_PER_AU) * SIZE_FACTOR, material);
         this._distanceToPlanet = 0;
         this._orbitalPeriod = data.orbit.period;
         

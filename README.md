@@ -16,7 +16,6 @@ Solar System is an interactive web application that allows users to explore our 
 - Celestial objects trajectories displayed with orbit lines
 - Detailed information about each celestial object
 - Adjustable simulation speed
-- Responsive design for desktop and mobile devices
 - Toggleable labels and orbit lines
 
 ## Installation

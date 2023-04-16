@@ -199,9 +199,11 @@ export class UIController {
 
 
       let infoOrbitalPeriod: HTMLElement = document.getElementById('info-orbital-period-value') as HTMLElement;
-      infoOrbitalPeriod.innerHTML = `${celestialObject.orbitalPeriod} days`;
+      infoOrbitalPeriod.innerHTML = DateHelper.getDurationText(celestialObject.orbitalPeriod);
       document.getElementById('info-orbital-period')!.style.display = (celestialObject instanceof Planet) ? 'flex' : 'none';
 
+      let infoRotationPeriod: HTMLElement = document.getElementById('info-rotation-period-value') as HTMLElement;
+      infoRotationPeriod.innerHTML = `${Math.round(celestialObject.rotationPeriod *1000)/1000} days`;
 
       let infoNextLunarEclipse: HTMLButtonElement = document.getElementById('info-next-lunar-eclipse') as HTMLButtonElement;
       infoNextLunarEclipse.style.display = (celestialObject.name === 'Moon') ? 'flex' : 'none';
@@ -348,22 +350,15 @@ export class UIController {
     }
   }
 
-  public updateTimeDisplay() {
+  public updateDateTimeDisplay() {
     let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
     let currentDate: Date = this._mainScene.timeController.currentDate;
-    if (this.currentTimeElement && simulationSpeed !== 0) {
-      this.currentTimeElement.value = DateHelper.formatDateFromFormat(currentDate, 'HH:mm:ss');
+    const currentPicker = document.getElementById('current-date-time-picker') as HTMLInputElement;
+    if (currentPicker && simulationSpeed !== 0) {
+      currentPicker.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DDTHH:mm:ss');
     }
   }
 
-  public updateDateDisplay() {
-    let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
-    let currentDate: Date = this._mainScene.timeController.currentDate;
-    if (this.currentDateElement && simulationSpeed !== 0) {
-      this.currentDateElement.value = DateHelper.formatDateFromFormat(currentDate, 'YYYY-MM-DD');
-    }
-
-  }
 
   public updateSpeedDisplay() {
     let simulationSpeed: number = this._mainScene.timeController.simulationSpeed;
