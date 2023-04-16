@@ -8,10 +8,21 @@
 
   #current-date-time-picker {
     font-size: 40px;
-      color: white;
-      border: none;
-      background-color: transparent;
-      text-shadow: 2px 2px 4px #000000;
+    color: white;
+    border: none;
+    background-color: transparent;
+    text-shadow: 2px 2px 4px #000000;
+
+    // For tablet devices
+    @media (max-width: 991px) {
+      font-size: 30px;
+    }
+
+    // For mobile devices
+    @media (max-width: 767px) {
+      font-size: 24px;
+    }
+
   }
 
 

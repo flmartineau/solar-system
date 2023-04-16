@@ -9,109 +9,118 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
     user-select: none;
-  }
 
-  .settings-modal-content {
-    background-color: $main-blue;
-    margin: 15% auto;
-    width: 25%;
-    height: 50%;
-    margin-top: 10%;
-    color: white;
-    border-radius: 16px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: white;
-
-
-    &-header {
-
-        background-color: black;
-        opacity: 0.9;
-        border-radius: 16px;
-
-
-        .settings-modal-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-right: 16px;
-            margin-top: 8px;
-          }
-        
-          .settings-modal-close:hover,
-          .settings-modal-close:focus {
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-          }
-
-          .settings-modal-title {
-            font-size: 16x;
-            font-weight: bold;
-            text-align: center;
-            padding: 12px;
-            display: block;
-            margin-left: 8px;
-
-            h2 {
-                margin: 0;
-            }
-          }
-    }
-
-    &-body {
-        padding: 20px;
+    @media (max-width: 767px) {
+      .settings-modal-content {
+        width: 80% !important;
+        font-size: 16px !important;
 
         .settings-modal-item {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-around;
-
-            .toggle {
-                margin: 0 0 1.5rem; box-sizing: border-box;
-                font-size: 0;
-                display: flex; flex-flow: row nowrap;
-                justify-content: flex-start; align-items: stretch;
-                input {width: 0; height: 0; position: absolute; left: -9999px;}
-                input + label {
-                    margin: 0; padding: .75rem 2rem; box-sizing: border-box;
-                    position: relative; display: inline-block;
-                    border: solid 1px #DDD; background-color: $main-blue;
-                    font-size: 16px; line-height: 36%; font-weight: 600; text-align: center;
-                    box-shadow: 0 0 0 rgba(255,255,255,0);
-                    transition: 	border-color .15s ease-out, 
-                                color .25s ease-out, 
-                                background-color .15s ease-out,
-                                box-shadow .15s ease-out;
-                    
-                    &:first-of-type {border-radius: 6px 0 0 6px; border-right: none;}
-                    &:last-of-type {border-radius: 0 6px 6px 0; border-left: none;}
-                }
-                input:hover + label {border-color: #213140;}
-                input:checked + label {
-                    background-color: $light-purple;
-                    color: #FFF;
-                    box-shadow: 0 0 10px rgba(rgb(44, 16, 204), .5);
-                    border-color: rgb(44, 16, 204);
-                    z-index: 1;
-                }
-            }
-
+          flex-direction: column;
+          align-items: center !important;
         }
+
+      }
+
+
+
+      
+    }
+
+    .settings-modal-content {
+      background-color: $main-blue;
+      margin: 15% auto;
+      width: 530px;
+      height: 50%;
+      margin-top: 10%;
+      color: white;
+      border-radius: 16px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: white;
+  
+  
+      &-header {
+  
+          background-color: black;
+          opacity: 0.9;
+          border-radius: 16px;
+  
+  
+          .settings-modal-close {
+              color: #aaa;
+              float: right;
+              font-size: 28px;
+              font-weight: bold;
+              cursor: pointer;
+              margin-right: 16px;
+              margin-top: 8px;
+            }
+          
+            .settings-modal-close:hover,
+            .settings-modal-close:focus {
+              color: white;
+              text-decoration: none;
+              cursor: pointer;
+            }
+  
+            .settings-modal-title {
+              font-size: 16x;
+              font-weight: bold;
+              text-align: center;
+              padding: 12px;
+              display: block;
+              margin-left: 8px;
+  
+              h2 {
+                  margin: 0;
+              }
+            }
+      }
+  
+      &-body {
+          padding: 20px;
+  
+          .settings-modal-item {
+              display: flex;
+              align-items: baseline;
+              justify-content: space-around;
+  
+              .toggle {
+                  margin: 0 0 1.5rem; box-sizing: border-box;
+                  font-size: 0;
+                  display: flex; flex-flow: row nowrap;
+                  justify-content: flex-start; align-items: stretch;
+                  input {width: 0; height: 0; position: absolute; left: -9999px;}
+                  input + label {
+                      margin: 0; padding: .75rem 2rem; box-sizing: border-box;
+                      position: relative; display: inline-block;
+                      border: solid 1px #DDD; background-color: $main-blue;
+                      font-size: 16px; line-height: 36%; font-weight: 600; text-align: center;
+                      box-shadow: 0 0 0 rgba(255,255,255,0);
+                      transition: 	border-color .15s ease-out, 
+                                  color .25s ease-out, 
+                                  background-color .15s ease-out,
+                                  box-shadow .15s ease-out;
+                      
+                      &:first-of-type {border-radius: 6px 0 0 6px; border-right: none;}
+                      &:last-of-type {border-radius: 0 6px 6px 0; border-left: none;}
+                  }
+                  input:hover + label {border-color: #213140;}
+                  input:checked + label {
+                      background-color: $light-purple;
+                      color: #FFF;
+                      box-shadow: 0 0 10px rgba(rgb(44, 16, 204), .5);
+                      border-color: rgb(44, 16, 204);
+                      z-index: 1;
+                  }
+              }
+  
+          }
+      }
+  
+  
     }
 
 
   }
-
-@mixin hideInput {width: 0; height: 0; position: absolute; left: -9999px;}
-@mixin breakpoint($point) {
-	@if $point == 1100 {
-		@media (max-width: 1100px) { @content ; }
-	}
-	@else if $point == 800 {
-		@media (max-width: 800px) { @content ; }
-	}
-}

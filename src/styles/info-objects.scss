@@ -14,6 +14,23 @@
   color: white;
   user-select: none;
 
+
+
+  @media (max-width: 767px) {
+    bottom: 90px;
+    width: 245px;
+
+    #info-header {
+      height: 33px !important;
+    }
+
+    #info-content {
+      font-size: 14px;
+    }
+
+
+  }
+
   #info-header {
     background-color: #000;
     background-position: center;
