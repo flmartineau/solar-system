@@ -2,9 +2,8 @@ import { MainScene } from '../scenes/MainScene';
 import { Intersection, Object3D, Raycaster } from 'three';
 import { UIController } from './UIController';
 import { TimeController } from './TimeController';
-import { CelestialBody } from '../components/celestial/CelestialBody';
-import { Label } from '../components/celestial/Label';
-import { DateHelper } from '../helper/DateHelper';
+import { CelestialBody } from '../models/CelestialBody';
+import { Label } from '../models/Label';
 import { NextGlobalSolarEclipse, NextLunarEclipse } from 'astronomy-engine';
 
 export class MouseEvents {

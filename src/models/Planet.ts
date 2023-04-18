@@ -1,15 +1,15 @@
 import { AxisInfo, Body, HelioDistance, HelioVector, KM_PER_AU, RotationAxis, Vector } from 'astronomy-engine';
 import { CelestialBody } from './CelestialBody';
-import { SIZE_FACTOR } from '../../utils/constants';
-import { MainScene } from '../../scenes/MainScene';
+import { SIZE_FACTOR } from '../utils/constants';
+import { MainScene } from '../scenes/MainScene';
 import { AdditiveBlending, BackSide, CatmullRomCurve3, Color, ColorRepresentation, DoubleSide, FrontSide, HexColorString, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, MeshPhongMaterial, Object3D, PointLight, RingGeometry, ShaderMaterial, SphereGeometry, Texture, TubeGeometry, Vector3 } from 'three';
 import { Moon } from './Moon';
 import { Lensflare, LensflareElement } from "three/examples/jsm/objects/Lensflare";
 import { OrbitLine } from './OrbitLine';
-import glowFragmentShader from '../../assets/shaders/glow/glowFragment.glsl';
-import glowVertexShader from '../../assets/shaders/glow/glowVertex.glsl';
-import { IPlanet } from './interfaces/ISolarSystem';
-import { RadialRingGeometry } from '../../utils/RadialRingGeometry';
+import glowFragmentShader from '../assets/shaders/glow/glowFragment.glsl';
+import glowVertexShader from '../assets/shaders/glow/glowVertex.glsl';
+import { IPlanet } from '../interfaces/ISolarSystem';
+import { RadialRingGeometry } from '../utils/RadialRingGeometry';
 
 export class Planet extends CelestialBody {
 

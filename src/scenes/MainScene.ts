@@ -1,16 +1,16 @@
 import { Scene, WebGLRenderer, CubeTexture, sRGBEncoding, TextureLoader, Line } from 'three';
 
-import { Planet } from '../components/celestial/Planet';
+import { Planet } from '../models/Planet';
 import { CameraController } from '../controllers/CameraController';
 import { MouseEvents } from '../controllers/MouseEvents';
 import { TimeController } from '../controllers/TimeController';
 import { TemplateHelper } from '../helper/TemplateHelper';
-import { CelestialBody } from '../components/celestial/CelestialBody';
-import { Label } from '../components/celestial/Label';
+import { CelestialBody } from '../models/CelestialBody';
+import { Label } from '../models/Label';
 import { UIController } from '../controllers/UIController';
 import { AudioController } from '../controllers/AudioController';
 import { DevConsoleController } from '../controllers/DevConsoleController';
-import { Moon } from '../components/celestial/Moon';
+import { Moon } from '../models/Moon';
 import { SolarSystemFactory } from '../factories/SolarSystemFactory';
 import { LoaderController } from '../controllers/LoaderController';
 

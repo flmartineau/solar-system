@@ -1,10 +1,10 @@
 import { MeshBasicMaterial, PointLight } from 'three';
-import { MainScene } from '../../scenes/MainScene';
-import { SIZE_FACTOR } from '../../utils/constants';
+import { MainScene } from '../scenes/MainScene';
+import { SIZE_FACTOR } from '../utils/constants';
 import { CelestialBody } from './CelestialBody';
 import { AxisInfo, Body, KM_PER_AU, RotationAxis } from 'astronomy-engine';
 import { Lensflare, LensflareElement} from "three/examples/jsm/objects/Lensflare";
-import { ISun } from './interfaces/ISolarSystem';
+import { ISun } from '../interfaces/ISolarSystem';
 
 
 

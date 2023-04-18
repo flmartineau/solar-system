@@ -1,7 +1,7 @@
 import { Mesh, SphereGeometry, Material } from 'three';
 import { Label } from './Label';
-import { MainScene } from '../../scenes/MainScene';
-import { IMoon, IPlanet, ISun } from './interfaces/ISolarSystem';
+import { MainScene } from '../scenes/MainScene';
+import { IMoon, IPlanet, ISun } from '../interfaces/ISolarSystem';
 
 export class CelestialBody extends Mesh {
     public name: string;

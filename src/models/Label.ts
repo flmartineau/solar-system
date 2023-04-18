@@ -1,7 +1,7 @@
 import { CanvasTexture, PerspectiveCamera, Sprite, SpriteMaterial, Vector3 } from "three";
 import { CelestialBody } from "./CelestialBody";
 import { Moon } from "./Moon";
-import { MainScene } from "../../scenes/MainScene";
+import { MainScene } from "../scenes/MainScene";
 
 export class Label extends Sprite {
 

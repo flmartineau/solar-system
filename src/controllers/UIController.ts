@@ -1,9 +1,9 @@
 import { KM_PER_AU } from 'astronomy-engine';
 import { SettingsModal } from '../components/SettingsModal';
-import { CelestialBody } from '../components/celestial/CelestialBody';
-import { Label } from '../components/celestial/Label';
-import { Moon } from '../components/celestial/Moon';
-import { Planet } from '../components/celestial/Planet';
+import { CelestialBody } from '../models/CelestialBody';
+import { Label } from '../models/Label';
+import { Moon } from '../models/Moon';
+import { Planet } from '../models/Planet';
 import { DateHelper } from '../helper/DateHelper';
 import { MainScene } from '../scenes/MainScene';
 

@@ -1,11 +1,11 @@
 import { Color, LineBasicMaterial, MeshPhongMaterial, Texture, Vector3 } from 'three';
-import { MainScene } from '../../scenes/MainScene';
-import { SIZE_FACTOR } from '../../utils/constants';
+import { MainScene } from '../scenes/MainScene';
+import { SIZE_FACTOR } from '../utils/constants';
 import { CelestialBody } from './CelestialBody';
 import { Vector, Body, GeoVector, HelioVector, KM_PER_AU, AxisInfo, RotationAxis, JupiterMoons, JupiterMoonsInfo, StateVector, AstroTime } from 'astronomy-engine';
 import { Planet } from './Planet';
 import { OrbitLine } from './OrbitLine';
-import { IMoon } from './interfaces/ISolarSystem';
+import { IMoon } from '../interfaces/ISolarSystem';
 
 export class Moon extends CelestialBody {
 

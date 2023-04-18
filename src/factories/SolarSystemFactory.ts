@@ -1,9 +1,9 @@
-import { CelestialBody } from "../components/celestial/CelestialBody";
-import { Planet } from "../components/celestial/Planet";
-import { Sun } from "../components/celestial/Sun";
+import { CelestialBody } from "../models/CelestialBody";
+import { Planet } from "../models/Planet";
+import { Sun } from "../models/Sun";
 import { MainScene } from "../scenes/MainScene";
-import { IMoon, IPlanet, ISolarSystem, ISun } from "../components/celestial/interfaces/ISolarSystem";
-import { Moon } from "../components/celestial/Moon";
+import { IMoon, IPlanet, ISolarSystem, ISun } from "../interfaces/ISolarSystem";
+import { Moon } from "../models/Moon";
 
 export class SolarSystemFactory {
 

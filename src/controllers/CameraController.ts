@@ -2,7 +2,7 @@ import { PerspectiveCamera, Vector3, WebGLRenderer, Raycaster, Vector2, Quaterni
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { MainScene } from '../scenes/MainScene';
-import { CelestialBody } from '../components/celestial/CelestialBody';
+import { CelestialBody } from '../models/CelestialBody';
 import GUI from 'lil-gui';
 import { SIZE_FACTOR } from '../utils/constants';
 

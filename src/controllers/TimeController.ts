@@ -1,5 +1,5 @@
 import { Clock } from 'three';
-import { CelestialBody } from '../components/celestial/CelestialBody';
+import { CelestialBody } from '../models/CelestialBody';
 import { MainScene } from '../scenes/MainScene';
 
 /**
