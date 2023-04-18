@@ -56,8 +56,8 @@ export class MainScene {
     this._loaderController = new LoaderController();
     this._devConsoleController = new DevConsoleController(this);
     this._cameraController = new CameraController(this);
-    this._uiController = new UIController(this);
     this._audioController = new AudioController();
+
 
     this._selectedObject = null;
     this._moonsVisibility = true;
@@ -73,13 +73,13 @@ export class MainScene {
     this._scene.background = this._skybox;
 
     this._timeController = new TimeController(this);
+    this._uiController = new UIController(this);
+
 
     this._mouseEvents = new MouseEvents(this);
 
-    TemplateHelper.initTemplates(this._mouseEvents);
-
     this.loadData().then(() => {
-      this._uiController.createCelestialObjectList();
+      this._uiController.bodiesList.createCelestialObjectList();
       this._loaderController.hideLoadingScreen();
       this.animate();
     });
@@ -212,7 +212,7 @@ export class MainScene {
       this._selectedObject.isSelected = false;
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
-    this.uiController.updateCelestialObjectList();
+    this.uiController.bodiesList.updateCelestialObjectList();
   }
 
   /**
@@ -224,7 +224,7 @@ export class MainScene {
       this._devConsoleController.stats.begin();
       this._timeController.update();
       if (this._selectedObject)
-        this._uiController.showInfo(this._selectedObject);
+        this._uiController.infoPanel.showInfo(this._selectedObject);
       this._cameraController.update();
       this._devConsoleController.stats.end();
       this._renderer.render(this._scene, this._cameraController.camera);

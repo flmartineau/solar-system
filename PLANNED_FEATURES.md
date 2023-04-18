@@ -9,3 +9,4 @@
 - add kuiper belt
 - add option for rotating the camera with objects
 - add realistic shadows
+- migrate to React for UI components

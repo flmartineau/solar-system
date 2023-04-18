@@ -40,7 +40,7 @@ export class Planet extends CelestialBody {
         const material = new MeshPhongMaterial({ map: texture });
 
         const radius: number = (data.radius / KM_PER_AU) * SIZE_FACTOR * 
-            ((mainScene.uiController.isRealSize) ? 1 : 1000);
+            ((mainScene.uiController.toolbar.isRealSize) ? 1 : 1000);
 
 
         super(mainScene, data, radius, material);

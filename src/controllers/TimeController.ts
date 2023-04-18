@@ -74,8 +74,8 @@ export class TimeController {
   public togglePlayPause(): void {
     this._isPlaying = !this._isPlaying;
     this._simulationSpeed = this._isPlaying ? 1 : 0;
-    this._mainScene.uiController.updateSpeedDisplay();
-    this._mainScene.uiController.togglePlayPauseButton();
+    this._mainScene.uiController.controlPanel.updateSpeedDisplay();
+    this._mainScene.uiController.controlPanel.togglePlayPauseButton();
   }
 
   /**
@@ -89,7 +89,7 @@ export class TimeController {
         if (celestialBody.instanceOf('Moon')) {
           celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
         } else {
-          celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.isRealSize ? 1 : celestialBody.bigSizeFactor)));
+          celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbar.isRealSize ? 1 : celestialBody.bigSizeFactor)));
         }
       });
       return;
@@ -105,12 +105,12 @@ export class TimeController {
       if (celestialBody.instanceOf('Moon')) {
         celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
       } else {
-        celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.isRealSize ? 1 : celestialBody.bigSizeFactor)));
+        celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbar.isRealSize ? 1 : celestialBody.bigSizeFactor)));
       }
     });
 
-    this._mainScene.uiController.updateDateTimeDisplay();
-    this._mainScene.uiController.updateSpeedDisplay();
+    this._mainScene.uiController.dateDisplay.updateDateTimeDisplay();
+    this._mainScene.uiController.controlPanel.updateSpeedDisplay();
 
     this._clock.elapsedTime = 0;
   }
