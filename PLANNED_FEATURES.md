@@ -3,11 +3,9 @@
 - add barycentric positions
 - add correct rotation axis
 - display lagrange points
-- add scale grid
 - add search
-- improved atmosphere graphics
+- improve atmosphere graphics
 - global events menu
 - add kuiper belt
 - add option for rotating the camera with objects
 - add realistic shadows
-- add responsive design for mobile

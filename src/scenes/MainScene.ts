@@ -54,7 +54,7 @@ export class MainScene {
     this._renderer.autoClear = true;
 
     this._loaderController = new LoaderController();
-    this._devConsoleController = new DevConsoleController();
+    this._devConsoleController = new DevConsoleController(this);
     this._cameraController = new CameraController(this);
     this._uiController = new UIController(this);
     this._audioController = new AudioController();
