@@ -14,7 +14,7 @@ const htmlPlugins = htmlFiles.map(file => new HtmlWebpackPlugin({
 
 module.exports = {
   entry: {
-    main: './src/index.ts',
+    main: './src/index.tsx',
     styles: './src/styles.scss',
   },
   output: {
@@ -22,7 +22,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.tsx', '.jsx'],
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   module: {

@@ -15,12 +15,15 @@ export class TimeController {
 
   private _mainScene: MainScene;
 
+  private _updateDateTimeDisplayCallback: () => void;
+
   /**
    * Create a new TimeController.
    * @param mainScene - The main scene to which the TimeController is attached.
    */
-  constructor(mainScene: MainScene) {
+  constructor(mainScene: MainScene, updateDateTimeDisplayCallback: () => void) {
     this._mainScene = mainScene;
+    this._updateDateTimeDisplayCallback = updateDateTimeDisplayCallback;
     this._currentDate = new Date();
     this._simulationSpeed = 1;
     this._isPlaying = true;
@@ -109,7 +112,7 @@ export class TimeController {
       }
     });
 
-    this._mainScene.uiController.dateDisplay.updateDateTimeDisplay();
+    this._updateDateTimeDisplayCallback();
     this._mainScene.uiController.controlPanel.updateSpeedDisplay();
 
     this._clock.elapsedTime = 0;

@@ -72,7 +72,7 @@ export class MainScene {
     this._skybox.encoding = sRGBEncoding;
     this._scene.background = this._skybox;
 
-    this._timeController = new TimeController(this);
+    this._timeController = new TimeController(this, () => this._uiController.dateDisplayComponent?.current?.updateDateTimeDisplay());
     this._uiController = new UIController(this);
 
 
