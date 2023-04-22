@@ -50,7 +50,8 @@ export class Label extends Sprite {
         const distanceToCamera: number = camera.position.distanceTo(this.position);
 
         if (this.celestialBody.instanceOf('Moon')) {
-            const moonsVisibility: boolean = this.mainScene.uiController.toolbar.moonsVisibility;
+            const moonsVisibility: boolean = this.mainScene.uiController.toolbarComponent?.current ? 
+            this.mainScene.uiController.toolbarComponent?.current?.moonsVisibility : false;
             this.visible = (distanceToCamera < 300) && (this._celestialBody as Moon).planet.label.visible && moonsVisibility;
         }
 

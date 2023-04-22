@@ -53,6 +53,8 @@ export class MainScene {
     this._renderer.sortObjects = true;
     this._renderer.autoClear = true;
 
+    this._uiController = new UIController(this);
+
     this._loaderController = new LoaderController();
     this._devConsoleController = new DevConsoleController(this);
     this._cameraController = new CameraController(this);
@@ -73,7 +75,6 @@ export class MainScene {
     this._scene.background = this._skybox;
 
     this._timeController = new TimeController(this);
-    this._uiController = new UIController(this);
 
 
     this._mouseEvents = new MouseEvents(this);

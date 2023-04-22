@@ -3,6 +3,7 @@ import DateDisplay from './DateDisplay';
 import { MainScene } from '../scenes/MainScene';
 import InfoPanel from './InfoPanel';
 import ControlPanel from './ControlPanel';
+import Toolbar from './Toolbar';
 
 const App: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -45,6 +46,11 @@ const App: React.FC = () => {
                     ref={mainScene.uiController.controlPanelComponent}
                     timeController={mainScene.timeController}
                     audioController={mainScene.audioController}/>
+            )}
+            {mainScene && (
+                <Toolbar
+                    ref={mainScene.uiController.toolbarComponent}
+                    mainScene={mainScene}/>    
             )}
             <div ref={containerRef} id="game-container"></div>
         </div>

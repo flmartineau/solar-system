@@ -2,13 +2,10 @@ import { CelestialBody } from "../models/CelestialBody";
 import { Moon } from "../models/Moon";
 import { Planet } from "../models/Planet";
 import { MainScene } from "../scenes/MainScene";
-import { Toolbar } from "./Toolbar";
-
 
 export class BodiesList {
 
     private _mainScene: MainScene;
-    private _toolbar: Toolbar;
 
     private _celestialObjectList: HTMLElement | null;
     private _moonMenu: HTMLElement | null;
@@ -16,9 +13,8 @@ export class BodiesList {
     /**
      * Create a new BodiesList.
      */
-    constructor(mainScene: MainScene, toolbar: Toolbar) {
+    constructor(mainScene: MainScene) {
         this._mainScene = mainScene;
-        this._toolbar = toolbar;
         this._celestialObjectList = document.getElementById('celestial-body-list');
         this._moonMenu = document.getElementById('moon-menu');
     }
@@ -41,7 +37,7 @@ export class BodiesList {
             this._celestialObjectList?.appendChild(listItem);
 
             if ((planet.isSelected || planet.moons.find((moon: Moon) => moon.isSelected)) && planet.moons.length > 0
-                && this._toolbar.moonsVisibility)
+                && this._mainScene.uiController.toolbarComponent?.current?.moonsVisibility)
                 this._moonMenu?.appendChild(this.createMoonList(planet, index));
             index++;
         });

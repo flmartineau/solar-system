@@ -1,16 +1,8 @@
-const fs = require('fs');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const htmlFiles = fs.readdirSync(path.resolve(__dirname, 'src/ui'))
-  .filter(file => file.endsWith('.html'));
-
-const htmlPlugins = htmlFiles.map(file => new HtmlWebpackPlugin({
-  template: path.resolve(__dirname, `src/ui/${file}`),
-  filename: file,
-}));
 
 module.exports = {
   entry: {
@@ -66,7 +58,6 @@ module.exports = {
     ],
   },
   plugins: [
-    ...htmlPlugins,
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',

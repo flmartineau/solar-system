@@ -87,7 +87,7 @@ export class TimeController {
         if (celestialBody.instanceOf('Moon')) {
           celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
         } else {
-          celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbar.isRealSize ? 1 : celestialBody.bigSizeFactor)));
+          celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbarComponent?.current?.isRealSize ? 1 : celestialBody.bigSizeFactor)));
         }
       });
       return;
@@ -103,7 +103,7 @@ export class TimeController {
       if (celestialBody.instanceOf('Moon')) {
         celestialBody.visible = (distanceToCamera < 3000) && this._mainScene.moonsVisibility;
       } else {
-        celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbar.isRealSize ? 1 : celestialBody.bigSizeFactor)));
+        celestialBody.visible = (distanceToCamera < (3000 * (this._mainScene.uiController.toolbarComponent?.current?.isRealSize ? 1 : celestialBody.bigSizeFactor)));
       }
     });
 

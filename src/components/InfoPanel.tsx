@@ -48,7 +48,7 @@ class InfoPanel extends React.Component<InfoPanelProps, InfoPanelState> {
   };
 
   getTemperatureText = () => {
-    switch (this.props.uiController.toolbar.settingsModal.getTemperatureUnit()) {
+    switch (this.props.uiController.settingsModalComponent.current?.temperatureUnit) {
       case 'celsius':
         return `${Math.round((this.state.celestialObject?.temperature - 273.15) * 100) / 100} °C`;
       case 'fahrenheit':
@@ -60,7 +60,7 @@ class InfoPanel extends React.Component<InfoPanelProps, InfoPanelState> {
 
 
   getDistanceText = (distance: number) => {
-    switch (this.props.uiController.toolbar.settingsModal.getDistanceUnit()) {
+    switch (this.props.uiController.settingsModalComponent.current?.distanceUnit) {
       case 'au':
         return `${Math.round((distance / KM_PER_AU) * 1000) / 1000} AU`;
       case 'metric':
@@ -72,7 +72,8 @@ class InfoPanel extends React.Component<InfoPanelProps, InfoPanelState> {
 
   render() {
     return (
-      <div id="info" style={{ display: this.state.celestialObject !== null ? 'block' : 'none' }}>
+      <div id="info" 
+      style={{ display: this.state.celestialObject !== null ? 'block' : 'none' }}>
         <div id="info-header" style={{ backgroundImage: `url('./assets/images/bodies/${this.state.celestialObject?.name.toLowerCase()}.png')` }}>
           <div className="info-element" id="info-name">
             <div id="info-name">{this.state.celestialObject?.name}</div>

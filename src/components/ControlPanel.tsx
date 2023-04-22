@@ -17,7 +17,6 @@ interface ControlPanelState {
 }
 
 class ControlPanel extends React.Component<ControlPanelProps, ControlPanelState> {
-    private ref = React.createRef<HTMLInputElement>();
     constructor(props: ControlPanelProps) {
         super(props);
 
