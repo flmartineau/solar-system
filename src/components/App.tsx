@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import DateDisplay from './DateDisplay';
 import { MainScene } from '../scenes/MainScene';
+import InfoPanel from './InfoPanel';
 
 const App: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -30,6 +31,13 @@ const App: React.FC = () => {
                 ref={mainScene.uiController.dateDisplayComponent} 
                 timeController={mainScene.timeController} 
                 uiController={mainScene.uiController} />
+            )}
+            {mainScene && (
+                <InfoPanel
+                ref={mainScene.uiController.infoPanelComponent}
+                mainScene={mainScene}
+                timeController={mainScene?.timeController}
+                uiController={mainScene?.uiController}/>
             )}
             <div ref={containerRef} id="game-container"></div>
         </div>

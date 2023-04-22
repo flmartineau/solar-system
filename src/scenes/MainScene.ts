@@ -72,7 +72,7 @@ export class MainScene {
     this._skybox.encoding = sRGBEncoding;
     this._scene.background = this._skybox;
 
-    this._timeController = new TimeController(this, () => this._uiController.dateDisplayComponent?.current?.updateDateTimeDisplay());
+    this._timeController = new TimeController(this);
     this._uiController = new UIController(this);
 
 
@@ -223,8 +223,11 @@ export class MainScene {
     this._renderer.setAnimationLoop(() => {
       this._devConsoleController.stats.begin();
       this._timeController.update();
-      if (this._selectedObject)
-        this._uiController.infoPanel.showInfo(this._selectedObject);
+      if (this._selectedObject) {
+        this._uiController.infoPanelComponent?.current?.setSelectedObject(this._selectedObject);
+        this._uiController.showInfo = true;
+      }
+        
       this._cameraController.update();
       this._devConsoleController.stats.end();
       this._renderer.render(this._scene, this._cameraController.camera);

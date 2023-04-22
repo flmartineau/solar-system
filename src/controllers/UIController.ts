@@ -1,11 +1,10 @@
 import { MainScene } from '../scenes/MainScene';
 import { ControlPanel } from '../components/ControlPanel';
-import { InfoPanel } from '../components/InfoPanel';
 import { Toolbar } from '../components/Toolbar';
 import { BodiesList } from '../components/BodiesList';
 import React from 'react';
 import DateDisplay from '../components/DateDisplay';
-
+import  InfoPanel  from '../components/InfoPanel';
 /**
  * User interface controller for the solar system application.
  */
@@ -13,11 +12,13 @@ export class UIController {
 
   //UI components
   private _controlPanel: ControlPanel;
-  private _infoPanel: InfoPanel;
   private _toolbar: Toolbar;
-  //private _dateDisplay: DateDisplay;
   public dateDisplayComponent: React.RefObject<DateDisplay>;
+  public infoPanelComponent: React.RefObject<InfoPanel>;
   private _bodiesList: BodiesList;
+
+
+  private _showInfo: boolean = false;
 
   /**
    * Create a UIController.
@@ -25,28 +26,27 @@ export class UIController {
    */
   constructor(mainScene: MainScene) {
     this._controlPanel = new ControlPanel(mainScene.timeController, mainScene.audioController);
-    this._infoPanel = new InfoPanel(mainScene, mainScene.timeController, this);
     this._toolbar = new Toolbar(mainScene, this);
     this._bodiesList = new BodiesList(mainScene, this.toolbar);
     this.dateDisplayComponent = React.createRef<DateDisplay>();
-    //this._dateDisplay = new DateDisplay(mainScene.timeController, this);
+    this.infoPanelComponent = React.createRef<InfoPanel>();
+  }
+
+  set showInfo(showInfo: boolean) {
+    this._showInfo = showInfo;
+  }
+
+  get showInfo(): boolean {
+    return this._showInfo;
   }
 
   get controlPanel(): ControlPanel {
     return this._controlPanel;
   }
 
-  get infoPanel(): InfoPanel {
-    return this._infoPanel;
-  }
-
   get toolbar(): Toolbar {
     return this._toolbar;
   }
-
-  /* get dateDisplay(): DateDisplay {
-    return this._dateDisplay;
-  } */
 
   get bodiesList(): BodiesList {
     return this._bodiesList;

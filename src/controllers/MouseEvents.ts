@@ -65,22 +65,6 @@ export class MouseEvents {
    */
   private onMouseMove(event: MouseEvent): void {
     this._mainScene.cameraController.setFromCamera(event, this._raycaster);
-
-    const celestialObjects: Array<CelestialBody> = this._mainScene.celestialObjects;
-    const celestialLabels: Array<Label> = this._mainScene.labels;
-    const intersectsObjects: Array<Intersection<Object3D<Event>>> =
-      this._raycaster.intersectObjects(celestialObjects);
-    const intersectsLabels: Array<Intersection<Object3D<Event>>> =
-      this._raycaster.intersectObjects(celestialLabels);
-    if (intersectsObjects.length > 0) {
-      this._uiController.infoPanel.showInfo(intersectsObjects[0].object);
-    } else if (intersectsLabels.length > 0) {
-      this._uiController.infoPanel.showInfo((intersectsLabels[0].object as unknown as Label).celestialBody);
-    } else if (this._mainScene.selectedObject) {
-      this._uiController.infoPanel.showInfo(this._mainScene.selectedObject);
-    } else {
-      this._uiController.infoPanel.hideInfo();
-    }
   }
 
   /**
