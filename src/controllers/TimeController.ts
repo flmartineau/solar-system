@@ -74,8 +74,6 @@ export class TimeController {
   public togglePlayPause(): void {
     this._isPlaying = !this._isPlaying;
     this._simulationSpeed = this._isPlaying ? 1 : 0;
-    this._mainScene.uiController.controlPanel.updateSpeedDisplay();
-    this._mainScene.uiController.controlPanel.togglePlayPauseButton();
   }
 
   /**
@@ -110,7 +108,6 @@ export class TimeController {
     });
 
     this._mainScene.uiController.dateDisplayComponent?.current?.updateDateTimeDisplay();
-    this._mainScene.uiController.controlPanel.updateSpeedDisplay();
 
     this._clock.elapsedTime = 0;
   }

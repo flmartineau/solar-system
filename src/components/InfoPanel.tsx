@@ -38,13 +38,13 @@ class InfoPanel extends React.Component<InfoPanelProps, InfoPanelState> {
   handleNextLunarEclipse = () => {
     const { timeController, uiController } = this.props;
     timeController.currentDate = NextLunarEclipse(timeController.currentDate).peak.date;
-    uiController.controlPanel.updateCurrentDateButton(false);
+    uiController.controlPanelComponent?.current?.updateCurrentDateButton(false);
   };
 
   handleNextSolarEclipse = () => {
     const { timeController, uiController } = this.props;
     timeController.currentDate = NextGlobalSolarEclipse(timeController.currentDate).peak.date;
-    uiController.controlPanel.updateCurrentDateButton(false);
+    uiController.controlPanelComponent?.current?.updateCurrentDateButton(false);
   };
 
   getTemperatureText = () => {

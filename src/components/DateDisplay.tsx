@@ -18,7 +18,6 @@ class DateDisplay extends Component<DateDisplayProps> {
           const newDate: Date | null = new Date(this.dateInputRef.current!.value);
           if (newDate) {
             this.props.timeController.currentDate = newDate;
-            this.props.uiController.controlPanel.updateCurrentDateButton(false);
           }
         }
       });
