@@ -4,7 +4,6 @@ import { Planet } from '../models/Planet';
 import { CameraController } from '../controllers/CameraController';
 import { MouseEvents } from '../controllers/MouseEvents';
 import { TimeController } from '../controllers/TimeController';
-import { TemplateHelper } from '../helper/TemplateHelper';
 import { CelestialBody } from '../models/CelestialBody';
 import { Label } from '../models/Label';
 import { UIController } from '../controllers/UIController';
@@ -80,7 +79,7 @@ export class MainScene {
     this._mouseEvents = new MouseEvents(this);
 
     this.loadData().then(() => {
-      this._uiController.bodiesList.createCelestialObjectList();
+      this._uiController.bodiesList.planets = this.planets;
       this._loaderController.hideLoadingScreen();
       this.animate();
     });
@@ -213,7 +212,7 @@ export class MainScene {
       this._selectedObject.isSelected = false;
     this._selectedObject = object;
     this._cameraController.centerCameraOnObject(this._selectedObject);
-    this.uiController.bodiesList.updateCelestialObjectList();
+    this.uiController.bodiesList.selectObject(this._selectedObject);
   }
 
   /**
@@ -226,7 +225,6 @@ export class MainScene {
       this._timeController.update();
       if (this._selectedObject) {
         this._uiController.infoPanelComponent?.current?.setSelectedObject(this._selectedObject);
-        this._uiController.showInfo = true;
       }
         
       this._cameraController.update();

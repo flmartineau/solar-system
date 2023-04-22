@@ -4,6 +4,7 @@ import { MainScene } from '../scenes/MainScene';
 import InfoPanel from './InfoPanel';
 import ControlPanel from './ControlPanel';
 import Toolbar from './Toolbar';
+import BodiesList from './BodiesList';
 
 const App: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -51,6 +52,11 @@ const App: React.FC = () => {
                 <Toolbar
                     ref={mainScene.uiController.toolbarComponent}
                     mainScene={mainScene}/>    
+            )}
+            {mainScene && (
+                <BodiesList
+                ref={mainScene.uiController.bodiesListComponent}
+                mainScene={mainScene}/>
             )}
             <div ref={containerRef} id="game-container"></div>
         </div>
