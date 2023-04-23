@@ -54,7 +54,7 @@ export class MainScene {
 
     this._uiController = new UIController(this);
 
-    this._loaderController = new LoaderController();
+    this._loaderController = new LoaderController(this);
     this._devConsoleController = new DevConsoleController(this);
     this._cameraController = new CameraController(this);
     this._audioController = new AudioController();
@@ -80,7 +80,7 @@ export class MainScene {
 
     this.loadData().then(() => {
       this._uiController.bodiesList.planets = this.planets;
-      this._loaderController.hideLoadingScreen();
+      this._uiController.loadingScreen.hide();
       this.animate();
     });
 

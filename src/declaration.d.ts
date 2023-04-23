@@ -8,3 +8,7 @@ declare module '*.glsl' {
     export default src;
   }
   
+declare module '*.png' {
+    const src: string;
+    export default src;
+  }

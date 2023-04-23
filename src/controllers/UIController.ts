@@ -8,6 +8,7 @@ import SettingsModal from '../components/SettingsModal';
 import BodiesList from '../components/BodiesList';
 import { CelestialBody } from '../models/CelestialBody';
 import { Planet } from '../models/Planet';
+import LoadingScreen from '../components/LoadingScreen';
 
 
 /**
@@ -24,6 +25,7 @@ export class UIController {
   public controlPanelComponent: React.RefObject<ControlPanel>;
   public settingsModalComponent: React.RefObject<SettingsModal>;
   public bodiesListComponent: React.RefObject<BodiesList>;
+  public loadingScreenComponent: React.RefObject<LoadingScreen>;
 
   /**
    * Create a UIController.
@@ -36,10 +38,15 @@ export class UIController {
     this.toolbarComponent = React.createRef<Toolbar>();
     this.settingsModalComponent = React.createRef<SettingsModal>();
     this.bodiesListComponent = React.createRef<BodiesList>();
+    this.loadingScreenComponent = React.createRef<LoadingScreen>();
   }
 
   get bodiesList(): BodiesList {
     return this.bodiesListComponent.current!;
+  }
+
+  get loadingScreen(): LoadingScreen {
+    return this.loadingScreenComponent.current!;
   }
 
   getCelestialBodyList(): Planet[] {

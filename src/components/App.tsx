@@ -5,58 +5,52 @@ import InfoPanel from './InfoPanel';
 import ControlPanel from './ControlPanel';
 import Toolbar from './Toolbar';
 import BodiesList from './BodiesList';
+import LoadingScreen from './LoadingScreen';
 
 const App: React.FC = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [mainScene, setMainScene] = useState<MainScene | null>(null);
 
     useEffect(() => {
-      if (containerRef.current) {
-        setMainScene(new MainScene(containerRef.current));
-      }
+        if (containerRef.current) {
+            setMainScene(new MainScene(containerRef.current));
+        }
     }, []);
 
     return (
         <div>
-            <div id="loading-screen">
-                <div id="loading-screen-content">
-                    <div id="loading-screen-header">
-                        <img id="loading-screen-header-title" src="./assets/IMAGES/logo_text.png" alt="Solar System Logo" />
-                        <p id="loading-screen-header-text">LOADING...</p>
-                    </div>
-                    <div id="loading-bar">
-                        <div id="loading-bar-inner"></div>
-                    </div>
-                </div>
-            </div>
-           {mainScene && (
-            <DateDisplay 
-                ref={mainScene.uiController.dateDisplayComponent} 
-                timeController={mainScene.timeController} 
-                uiController={mainScene.uiController} />
+            {mainScene && (
+                <LoadingScreen
+                    ref={mainScene.uiController.loadingScreenComponent} />
+            )}
+            {mainScene && (
+                <DateDisplay
+                    ref={mainScene.uiController.dateDisplayComponent}
+                    timeController={mainScene.timeController}
+                    uiController={mainScene.uiController} />
             )}
             {mainScene && (
                 <InfoPanel
-                ref={mainScene.uiController.infoPanelComponent}
-                mainScene={mainScene}
-                timeController={mainScene?.timeController}
-                uiController={mainScene?.uiController}/>
+                    ref={mainScene.uiController.infoPanelComponent}
+                    mainScene={mainScene}
+                    timeController={mainScene?.timeController}
+                    uiController={mainScene?.uiController} />
             )}
             {mainScene && (
                 <ControlPanel
                     ref={mainScene.uiController.controlPanelComponent}
                     timeController={mainScene.timeController}
-                    audioController={mainScene.audioController}/>
+                    audioController={mainScene.audioController} />
             )}
             {mainScene && (
                 <Toolbar
                     ref={mainScene.uiController.toolbarComponent}
-                    mainScene={mainScene}/>    
+                    mainScene={mainScene} />
             )}
             {mainScene && (
                 <BodiesList
-                ref={mainScene.uiController.bodiesListComponent}
-                mainScene={mainScene}/>
+                    ref={mainScene.uiController.bodiesListComponent}
+                    mainScene={mainScene} />
             )}
             <div ref={containerRef} id="game-container"></div>
         </div>

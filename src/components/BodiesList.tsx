@@ -49,6 +49,7 @@ class BodiesList extends React.Component<BodiesListProps, BodiesListState> {
                                     {planet.moons.map((moon: Moon) => {
                                         return (
                                             <li id={'moon-list-' + moon.name.toLowerCase()}
+                                                key={'moon-list-' + moon.name.toLowerCase()}
                                                 className={this.state.selectedObject === moon ? 'selected' : ''}
                                                 onClick={() => this.selectObject(moon)}>
                                                 {moon.name}
@@ -67,6 +68,7 @@ class BodiesList extends React.Component<BodiesListProps, BodiesListState> {
                         {this.state.celestialBodies.map((planet: Planet) => {
                             return (
                                 <li id={'planet-list-' + planet.name.toLowerCase()}
+                                    key={'planet-list-' + planet.name.toLowerCase()}
                                     className={this.state.selectedObject === planet ? 'selected' : ''}
                                     onClick={() => this.selectObject(planet)}>
                                     {planet.name}

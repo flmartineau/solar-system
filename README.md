@@ -49,6 +49,7 @@ The `dist` folder will be generated with the production-ready files. You can dep
 - TypeScript
 - WebGL
 - Webpack
+- React
 
 ## Credit
 

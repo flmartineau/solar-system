@@ -1,13 +1,15 @@
 import { CubeTextureLoader, LoadingManager, TextureLoader } from "three";
+import { MainScene } from "../scenes/MainScene";
 
 export class LoaderController {
 
-
+    private _mainScene: MainScene;
     private _loadingManager: LoadingManager;
     private _textureLoader: TextureLoader;
     private _cubeTextureLoader: CubeTextureLoader;
 
-    constructor() {
+    constructor(mainScene: MainScene) {
+        this._mainScene = mainScene;
         this._loadingManager = new LoadingManager();
         this._textureLoader = new TextureLoader(this._loadingManager);
         this._cubeTextureLoader = new CubeTextureLoader(this._loadingManager);
@@ -27,19 +29,7 @@ export class LoaderController {
     }
 
     public updateLoadingBar(item: string, loaded: number, total: number): void {
-        const progress = (loaded / 34) * 100;
-        const loadingBarInner = document.getElementById("loading-bar-inner");
-        if (loadingBarInner) {
-            loadingBarInner.style.width = `${progress}%`;
-        }
-    }
-
-
-    public hideLoadingScreen(): void {
-        const loadingScreen = document.getElementById("loading-screen");
-        if (loadingScreen) {
-            loadingScreen.style.display = "none";
-        }
+        this._mainScene.uiController.loadingScreen.getUpdatedProgress(item, loaded, total);
     }
 
 }
